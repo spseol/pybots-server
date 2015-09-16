@@ -15,7 +15,13 @@ class Map(object):
             return row[index[0]]
         except IndexError as e:
             raise OutOfMapError(e)
+            
+    def export_map(self):
+        return map(lambda row: map(lambda cell: self._export_cell(cell), row), self.__map)
 
-
+    def _export_cell(self, cell):
+        return cell
+    
+    
 class OutOfMapError(IndexError):
     pass
