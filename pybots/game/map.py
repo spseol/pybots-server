@@ -1,5 +1,5 @@
-from pybots.game.empty_field import EmptyField
-from pybots.game.field import Field
+from pybots.game.fields.empty_field import EmptyField
+from pybots.game.fields.field import Field
 
 
 class Map(object):
@@ -26,7 +26,8 @@ class Map(object):
     def export_map(self):
         return [[self._export_field(field) for field in row] for row in self.__map]
 
-    def _export_field(self, field):
+    @classmethod
+    def _export_field(cls, field):
         if isinstance(field, Field):
             return field.export()
         raise UnknownFieldError()

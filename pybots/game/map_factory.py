@@ -1,0 +1,2 @@
+class MapFactory(object):
+    pass
