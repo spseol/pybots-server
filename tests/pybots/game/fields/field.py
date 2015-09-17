@@ -1,6 +1,6 @@
 import unittest
 
-from pybots.game.field import Field
+from pybots.game.fields.field import Field
 
 
 class TestField(unittest.TestCase):

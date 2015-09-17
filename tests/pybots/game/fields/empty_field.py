@@ -1,6 +1,6 @@
 import unittest
 
-from pybots.game.empty_field import EmptyField
+from pybots.game.fields.empty_field import EmptyField
 
 
 class TestEmptyField(unittest.TestCase):

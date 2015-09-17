@@ -7,7 +7,7 @@ python:
   - "3.4"
 
 script:
-  - python test.py
+  - pep8 pybots/
   - coverage run --source=pybots test.py
 
 install:
@@ -20,3 +20,5 @@ branches:
   only:
     - master
 
+before_script:
+  - "pep8 --ignore=E501 pybots" # ignore too long lines
