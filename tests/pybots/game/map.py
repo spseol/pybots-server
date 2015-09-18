@@ -14,8 +14,23 @@ class TestMap(unittest.TestCase):
             Map(width=.5)
         with self.assertRaises(AssertionError):
             Map(height=.5)
+        with self.assertRaises(AssertionError):
+            Map(default_field=None)
 
     def test_getitem(self):
+        game_map = Map(1, 1)
+        self.assertIsInstance(game_map[0, 0], EmptyField, 'empty map')
+
+    def test_setitem(self):
+        game_map = Map(1, 1)
+        field = EmptyField()
+        game_map[0, 0] = field
+        self.assertIs(game_map[0, 0], field, 'empty map')
+        self.assertIsInstance(game_map[0, 0], EmptyField, 'empty map')
+        with self.assertRaises(UnknownFieldError):
+            game_map[0, 0] = None
+
+    def test__get(self):
         game_map = Map(1, 1)
         with self.assertRaises(AssertionError):
             game_map[0]
@@ -29,8 +44,6 @@ class TestMap(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             game_map[0.1, -0.1]
-
-        self.assertIsInstance(game_map[0, 0], EmptyField, 'empty map')
 
     def test_export_map(self):
         game_map = Map(1, 1)
