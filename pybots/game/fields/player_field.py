@@ -1,4 +1,5 @@
 from pybots.game.fields.field import Field
+from pybots.game.fields.fields import Fields
 
 
 class PlayerField(Field):
@@ -6,5 +7,4 @@ class PlayerField(Field):
         self.orientation = orientation
 
     def export(self):
-        # TODO: specify enumeration with field types
-        return 'player'
+        return Fields.PLAYER
