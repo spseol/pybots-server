@@ -13,7 +13,9 @@ class MapFactory(object):
     def create(self):
         game_map = Map(**self.map_kwargs)
 
-        random_position = lambda: (randint(0, game_map.width - 1), randint(0, game_map.height - 1))
+        def random_position():
+            return randint(0, game_map.width - 1), randint(0, game_map.height - 1)
+
         treasure = TreasureField()
 
         game_map[random_position()] = treasure
