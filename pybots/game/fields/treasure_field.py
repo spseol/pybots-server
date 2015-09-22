@@ -10,4 +10,5 @@ class TreasureField(Field):
         self.price = price
 
     def export(self):
-        return Fields.TREASURE
+        # TODO: fix JSON serializing enum
+        return Fields.TREASURE.value

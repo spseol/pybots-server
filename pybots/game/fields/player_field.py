@@ -7,4 +7,5 @@ class PlayerField(Field):
         self.orientation = orientation
 
     def export(self):
-        return Fields.PLAYER
+        # TODO: fix JSON serializing enum
+        return Fields.PLAYER.value
