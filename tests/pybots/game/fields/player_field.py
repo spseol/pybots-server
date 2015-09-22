@@ -11,4 +11,4 @@ class TestPlayerField(TestCase):
 
     def test_export(self):
         player = PlayerField(0)
-        self.assertEqual(player.export(), Fields.PLAYER, 'Player field export')
+        self.assertEqual(player.export(), Fields.PLAYER.value, 'Player field export')

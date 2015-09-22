@@ -5,8 +5,8 @@ from pybots.game.fields.field import Field
 
 
 class Map(object):
-    DEFAULT_MAP_WIDTH = 10
-    DEFAULT_MAP_HEIGHT = 10
+    DEFAULT_MAP_WIDTH = 4
+    DEFAULT_MAP_HEIGHT = 4
 
     def __init__(self,
                  width=DEFAULT_MAP_WIDTH,
