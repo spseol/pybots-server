@@ -57,3 +57,8 @@ class TestMap(unittest.TestCase):
         getattr(game_map, '_{}__map'.format(game_map.__class__.__name__))[0][0] = None
         with self.assertRaises(UnknownFieldError):
             game_map._export_field(game_map[0, 0])
+
+    def test_resolutions(self):
+        game_map = Map(10, 20)
+        self.assertEqual(game_map.width, 10, 'Map width')
+        self.assertEqual(game_map.height, 20, 'Map height')

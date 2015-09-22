@@ -22,10 +22,10 @@ class Map(object):
         self.__height = height
 
     def __getitem__(self, index):
-        return self._get(index)
+        return self._getitem(index)
 
     def __setitem__(self, index, field):
-        self._get(index)
+        self._getitem(index)
         if not isinstance(field, Field):
             raise UnknownFieldError('Cannot set this field.', field)
         self.__map[index[1]][index[0]] = field
@@ -33,12 +33,20 @@ class Map(object):
     def export_map(self):
         return [[self._export_field(field) for field in row] for row in self.__map]
 
-    def _get(self, index):
+    def _getitem(self, index):
         assert isinstance(index, (list, tuple)) and len(index) == 2, 'Index has to have two items, x and y.'
         try:
             return self.__map[index[1]][index[0]]
         except IndexError as e:
             raise OutOfMapError(e)
+
+    @property
+    def width(self):
+        return self.__width
+
+    @property
+    def height(self):
+        return self.__height
 
     @classmethod
     def _export_field(cls, field):
