@@ -3,6 +3,7 @@ import sys
 from flask import Flask
 from pybots.urls import urls
 import logging
+import logging.handlers
 
 PORT = 44822
 
@@ -16,7 +17,11 @@ if __name__ == '__main__':
     else:
         logger = logging.getLogger()
         logger.setLevel(logging.DEBUG)
-        fileHandler = logging.FileHandler("robots.log")
+        # fileHandler = logging.FileHandler("robots.log")
+        fileHandler = logging.handlers.RotatingFileHandler("robots.log",
+                                                           maxBytes=5000,
+                                                           backupCount=7)
+
         consoleHandler = logging.StreamHandler()
         '''
         logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] "
