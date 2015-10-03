@@ -49,7 +49,7 @@ class TestMap(unittest.TestCase):
     def test_export_map(self):
         game_map = Map(1, 1)
         self.assertEqual(
-            game_map.export_map(),
+            game_map.export(),
             [[Fields.EMPTY.value]]
         )
 
