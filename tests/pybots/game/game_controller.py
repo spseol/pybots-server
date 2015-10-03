@@ -1,7 +1,7 @@
 from random import randint
 
+from pybots.game.game import Game
 from pybots.game.game_controller import GameController
-from pybots.game.map import Map
 from tests.pybots.pybots_test_case import TestCase
 
 
@@ -12,8 +12,8 @@ class TestGameController(TestCase):
         game = GameController.get(player_id)
         self.assertIsInstance(
             game,
-            Map,
-            'GameController.get returns game instance.'
+            Game,
+            'GameController.get returns Game instance.'
         )
 
         self.assertIs(

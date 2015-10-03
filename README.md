@@ -21,7 +21,7 @@ vždy uspořádána do slovníku.
 * `GET /game/<ID>` pohled na hrací pole
     + -> vrátí `200` (slovník) s polohou hráčů
     + `map`: seznam řádků s kódy jednotlivých políček
-* `POST /move` tah hráče. Očekává parametry:
+* `POST /action` tah hráče. Očekává parametry:
     + `id`: `<ID hráče>`
     + `action`:
         - `step`
