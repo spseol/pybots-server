@@ -1,3 +1,7 @@
-class Field(object):
-    def export(self):
-        raise NotImplementedError()
+from abc import ABCMeta
+
+from pybots.game.utils import Exportable
+
+
+class Field(Exportable, metaclass=ABCMeta):
+    pass
