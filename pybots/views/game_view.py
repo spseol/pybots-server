@@ -1,23 +1,23 @@
-from flask.json import jsonify
+from pprint import pformat
 
-from flask.views import View
+from flask.views import MethodView
 
+from pybots.game.game import Game
 from pybots.game.game_controller import GameController
+from pybots.views.utils import args_to_kwargs
 
-from pybots.game.map import Map
 
+class GameView(MethodView):
+    decorators = [args_to_kwargs]
 
-class GameView(View):
-    def dispatch_request(self, *args, **kwargs):
-        user_id = kwargs.pop('user_id', None)
+    def get(self, user_id=None, *args, **kwargs):
         if not user_id:
             return 'Invalid request', 404
 
-        # TODO: delegate to GameController
-        game_map = GameController.maps.get(user_id, None)
-
-        if user_id not in GameController.maps:
+        if user_id not in GameController.games:
             return 'Unknown user_id', 404
 
-        assert isinstance(game_map, Map)
-        return jsonify(map=game_map.export_map())
+        game = GameController.games.get(user_id, None)
+
+        assert isinstance(game, Game)
+        return pformat(game.export())
