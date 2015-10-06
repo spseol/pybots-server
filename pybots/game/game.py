@@ -1,6 +1,6 @@
 from pybots.game.actions import Action
 from pybots.game.fields.player_field import PlayerField
-from pybots.game.map import Map
+from pybots.game.map import Map, OutOfMapError
 from pybots.game.utils import Exportable, get_next_position
 
 
@@ -25,7 +25,8 @@ class Game(Exportable):
         if player_id not in self._players_positions:
             self._players_positions[player_id] = self._empty_player_positions.pop()
 
-        self._actions[action](**dict(player_id=player_id))
+        action_func = self._actions[action]
+        action_func(**dict(player_id=player_id))
 
     def _action_step(self, player_id, **kwargs):
         actual_position = self._players_positions[player_id]
@@ -34,8 +35,10 @@ class Game(Exportable):
             actual_position,
             orientation
         )
-        if not self.map.get_next_field(actual_position, orientation):
-            raise WallError()
+        try:
+            self.map[new_position]
+        except OutOfMapError:
+            raise MovementError('New position is out of map.')
 
         actual_field = self._map[actual_position]
         new_field = self._map[new_position]
@@ -60,5 +63,5 @@ class Game(Exportable):
         )
 
 
-class WallError(Exception):
+class MovementError(Exception):
     pass

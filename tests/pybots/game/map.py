@@ -44,7 +44,10 @@ class TestMap(unittest.TestCase):
             game_map[0, 1]
 
         with self.assertRaises(TypeError):
-            game_map[0.1, -0.1]
+            game_map[0.1, 0.1]
+
+        with self.assertRaises(OutOfMapError):
+            game_map[-1, -1]
 
     def test_export_map(self):
         game_map = Map(1, 1)

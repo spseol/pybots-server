@@ -35,6 +35,10 @@ class Map(Exportable):
 
     def _getitem(self, index):
         assert isinstance(index, (list, tuple)) and len(index) == 2, 'Index has to have two items, x and y.'
+
+        if index[0] < 0 or index[1] < 0:
+            raise OutOfMapError("Indexing by negative value isn't allowed.")
+
         try:
             return self.__map[index[1]][index[0]]
         except IndexError as e:
