@@ -1,7 +1,8 @@
 from pybots.game.actions import Action
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
-from pybots.game.game import Game, MovementError
+from pybots.game.fields.treasure_field import TreasureField
+from pybots.game.game import Game, MovementError, GameFinished, NoFreeBots
 from pybots.game.map import Map
 from pybots.game.map_factory import MapFactory
 from pybots.game.orientations import Orientation
@@ -18,6 +19,12 @@ class TestGame(TestCase):
             dict(map=game_map.export())
         )
 
+    def test_not_free_bots(self):
+        game_map = MapFactory(players=0).create()
+        game = Game(game_map)
+        with self.assertRaises(NoFreeBots):
+            game.action('bot_id', Action.STEP)
+
     def test_action_simple_movements(self):
         game_map = Map(width=1, height=1)
         fake_map = [
@@ -26,7 +33,7 @@ class TestGame(TestCase):
         ]
         setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
         game = Game(game_map)
-        game._empty_bots_positions = game._map.get_field_positions(BotField)
+        game._empty_bots_positions = game._map.get_field_occurrences(BotField)
 
         fake_bot_id = 'fake_bot_id'
 
@@ -38,7 +45,7 @@ class TestGame(TestCase):
 
         game.action(fake_bot_id, Action.TURN_LEFT)
         self.assertEqual(
-            game._map[game._bots_positions[fake_bot_id]].orientation,
+            game.map[game._bots_positions[fake_bot_id]].orientation,
             Orientation.EAST
         )
 
@@ -61,3 +68,16 @@ class TestGame(TestCase):
         with self.assertRaises(MovementError):
             game.action(fake_bot_id, Action.STEP)
 
+
+    def test_action_reach_treasure(self):
+        game_map = Map(width=1, height=2)
+        fake_map = [
+            [TreasureField()],
+            [BotField(Orientation.NORTH)],
+        ]
+        setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
+        game = Game(game_map)
+        game._empty_bots_positions = game.map.get_field_occurrences(BotField)
+
+        with self.assertRaises(GameFinished):
+            game.action('bot_id', Action.STEP)

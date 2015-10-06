@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 import sys
+
+if sys.version_info < (3, ):
+    print('Pybots require python 3.')
+    exit(1)
+
 import logging
 import logging.handlers
 
@@ -12,23 +17,28 @@ PORT = 44822
 
 app = Flask(__name__)
 
-if __name__ == '__main__':
-    for rule, view in urls:
-        app.add_url_rule(rule, view_func=view)
+for rule, view in urls:
+    app.add_url_rule(rule, view_func=view)
 
+
+def main():
     if len(sys.argv) > 1 and sys.argv[1].upper() == 'DEBUG':
         app.run(host='127.0.0.1', port=PORT, debug=True)
     else:
         logger = logging.getLogger()
         logger.setLevel(logging.DEBUG)
 
-        fileHandler = logging.handlers.RotatingFileHandler("robots.log",
-                                                           maxBytes=5000,
-                                                           backupCount=7)
+        file_handler = logging.handlers.RotatingFileHandler("robots.log",
+                                                            maxBytes=5000,
+                                                            backupCount=7)
 
-        consoleHandler = logging.StreamHandler()
+        console_handler = logging.StreamHandler()
 
-        logger.addHandler(fileHandler)
-        logger.addHandler(consoleHandler)
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
 
         app.run(host='0.0.0.0', port=PORT, debug=False, threaded=True)
+
+
+if __name__ == '__main__':
+    main()

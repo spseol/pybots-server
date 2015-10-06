@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - "2.7"
   - "3.2"
   - "3.3"
   - "3.4"
@@ -27,7 +26,6 @@ before_script:
 
 matrix:
   allow_failures:
-    - python: "2.7"
     - python: "3.2"
     - python: "3.3"
     - python: "3.5"

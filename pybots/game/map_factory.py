@@ -8,8 +8,13 @@ from pybots.game.orientations import Orientation
 
 
 class MapFactory(object):
-    def __init__(self, **kwargs):
+    PLAYERS = 2
+    TREASURES = 1
+
+    def __init__(self, players=PLAYERS, treasures=TREASURES, **kwargs):
         self.map_options = kwargs
+        self.players = players
+        self.treasures = treasures
 
     def create(self):
         game_map = Map(**self.map_options)
@@ -17,16 +22,18 @@ class MapFactory(object):
         def random_position():
             return randint(0, game_map.width - 1), randint(0, game_map.height - 1)
 
-        treasure = TreasureField()
+        for _i in range(self.treasures):
+            treasure = TreasureField()
+            position = random_position()
+            while not isinstance(game_map[position], EmptyField):
+                position = random_position()
+            game_map[position] = treasure
 
-        game_map[random_position()] = treasure
-
-        for _i in range(2):
+        for _i in range(self.players):
             bot = BotField(Orientation.NORTH)
             position = random_position()
             while not isinstance(game_map[position], EmptyField):
                 position = random_position()
-
             game_map[position] = bot
 
         return game_map
