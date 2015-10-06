@@ -1,7 +1,7 @@
 from pybots.game.actions import Action
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.player_field import PlayerField
-from pybots.game.game import Game, WallError
+from pybots.game.game import Game, MovementError
 from pybots.game.map import Map
 from pybots.game.map_factory import MapFactory
 from pybots.game.orientations import Orientation
@@ -48,7 +48,16 @@ class TestGame(TestCase):
             (1, 0)
         )
 
-        with self.assertRaises(WallError):
+        with self.assertRaises(MovementError):
             game.action(fake_player_id, Action.STEP)
+        self.assertEqual(
+            game._players_positions[fake_player_id],
+            (1, 0)
+        )
 
+        game.action(fake_player_id, Action.TURN_RIGHT)
+
+        game.action(fake_player_id, Action.STEP)
+        with self.assertRaises(MovementError):
+            game.action(fake_player_id, Action.STEP)
 
