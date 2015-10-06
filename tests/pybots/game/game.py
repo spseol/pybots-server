@@ -18,7 +18,7 @@ class TestGame(TestCase):
             dict(map=game_map.export())
         )
 
-    def test_action(self):
+    def test_action_simple_movements(self):
         game_map = Map(width=1, height=1)
         fake_map = [
             [PlayerField(Orientation.EAST), EmptyField()],

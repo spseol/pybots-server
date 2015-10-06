@@ -9,10 +9,10 @@ from pybots.game.orientations import Orientation
 
 class MapFactory(object):
     def __init__(self, **kwargs):
-        self.map_kwargs = kwargs
+        self.map_options = kwargs
 
     def create(self):
-        game_map = Map(**self.map_kwargs)
+        game_map = Map(**self.map_options)
 
         def random_position():
             return randint(0, game_map.width - 1), randint(0, game_map.height - 1)
