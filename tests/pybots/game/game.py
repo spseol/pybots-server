@@ -1,6 +1,6 @@
 from pybots.game.actions import Action
 from pybots.game.fields.empty_field import EmptyField
-from pybots.game.fields.player_field import PlayerField
+from pybots.game.fields.bot_field import BotField
 from pybots.game.game import Game, MovementError
 from pybots.game.map import Map
 from pybots.game.map_factory import MapFactory
@@ -21,43 +21,43 @@ class TestGame(TestCase):
     def test_action_simple_movements(self):
         game_map = Map(width=1, height=1)
         fake_map = [
-            [PlayerField(Orientation.EAST), EmptyField()],
+            [BotField(Orientation.EAST), EmptyField()],
             [EmptyField(), EmptyField()],
         ]
         setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
         game = Game(game_map)
-        game._empty_player_positions = game._map.get_field_positions(PlayerField)
+        game._empty_bots_positions = game._map.get_field_positions(BotField)
 
-        fake_player_id = 'fake_player_id'
+        fake_bot_id = 'fake_bot_id'
 
-        game.action(fake_player_id, Action.TURN_RIGHT)
+        game.action(fake_bot_id, Action.TURN_RIGHT)
         self.assertEqual(
-            game._map[game._players_positions[fake_player_id]].orientation,
+            game._map[game._bots_positions[fake_bot_id]].orientation,
             Orientation.SOUTH
         )
 
-        game.action(fake_player_id, Action.TURN_LEFT)
+        game.action(fake_bot_id, Action.TURN_LEFT)
         self.assertEqual(
-            game._map[game._players_positions[fake_player_id]].orientation,
+            game._map[game._bots_positions[fake_bot_id]].orientation,
             Orientation.EAST
         )
 
-        game.action(fake_player_id, Action.STEP)
+        game.action(fake_bot_id, Action.STEP)
         self.assertEqual(
-            game._players_positions[fake_player_id],
+            game._bots_positions[fake_bot_id],
             (1, 0)
         )
 
         with self.assertRaises(MovementError):
-            game.action(fake_player_id, Action.STEP)
+            game.action(fake_bot_id, Action.STEP)
         self.assertEqual(
-            game._players_positions[fake_player_id],
+            game._bots_positions[fake_bot_id],
             (1, 0)
         )
 
-        game.action(fake_player_id, Action.TURN_RIGHT)
+        game.action(fake_bot_id, Action.TURN_RIGHT)
 
-        game.action(fake_player_id, Action.STEP)
+        game.action(fake_bot_id, Action.STEP)
         with self.assertRaises(MovementError):
-            game.action(fake_player_id, Action.STEP)
+            game.action(fake_bot_id, Action.STEP)
 

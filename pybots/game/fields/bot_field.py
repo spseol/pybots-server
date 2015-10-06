@@ -5,14 +5,14 @@ from pybots.game.orientations import Orientation
 from pybots.game.utils import get_next_orientation
 
 
-class PlayerField(Field):
+class BotField(Field):
     def __init__(self, orientation):
         assert isinstance(orientation, Orientation)
         self._orientation = orientation
 
     def export(self):
         # TODO: fix JSON serializing enum
-        return Fields.PLAYER.value
+        return Fields.BOT.value
 
     @property
     def orientation(self):

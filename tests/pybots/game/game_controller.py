@@ -8,9 +8,9 @@ from tests.pybots.pybots_test_case import TestCase
 
 class TestGameController(TestCase):
     def test_get(self):
-        player_id = randint(0, 10 ** 12)
+        bot_id = randint(0, 10 ** 12)
 
-        game = game_controller.get(player_id)
+        game = game_controller.get(bot_id)
         self.assertIsInstance(
             game,
             Game,
@@ -19,19 +19,19 @@ class TestGameController(TestCase):
 
         self.assertIs(
             game,
-            game_controller.get(player_id),
+            game_controller.get(bot_id),
             'Twice calling of GameController.get returns the same game.'
         )
 
     def test_action_simple(self):
-        player_id = 'fake_player_0'
+        bot_id = 'fake_bot_0'
 
         with self.assertRaises(MovementError):
-            for _ in range(game_controller.get(player_id).map.height):
-                game_controller.action(player_id, Action.STEP)
+            for _ in range(game_controller.get(bot_id).map.height):
+                game_controller.action(bot_id, Action.STEP)
 
-        player_id = 'fake_player_1'
+        bot_id = 'fake_bot_1'
         with self.assertRaises(MovementError):
-            game_controller.action(player_id, Action.TURN_LEFT)
-            for _ in range(game_controller.get(player_id).map.width):
-                game_controller.action(player_id, Action.STEP)
+            game_controller.action(bot_id, Action.TURN_LEFT)
+            for _ in range(game_controller.get(bot_id).map.width):
+                game_controller.action(bot_id, Action.STEP)
