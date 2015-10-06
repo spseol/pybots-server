@@ -31,4 +31,4 @@ if __name__ == '__main__':
         logger.addHandler(fileHandler)
         logger.addHandler(consoleHandler)
 
-        app.run(host='0.0.0.0', port=PORT, debug=False)
+        app.run(host='0.0.0.0', port=PORT, debug=False, threaded=True)

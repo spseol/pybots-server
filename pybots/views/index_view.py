@@ -2,7 +2,7 @@ from flask.json import jsonify
 from flask.views import View
 from flask import request
 
-from pybots.game.game_controller import GameController
+from pybots.game.game_controller import game_controller
 
 
 class IndexView(View):
@@ -13,5 +13,5 @@ class IndexView(View):
             tuple(headers)
         )
 
-        GameController.get(client_id)
+        game_controller.get(client_id)
         return jsonify(id=client_id)

@@ -6,7 +6,7 @@ class TestUrls(TestCase):
     def test_urls(self):
         try:
             iter(urls)
-        except TypeError as te:
+        except TypeError:
             raise self.failureException('Urls is not iterable.')
 
         for url in urls:

@@ -2,7 +2,7 @@ from flask import jsonify
 from flask.views import MethodView
 
 from pybots.game.actions import Action
-from pybots.game.game_controller import GameController
+from pybots.game.game_controller import game_controller
 from pybots.views.utils import form_to_kwargs, args_to_kwargs
 
 
@@ -13,9 +13,9 @@ class ActionView(MethodView):
         if not all((player_id, action)):
             return 'Invalid request', 404
 
-        GameController.action(
+        game_controller.action(
             player_id,
             Action(int(action))
         )
 
-        return jsonify(**GameController.get(player_id).export()), 200
+        return jsonify(**game_controller.get(player_id).export()), 200
