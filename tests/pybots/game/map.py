@@ -1,8 +1,11 @@
 import unittest
 
+from pybots.game.fields.bot_field import BotField
+
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.fields import Fields
 from pybots.game.map import Map, OutOfMapError, UnknownFieldError
+from pybots.game.orientations import Orientation
 
 
 class TestMap(unittest.TestCase):
@@ -66,3 +69,15 @@ class TestMap(unittest.TestCase):
         game_map = Map(10, 20)
         self.assertEqual(game_map.width, 10, 'Map width')
         self.assertEqual(game_map.height, 20, 'Map height')
+
+    def test_get_next_field(self):
+        game_map = Map(2, 1)
+        bot = BotField()
+        game_map[1, 0] = bot
+        self.assertIs(
+            game_map.get_next_field((0, 0), Orientation.EAST),
+            bot
+        )
+        self.assertIsNone(
+            game_map.get_next_field((0, 0), Orientation.NORTH)
+        )

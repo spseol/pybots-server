@@ -44,7 +44,7 @@ class Map(Exportable):
         except IndexError as e:
             raise OutOfMapError(e)
 
-    def get_field_positions(self, field_cls):
+    def get_field_occurrences(self, field_cls):
         positions = []
         for y, row in enumerate(self.__map):
             for x, field in enumerate(row):

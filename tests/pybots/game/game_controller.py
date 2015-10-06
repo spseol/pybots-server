@@ -2,7 +2,7 @@ from random import randint
 
 from pybots.game.actions import Action
 from pybots.game.game import Game, MovementError
-from pybots.game.game_controller import game_controller
+from pybots.game.game_controller import game_controller, GameController
 from tests.pybots.pybots_test_case import TestCase
 
 
@@ -24,14 +24,14 @@ class TestGameController(TestCase):
         )
 
     def test_action_simple(self):
+        controller = GameController(map_factory_options=dict(height=2, width=2, treasures=0))
         bot_id = 'fake_bot_0'
-
         with self.assertRaises(MovementError):
-            for _ in range(game_controller.get(bot_id).map.height):
-                game_controller.action(bot_id, Action.STEP)
+            for _ in range(controller.get(bot_id).map.height):
+                controller.action(bot_id, Action.STEP)
 
         bot_id = 'fake_bot_1'
         with self.assertRaises(MovementError):
-            game_controller.action(bot_id, Action.TURN_LEFT)
-            for _ in range(game_controller.get(bot_id).map.width):
-                game_controller.action(bot_id, Action.STEP)
+            controller.action(bot_id, Action.TURN_LEFT)
+            for _ in range(controller.get(bot_id).map.width):
+                controller.action(bot_id, Action.STEP)

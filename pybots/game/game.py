@@ -9,7 +9,7 @@ class Game(Exportable):
     def __init__(self, game_map):
         assert isinstance(game_map, Map)
         self._map = game_map
-        self._empty_bots_positions = self.map.get_field_positions(BotField)
+        self._empty_bots_positions = self.map.get_field_occurrences(BotField)
         self._bots_positions = {}
         self._actions = {
             Action.STEP: self._action_step,
@@ -23,8 +23,10 @@ class Game(Exportable):
 
     def action(self, bot_id, action):
         assert isinstance(action, Action)
-        if bot_id not in self._bots_positions:
+        if bot_id not in self._bots_positions and self._empty_bots_positions:
             self._bots_positions[bot_id] = self._empty_bots_positions.pop()
+        elif bot_id not in self._bots_positions and not self._empty_bots_positions:
+            raise NoFreeBots
 
         action_func = self._actions[action]
         action_func(**dict(bot_id=bot_id))
@@ -71,4 +73,8 @@ class MovementError(Exception):
 
 
 class GameFinished(Exception):
+    pass
+
+
+class NoFreeBots(Exception):
     pass

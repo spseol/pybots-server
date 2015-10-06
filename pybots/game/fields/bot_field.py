@@ -6,7 +6,9 @@ from pybots.game.utils import get_next_orientation
 
 
 class BotField(Field):
-    def __init__(self, orientation):
+    DEFAULT_ORIENTATION = Orientation.NORTH
+
+    def __init__(self, orientation=DEFAULT_ORIENTATION):
         assert isinstance(orientation, Orientation)
         self._orientation = orientation
 
