@@ -1,6 +1,6 @@
 from pybots.game.fields.empty_field import EmptyField
 
-from pybots.game.fields.player_field import PlayerField
+from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map_factory import MapFactory
 from tests.pybots.pybots_test_case import TestCase
@@ -12,7 +12,7 @@ class TestMapFactory(TestCase):
         game_map = factory.create()
 
         self.assertIsInMap(game_map, TreasureField)
-        self.assertIsInMap(game_map, PlayerField, 2)
+        self.assertIsInMap(game_map, BotField, 2)
         self.assertIsInMap(
             game_map,
             EmptyField,
@@ -24,7 +24,7 @@ class TestMapFactory(TestCase):
         game_map = factory.create()
 
         self.assertIsInMap(game_map, TreasureField)
-        self.assertIsInMap(game_map, PlayerField, 2)
+        self.assertIsInMap(game_map, BotField, 2)
         self.assertIsInMap(
             game_map,
             EmptyField,

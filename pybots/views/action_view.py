@@ -9,13 +9,13 @@ from pybots.views.utils import form_to_kwargs, args_to_kwargs
 class ActionView(MethodView):
     decorators = [form_to_kwargs, args_to_kwargs]
 
-    def post(self, player_id=None, action=None, *args, **kwargs):
-        if not all((player_id, action)):
+    def post(self, bot_id=None, action=None, *args, **kwargs):
+        if not all((bot_id, action)):
             return 'Invalid request', 404
 
         game_controller.action(
-            player_id,
+            bot_id,
             Action(int(action))
         )
 
-        return jsonify(**game_controller.get(player_id).export()), 200
+        return jsonify(**game_controller.get(bot_id).export()), 200
