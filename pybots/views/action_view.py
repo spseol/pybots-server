@@ -7,7 +7,7 @@ from pybots.views.utils import form_to_kwargs, args_to_kwargs
 
 
 class ActionView(MethodView):
-    decorators = [form_to_kwargs, args_to_kwargs]
+    decorators = [form_to_kwargs]
 
     def post(self, bot_id=None, action=None, *args, **kwargs):
         if not all((bot_id, action)):
