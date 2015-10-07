@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import os
 
 if sys.version_info < (3, ):
     print('Pybots require python 3.')
@@ -28,7 +29,8 @@ def main():
         logger = logging.getLogger()
         logger.setLevel(logging.DEBUG)
 
-        file_handler = logging.handlers.RotatingFileHandler("robots.log",
+        dir = os.path.dirname(__file__)
+        file_handler = logging.handlers.RotatingFileHandler(dir+"/robots.log",
                                                             maxBytes=5000,
                                                             backupCount=7)
 
