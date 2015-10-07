@@ -12,11 +12,11 @@ class TestMapFactory(TestCase):
         game_map = factory.create()
 
         self.assertIsInMap(game_map, TreasureField)
-        self.assertIsInMap(game_map, BotField, 2)
+        self.assertIsInMap(game_map, BotField, MapFactory.PLAYERS)
         self.assertIsInMap(
             game_map,
             EmptyField,
-            game_map.width * game_map.height - 3
+            game_map.width * game_map.height - MapFactory.PLAYERS - MapFactory.TREASURES
         )
 
     def test_create_small_map(self):
@@ -24,9 +24,9 @@ class TestMapFactory(TestCase):
         game_map = factory.create()
 
         self.assertIsInMap(game_map, TreasureField)
-        self.assertIsInMap(game_map, BotField, 2)
+        self.assertIsInMap(game_map, BotField, MapFactory.PLAYERS)
         self.assertIsInMap(
             game_map,
             EmptyField,
-            game_map.width * game_map.height - 3
+            game_map.width * game_map.height - MapFactory.PLAYERS - MapFactory.TREASURES
         )

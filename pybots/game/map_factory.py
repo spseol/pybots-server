@@ -8,7 +8,7 @@ from pybots.game.orientations import Orientation
 
 
 class MapFactory(object):
-    PLAYERS = 2
+    PLAYERS = 1
     TREASURES = 1
 
     def __init__(self, players=PLAYERS, treasures=TREASURES, **kwargs):
