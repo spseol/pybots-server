@@ -1,5 +1,4 @@
 from flask.json import loads
-
 from flask.wrappers import Response
 
 from main import app

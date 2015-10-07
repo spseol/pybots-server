@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+from logging.handlers import RotatingFileHandler
 import sys
 import os
+from os.path import join
 
 if sys.version_info < (3, ):
     print('Pybots require python 3.')
@@ -29,10 +31,10 @@ def main():
         logger = logging.getLogger()
         logger.setLevel(logging.DEBUG)
 
-        dir = os.path.dirname(__file__)
-        file_handler = logging.handlers.RotatingFileHandler(dir+"/robots.log",
-                                                            maxBytes=5000,
-                                                            backupCount=7)
+        log_dir = os.path.dirname(__file__)
+        file_handler = RotatingFileHandler(join(log_dir, 'robots.log'),
+                                           maxBytes=5000,
+                                           backupCount=7)
 
         console_handler = logging.StreamHandler()
 
