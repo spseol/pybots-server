@@ -1,5 +1,6 @@
 from pprint import pformat
 
+from flask.json import jsonify
 from flask.views import MethodView
 
 from pybots.game.game import Game
@@ -20,4 +21,4 @@ class GameView(MethodView):
         game = game_controller.games.get(user_id, None)
 
         assert isinstance(game, Game)
-        return pformat(game.export())
+        return jsonify(game.export())
