@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import unique, IntEnum
 
 
 @unique
-class Orientation(Enum):
+class Orientation(IntEnum):
     NORTH = 0
     EAST = 1
     SOUTH = 2
