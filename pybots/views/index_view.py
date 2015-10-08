@@ -9,9 +9,9 @@ class IndexView(View):
     def dispatch_request(self, *args, **kwargs):
         headers = sorted(request.headers.items())
         # headers.append(time())
-        client_id = hash(
+        bot_id = hash(
             tuple(headers)
         )
 
-        game_controller.get(client_id)
-        return jsonify(id=client_id)
+        game_controller.get(bot_id)
+        return jsonify(id=bot_id, bot_id=bot_id)

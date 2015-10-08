@@ -13,5 +13,4 @@ class TestIndexView(TestCase):
             self.assertEqual(response.content_type, 'application/json')
             self.assertEqual(response.status_code, 200)
             data = loads(response.data)
-            self.assertIn('id', data)
-            self.assertEqual(len(data), 1)
+            self.assertIn('bot_id', data)
