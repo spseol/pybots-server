@@ -16,19 +16,19 @@ vždy uspořádána do slovníku.
 
 
 * `GET /` založí novou hru
-    + -> `200` vrátí (slovník) ID hráče
-    + `id`: ID hráče
-* `GET /game/<ID>` pohled na hrací pole
-    + -> vrátí `200` (slovník) s polohou hráčů
-    + `map`: seznam řádků s kódy jednotlivých políček
-* `POST /action` tah hráče. Očekává parametry:
-    + `id`: `<ID hráče>`
+    + -> `200` vrátí:
+    + `bot_id`: unikátní ID bota
+* `GET /game/<bot_id>` pohled na hrací pole
+    + -> vrátí `200` (slovník) s polohou botů
+    + `map`: dvorozměrné pole polí v mapě
+* `POST /action` tah bota. Očekává parametry:
+    + `bot_id`: `<ID bota>`
     + `action`:
-        - `step`
-        - `turn left`
-        - `turn right`
-    + -> vrátí `202` a `Location` odpovědi. Odpověď bude možné číst až poté
-      co všichni hráči oznámí svůj tah.
-* `GET /answer/<answerID>` odpověď na tah
-    + -> vrátí `200` s oznámením o úspěšném, nebo neúspěšném tahu
-    + -> vrátí `423` s časovým údajem, za jak dlouho se má klient znovu zeptat
+        - `0`
+        - `1`
+        - `2`
+    + -> vrátí `200` a mapu s aplikovaným pohybem
+    + -> pokud je nutná dodatečná informace k tahu (nemožnost tahu, ukončení hry), je v klíči `state` dostupný stav.
+* `GET /info` vrátí výčet akcí a orientací:
+    + -> `"action": {"0": "STEP", ...}`
+    + -> `"orientation": {"0": "NORTH", ...}`
