@@ -20,7 +20,7 @@ class TestGame(TestCase):
         )
 
     def test_not_free_bots(self):
-        game_map = MapFactory(players=0).create()
+        game_map = MapFactory(bots=0).create()
         game = Game(game_map)
         with self.assertRaises(NoFreeBots):
             game.action('bot_id', Action.STEP)
