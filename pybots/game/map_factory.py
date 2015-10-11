@@ -1,4 +1,4 @@
-from random import randint
+import random
 
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
@@ -8,19 +8,19 @@ from pybots.game.orientations import Orientation
 
 
 class MapFactory(object):
-    PLAYERS = 1
+    BOTS = 1
     TREASURES = 1
 
-    def __init__(self, players=PLAYERS, treasures=TREASURES, **kwargs):
+    def __init__(self, bots=BOTS, treasures=TREASURES, **kwargs):
         self.map_options = kwargs
-        self.players = players
+        self.bots = bots
         self.treasures = treasures
 
     def create(self):
         game_map = Map(**self.map_options)
 
         def random_position():
-            return randint(0, game_map.width - 1), randint(0, game_map.height - 1)
+            return random.randint(0, game_map.width - 1), random.randint(0, game_map.height - 1)
 
         for _i in range(self.treasures):
             treasure = TreasureField()
@@ -29,7 +29,7 @@ class MapFactory(object):
                 position = random_position()
             game_map[position] = treasure
 
-        for _i in range(self.players):
+        for _i in range(self.bots):
             bot = BotField(Orientation.NORTH)
             position = random_position()
             while not isinstance(game_map[position], EmptyField):
