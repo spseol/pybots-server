@@ -12,19 +12,20 @@ class GameController(object):
             map_factory_options = {}
         self._map_factory = MapFactory(**map_factory_options)
 
-    def get(self, user_id):
-        game = self.games.get(str(user_id), None)
+    def get(self, bot_id):
+        assert isinstance(bot_id, int)
+        game = self.games.get(bot_id, None)
         if not game:
             game_map = self._map_factory.create()
             game = Game(game_map)
             # TODO: ASAP resolve params casting request params
-            self.games[str(user_id)] = game
+            self.games[bot_id] = game
         return game
 
-    def action(self, user_id, action):
+    def action(self, bot_id, action):
         assert action in Action
-        game = self.get(user_id)
-        game.action(user_id, action)
+        game = self.get(bot_id)
+        game.action(bot_id, action)
 
 
 game_controller = GameController()

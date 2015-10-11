@@ -1,4 +1,7 @@
+from random import randint
+
 from flask.json import loads
+
 from flask.wrappers import Response
 
 from main import app
@@ -6,13 +9,13 @@ from tests.pybots.pybots_test_case import TestCase
 
 
 class TestGameView(TestCase):
-    def test_invalid_states(self):
+    def test_invalid_request(self):
         with app.test_client() as client:
             response = client.get('/game')
             assert isinstance(response, Response)
             self.assertEqual(response.status_code, 404)
 
-            response = client.get('/game/fake_bot_id')
+            response = client.get('/game/{}'.format(randint(1, 10 ** 9)))
             self.assertEqual(response.status_code, 404)
 
     def test_valid_request(self):

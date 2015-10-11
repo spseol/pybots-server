@@ -6,6 +6,6 @@ from pybots.views.info_view import InfoView
 urls = (
     (u'/', IndexView.as_view('index')),
     (u'/info', InfoView.as_view('info')),
-    (u'/game/<bot_id>', GameView.as_view('game')),
+    (u'/game/<int:bot_id>', GameView.as_view('game')),
     (u'/action', ActionView.as_view('action')),
 )

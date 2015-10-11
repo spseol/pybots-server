@@ -25,12 +25,12 @@ class TestGameController(TestCase):
 
     def test_action_simple(self):
         controller = GameController(map_factory_options=dict(height=2, width=2, treasures=0))
-        bot_id = 'fake_bot_0'
+        bot_id = 0
         with self.assertRaises(MovementError):
             for _ in range(controller.get(bot_id).map.height):
                 controller.action(bot_id, Action.STEP)
 
-        bot_id = 'fake_bot_1'
+        bot_id = 1
         with self.assertRaises(MovementError):
             controller.action(bot_id, Action.TURN_LEFT)
             for _ in range(controller.get(bot_id).map.width):
