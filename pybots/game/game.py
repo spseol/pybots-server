@@ -64,8 +64,19 @@ class Game(Exportable):
 
     def export(self):
         return dict(
-            map=self._map.export()
+            map=self._map.export(),
+            bots=self._export_bots()
         )
+
+    def _export_bots(self):
+        return [
+            dict(
+                x=bot_position[0],
+                y=bot_position[1],
+                position=bot_position,
+                orientation=self._map[bot_position].orientation
+            ) for bot_position in list(self._bots_positions.values()) + self._empty_bots_positions
+        ]
 
 
 class MovementError(Exception):

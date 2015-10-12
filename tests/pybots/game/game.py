@@ -16,7 +16,10 @@ class TestGame(TestCase):
 
         self.assertCountEqual(
             game.export(),
-            dict(map=game_map.export())
+            dict(
+                map=game_map.export(),
+                bots=game._export_bots()
+            )
         )
 
     def test_not_free_bots(self):
@@ -68,7 +71,6 @@ class TestGame(TestCase):
         with self.assertRaises(MovementError):
             game.action(fake_bot_id, Action.STEP)
 
-
     def test_action_reach_treasure(self):
         game_map = Map(width=1, height=2)
         fake_map = [
@@ -81,3 +83,14 @@ class TestGame(TestCase):
 
         with self.assertRaises(GameFinished):
             game.action('bot_id', Action.STEP)
+
+    def test_export_bots(self):
+        bots_export = Game(MapFactory(width=2, height=1, bots=2, treasures=0).create())._export_bots()
+
+        self.assertListEqual(
+            bots_export,
+            [
+                dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH),
+                dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH)
+            ]
+        )
