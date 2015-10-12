@@ -11,7 +11,7 @@ class ActionView(MethodView):
     decorators = [form_to_kwargs]
 
     def post(self, bot_id=None, action=None, *args, **kwargs):
-        if not all((bot_id, action)):
+        if not all((bot_id, action, isinstance(bot_id, int))):
             return 'Invalid request', 404
         try:
             game_controller.action(
