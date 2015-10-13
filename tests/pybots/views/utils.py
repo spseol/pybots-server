@@ -2,7 +2,7 @@ from werkzeug.urls import url_encode
 
 from main import app
 from pybots.views.utils import args_to_kwargs, form_to_kwargs
-from tests.pybots.pybots_test_case import TestCase
+from tests.pybots_test_case import TestCase
 
 
 class UtilsView(TestCase):

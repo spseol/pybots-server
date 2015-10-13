@@ -4,7 +4,7 @@ from flask.wrappers import Response
 from main import app
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
-from tests.pybots.pybots_test_case import TestCase
+from tests.pybots_test_case import TestCase
 
 
 class TestInfoView(TestCase):
