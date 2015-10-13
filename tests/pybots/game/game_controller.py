@@ -3,7 +3,7 @@ from random import randint
 from pybots.game.actions import Action
 from pybots.game.game import Game, MovementError
 from pybots.game.game_controller import game_controller, GameController
-from tests.pybots.pybots_test_case import TestCase
+from tests.pybots_test_case import TestCase
 
 
 class TestGameController(TestCase):

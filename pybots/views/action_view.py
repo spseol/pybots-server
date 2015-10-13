@@ -2,7 +2,7 @@ from flask import jsonify
 from flask.views import MethodView
 
 from pybots.game.actions import Action
-from pybots.game.game import NoFreeBots, MovementError
+from pybots.game.game import NoFreeBots, MovementError, GameFinished
 from pybots.game.game_controller import game_controller
 from pybots.views.utils import form_to_kwargs
 
@@ -15,11 +15,11 @@ class ActionView(MethodView):
             return 'Invalid request.', 404
         try:
             bot_id = int(bot_id)
-        except TypeError:
+        except ValueError:
             return 'Invalid bot_id.', 404
 
         try:
-            action = Action(action)
+            action = Action(int(action))
         except ValueError:
             return 'Invalid action.', 404
 
@@ -29,8 +29,11 @@ class ActionView(MethodView):
                 action
             )
         except NoFreeBots:
-            return jsonify(state='Game finished!'), 200
+            # TODO: move states to enum
+            return jsonify(state='No free bots to play!'), 200
         except MovementError:
             return jsonify(state='Movement error!'), 200
+        except GameFinished:
+            return jsonify(state='Game finished!'), 200
         else:
             return jsonify(**game_controller.get(bot_id).export()), 200

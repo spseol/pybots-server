@@ -1,7 +1,7 @@
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
 from pybots.game.utils import Exportable, get_next_position, get_next_orientation
-from tests.pybots.pybots_test_case import TestCase
+from tests.pybots_test_case import TestCase
 
 
 class TestGameUtils(TestCase):

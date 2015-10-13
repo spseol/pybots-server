@@ -2,7 +2,7 @@ from flask.json import loads
 from flask.wrappers import Response
 
 from main import app
-from tests.pybots.pybots_test_case import TestCase
+from tests.pybots_test_case import TestCase
 
 
 class TestIndexView(TestCase):
