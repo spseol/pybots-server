@@ -11,16 +11,26 @@ class ActionView(MethodView):
     decorators = [form_to_kwargs]
 
     def post(self, bot_id=None, action=None, *args, **kwargs):
-        if not all((bot_id, action, isinstance(bot_id, int))):
-            return 'Invalid request', 404
+        if not all((bot_id, action)):
+            return 'Invalid request.', 404
+        try:
+            bot_id = int(bot_id)
+        except TypeError:
+            return 'Invalid bot_id.', 404
+
+        try:
+            action = Action(action)
+        except ValueError:
+            return 'Invalid action.', 404
+
         try:
             game_controller.action(
                 bot_id,
-                Action(int(action))
+                action
             )
         except NoFreeBots:
-            return jsonify(state='Game finished!')
+            return jsonify(state='Game finished!'), 200
         except MovementError:
-            return jsonify(state='Movement error!')
-
-        return jsonify(**game_controller.get(bot_id).export()), 200
+            return jsonify(state='Movement error!'), 200
+        else:
+            return jsonify(**game_controller.get(bot_id).export()), 200

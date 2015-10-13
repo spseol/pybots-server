@@ -4,4 +4,4 @@ from pybots.game.fields.fields import Fields
 
 class EmptyField(Field):
     def export(self):
-        return Fields.EMPTY.value
+        return Fields.EMPTY

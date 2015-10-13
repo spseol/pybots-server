@@ -13,8 +13,7 @@ class BotField(Field):
         self._orientation = orientation
 
     def export(self):
-        # TODO: fix JSON serializing enum
-        return Fields.BOT.value
+        return Fields.BOT
 
     @property
     def orientation(self):

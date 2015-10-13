@@ -4,6 +4,9 @@ import sys
 import os
 from os.path import join
 
+from pybots.json_encoder import JSONEncoder
+
+
 if sys.version_info < (3, ):
     print('Pybots require python 3.')
     exit(1)
@@ -20,6 +23,7 @@ PORT = 44822
 
 app = Flask(__name__)
 
+app.json_encoder = JSONEncoder
 for rule, view in urls:
     app.add_url_rule(rule, view_func=view)
 

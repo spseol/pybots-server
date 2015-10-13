@@ -12,4 +12,4 @@ class TestBotField(TestCase):
 
     def test_export(self):
         bot = BotField(Orientation.NORTH)
-        self.assertEqual(bot.export(), Fields.BOT.value, 'Bot field export')
+        self.assertEqual(bot.export(), Fields.BOT, 'Bot field export')
