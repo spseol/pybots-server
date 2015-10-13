@@ -15,4 +15,4 @@ class TestTreasureField(TestCase):
 
     def test_export(self):
         treasure = TreasureField()
-        self.assertEqual(treasure.export(), Fields.TREASURE.value, 'Treasure field export')
+        self.assertEqual(treasure.export(), Fields.TREASURE, 'Treasure field export')
