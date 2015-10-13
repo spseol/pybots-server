@@ -65,6 +65,9 @@ class Game(Exportable):
     def export(self):
         return dict(
             map=self._map.export(),
+            map_width=self._map.width,
+            map_height=self._map.height,
+            map_resolutions=(self._map.width, self._map.height),
             bots=self._export_bots()
         )
 

@@ -18,7 +18,10 @@ class TestGame(TestCase):
             game.export(),
             dict(
                 map=game_map.export(),
-                bots=game._export_bots()
+                bots=game._export_bots(),
+                map_width=game_map.width,
+                map_height=game_map.height,
+                map_resolutions=(game_map.width, game_map.height)
             )
         )
 
