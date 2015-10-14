@@ -19,7 +19,7 @@ class ActionView(MethodView):
             return 'Invalid bot_id.', 404
 
         try:
-            action = Action(int(action))
+            action = Action(action)
         except ValueError:
             return 'Invalid action.', 404
 
