@@ -1,8 +1,8 @@
-from enum import unique, IntEnum
+from enum import unique, Enum
 
 
 @unique
-class Action(IntEnum):
-    STEP = 0
-    TURN_LEFT = 1
-    TURN_RIGHT = 2
+class Action(Enum):
+    STEP = 'step'
+    TURN_LEFT = 'turn_left'
+    TURN_RIGHT = 'turn_right'
