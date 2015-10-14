@@ -1,7 +1,9 @@
-from enum import Enum
+from enum import IntEnum, unique
 
 
-class Fields(Enum):
+@unique
+class Fields(IntEnum):
+    # TODO: rename to Field
     EMPTY = 0
     TREASURE = 1
     BOT = 2
