@@ -6,8 +6,8 @@ from pybots.game.utils import Exportable, get_next_position
 
 
 class Map(Exportable):
-    DEFAULT_MAP_WIDTH = 10
-    DEFAULT_MAP_HEIGHT = 10
+    DEFAULT_MAP_WIDTH = 13
+    DEFAULT_MAP_HEIGHT = 11
 
     def __init__(self,
                  width=DEFAULT_MAP_WIDTH,
