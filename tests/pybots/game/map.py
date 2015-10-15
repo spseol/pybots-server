@@ -2,7 +2,7 @@ import unittest
 
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.empty_field import EmptyField
-from pybots.game.fields.fields import Fields
+from pybots.game.field import Field
 from pybots.game.map import Map, OutOfMapError, UnknownFieldError
 from pybots.game.orientations import Orientation
 
@@ -55,7 +55,7 @@ class TestMap(unittest.TestCase):
         game_map = Map(1, 1)
         self.assertEqual(
             game_map.export(),
-            [[Fields.EMPTY]]
+            [[Field.EMPTY]]
         )
 
     def test__export_field(self):
