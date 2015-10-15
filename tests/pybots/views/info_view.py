@@ -4,7 +4,7 @@ from flask.wrappers import Response
 from main import app
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
-from pybots.game.fields.fields import Fields
+from pybots.game.field import Field
 from tests.pybots_test_case import TestCase
 
 
@@ -19,7 +19,7 @@ class TestInfoView(TestCase):
 
             self.assertIn(Action.__name__.lower(), data)
             self.assertIn(Orientation.__name__.lower(), data)
-            self.assertIn(Fields.__name__.lower(), data)
+            self.assertIn(Field.__name__.lower(), data)
 
             self.assertDictEqual(
                 data[Orientation.__name__.lower()],
@@ -30,6 +30,6 @@ class TestInfoView(TestCase):
                 loads(dumps({str(m.name): str(m.value) for m in Action}))
             )
             self.assertDictEqual(
-                data[Fields.__name__.lower()],
-                loads(dumps({str(m.name): str(m.value) for m in Fields}))
+                data[Field.__name__.lower()],
+                loads(dumps({str(m.name): str(m.value) for m in Field}))
             )

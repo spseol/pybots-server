@@ -3,7 +3,7 @@ from flask.views import MethodView
 
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
-from pybots.game.fields.fields import Fields
+from pybots.game.field import Field
 
 
 class InfoView(MethodView):
@@ -11,8 +11,8 @@ class InfoView(MethodView):
         def enum_info_dict(enum):
             return {str(member.name): str(member.value) for member in enum}
 
-        return jsonify(
-            action=enum_info_dict(Action),
-            orientation=enum_info_dict(Orientation),
-            fields=enum_info_dict(Fields)
-        ), 200
+        return jsonify(**{
+            Action.__name__.lower(): enum_info_dict(Action),
+            Orientation.__name__.lower(): enum_info_dict(Orientation),
+            Field.__name__.lower(): enum_info_dict(Field)
+        }), 200
