@@ -28,11 +28,11 @@ for rule, view in urls:
     app.add_url_rule(rule, view_func=view)
 
 
-def main():
+def run():
     if len(sys.argv) > 1 and sys.argv[1].upper() == 'DEBUG':
         app.run(host='127.0.0.1', port=PORT, debug=True)
     else:
-        logger = logging.getLogger()
+        logger = app.logger
         logger.setLevel(logging.DEBUG)
 
         log_dir = os.path.dirname(__file__)
@@ -49,4 +49,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run()
