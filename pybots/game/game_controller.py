@@ -25,7 +25,7 @@ class GameController(object):
     def action(self, bot_id, action):
         assert action in Action
         game = self.get(bot_id)
-        game.action(bot_id, action)
+        return game.action(bot_id, action)
 
 
 game_controller = GameController()

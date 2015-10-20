@@ -10,7 +10,7 @@ class ResponseState(Enum):
     UNKNOWN_BOT = 'unknown_bot', 404
     INVALID_ACTION = 'invalid_action', 404
 
-    MOVEMENT_ERROR = 'movement_error', 404
+    MOVEMENT_ERROR = 'movement_error', 200
     MOVEMENT_SUCCESS = 'movement_success', 200
 
     def __init__(self, state, code=None):
