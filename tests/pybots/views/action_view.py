@@ -4,6 +4,7 @@ from flask.wrappers import Response
 from main import app
 from pybots.game.actions import Action
 from pybots.game.map import Map
+from pybots.views.response_state import ResponseState
 from tests.pybots_test_case import TestCase
 
 
@@ -19,7 +20,14 @@ class TestActionView(TestCase):
             assert isinstance(r, Response)
             self.assertEqual(r.status_code, 200, 'Valid request to turn left.')
             self.assertEqual(r.content_type, 'application/json')
-            self.assertIn('map', loads(r.data))
+            data = loads(r.data)
+            self.assertIn('map', data)
+
+            returned_map = data.get('map')
+            self.assertIn('map', returned_map)
+            self.assertIn('map_width', returned_map)
+            self.assertIn('map_height', returned_map)
+            self.assertIn('map_resolutions', returned_map)
 
     def test_invalid_request(self):
         with self.client as c:
@@ -41,7 +49,7 @@ class TestActionView(TestCase):
             for turn in range(Map.DEFAULT_MAP_HEIGHT):
                 r = c.post('/action', data=dict(bot_id=bot_id, action=Action.STEP.value))
                 self.assertEqual(r.status_code, 200)
-                if loads(r.data).get('state') in ('Movement error!', 'Game finished!'):
+                if loads(r.data).get('state') in (ResponseState.MOVEMENT_ERROR.state, ResponseState.GAME_WON.state):
                     found_wall = True
                     break
 

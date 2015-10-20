@@ -30,6 +30,7 @@ class Game(Exportable):
 
         action_func = self._actions[action]
         action_func(**dict(bot_id=bot_id))
+        return self
 
     def _action_step(self, bot_id, **kwargs):
         actual_position = self._bots_positions[bot_id]

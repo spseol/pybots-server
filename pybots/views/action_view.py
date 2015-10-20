@@ -23,7 +23,7 @@ class ActionView(MethodView):
             return ResponseState.INVALID_ACTION.response
 
         try:
-            game_controller.action(
+            game = game_controller.action(
                 bot_id,
                 action
             )
@@ -31,8 +31,7 @@ class ActionView(MethodView):
             # TODO: move states to enum
             return jsonify(state='No free bots to play!'), 200
         except MovementError:
-            return jsonify(state='Movement error!'), 200
+            return ResponseState.MOVEMENT_ERROR.response
         except GameFinished:
-            return jsonify(state='Game finished!'), 200
-        else:
-            return jsonify(**game_controller.get(bot_id).export()), 200
+            return ResponseState.GAME_WON.response
+        return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(), map=game.export())
