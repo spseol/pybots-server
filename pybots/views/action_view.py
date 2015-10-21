@@ -14,12 +14,12 @@ class ActionView(MethodView):
     def post(self, bot_id=None, action=None, *args, **kwargs):
         try:
             bot_id = int(bot_id)
-        except ValueError:
+        except (ValueError, TypeError):
             return ResponseState.UNKNOWN_BOT.response
 
         try:
             action = Action(action)
-        except ValueError:
+        except (ValueError, TypeError):
             return ResponseState.INVALID_ACTION.response
 
         try:
