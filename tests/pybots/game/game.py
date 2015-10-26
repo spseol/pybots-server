@@ -30,6 +30,7 @@ class TestGame(TestCase):
         game = Game(game_map)
         with self.assertRaises(NoFreeBots):
             game.action('bot_id', Action.STEP)
+        self.assertTrue(game.is_filled, 'Game is filled.')
 
     def test_action_simple_movements(self):
         game_map = Map(width=1, height=1)
@@ -40,6 +41,8 @@ class TestGame(TestCase):
         setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
         game = Game(game_map)
         game._empty_bots_positions = game._map.get_field_occurrences(BotField)
+
+        self.assertFalse(game.is_filled, 'Game has free bot field.')
 
         fake_bot_id = 'fake_bot_id'
 

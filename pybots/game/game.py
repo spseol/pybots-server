@@ -21,13 +21,16 @@ class Game(Exportable):
     def map(self):
         return self._map
 
-    def action(self, bot_id, action):
-        assert isinstance(action, Action)
+    def add_bot(self, bot_id):
         if bot_id not in self._bots_positions and self._empty_bots_positions:
             self._bots_positions[bot_id] = self._empty_bots_positions.pop()
         elif bot_id not in self._bots_positions and not self._empty_bots_positions:
             raise NoFreeBots
 
+    def action(self, bot_id, action):
+        assert isinstance(action, Action)
+
+        self.add_bot(bot_id)
         action_func = self._actions[action]
         action_func(**dict(bot_id=bot_id))
         return self
@@ -48,6 +51,8 @@ class Game(Exportable):
 
         if isinstance(new_field, TreasureField):
             raise GameFinished
+        elif isinstance(new_field, BotField):
+            raise MovementError('Cannot step on another bot.')
 
         self._map[new_position], self._map[actual_position] = actual_field, new_field
 
@@ -62,6 +67,10 @@ class Game(Exportable):
         bot_field = self.map[self._bots_positions[bot_id]]
         assert isinstance(bot_field, BotField)
         bot_field.rotate(Action.TURN_RIGHT)
+
+    @property
+    def is_filled(self):
+        return not bool(self._empty_bots_positions)
 
     def export(self):
         return dict(

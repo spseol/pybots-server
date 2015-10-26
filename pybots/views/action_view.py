@@ -1,4 +1,3 @@
-from flask import jsonify
 from flask.views import MethodView
 
 from pybots.game.actions import Action
@@ -27,11 +26,11 @@ class ActionView(MethodView):
                 bot_id,
                 action
             )
+            return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(), map=game.export())
         except NoFreeBots:
-            # TODO: move states to enum
-            return jsonify(state='No free bots to play!'), 200
+            # TODO: is it special state?
+            pass
         except MovementError:
             return ResponseState.MOVEMENT_ERROR.response
         except GameFinished:
             return ResponseState.GAME_WON.response
-        return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(), map=game.export())
