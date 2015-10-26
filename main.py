@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from logging import getLogger
 from logging.handlers import RotatingFileHandler
 import sys
 import os
@@ -32,7 +33,8 @@ def run():
     if len(sys.argv) > 1 and sys.argv[1].upper() == 'DEBUG':
         app.run(host='127.0.0.1', port=PORT, debug=True)
     else:
-        logger = app.logger
+        logger = getLogger()  # app.logger
+        # TODO: use default Flask logger
         logger.setLevel(logging.DEBUG)
 
         log_dir = os.path.dirname(__file__)
