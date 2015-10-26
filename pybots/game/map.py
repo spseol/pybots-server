@@ -68,6 +68,10 @@ class Map(Exportable):
     def height(self):
         return self.__height
 
+    @property
+    def map(self):
+        return self.__map
+
     @classmethod
     def _export_field(cls, field):
         if isinstance(field, Field):

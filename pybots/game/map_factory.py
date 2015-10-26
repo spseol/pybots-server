@@ -8,7 +8,7 @@ from pybots.game.orientations import Orientation
 
 
 class MapFactory(object):
-    BOTS = 1
+    BOTS = 2
     TREASURES = 1
 
     def __init__(self, bots=BOTS, treasures=TREASURES, **kwargs):
@@ -18,6 +18,10 @@ class MapFactory(object):
 
     def create(self):
         game_map = Map(**self.map_options)
+
+        if game_map.width * game_map.height < self.bots + self.treasures:
+            raise Exception('Cannot place {} bots and {} treasures into {}x{} map.'
+                            .format(self.bots, self.treasures, game_map.width, game_map.height))
 
         def random_position():
             return random.randint(0, game_map.width - 1), random.randint(0, game_map.height - 1)

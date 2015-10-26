@@ -68,6 +68,7 @@ class TestMap(unittest.TestCase):
         game_map = Map(10, 20)
         self.assertEqual(game_map.width, 10, 'Map width')
         self.assertEqual(game_map.height, 20, 'Map height')
+        self.assertIsInstance(game_map.map, list, 'Map property')
 
     def test_get_next_field(self):
         game_map = Map(2, 1)

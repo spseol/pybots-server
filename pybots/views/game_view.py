@@ -14,7 +14,7 @@ class GameView(MethodView):
         if bot_id not in game_controller.games:
             return ResponseState.UNKNOWN_BOT.response
 
-        game = game_controller.games.get(bot_id, None)
+        game = game_controller.get(bot_id)
 
         assert isinstance(game, Game)
         return jsonify(game.export())

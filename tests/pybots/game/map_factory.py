@@ -38,3 +38,9 @@ class TestMapFactory(TestCase):
             EmptyField,
             game_map.width * game_map.height - factory.bots - factory.treasures
         )
+
+    def test_invalid_map(self):
+        factory = MapFactory(bots=2, treasures=2, width=3, height=1)
+        with self.assertRaises(Exception):
+            factory.create()
+
