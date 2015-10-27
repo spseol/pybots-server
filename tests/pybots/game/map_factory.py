@@ -17,11 +17,11 @@ class TestMapFactory(TestCase):
         self.assertIsInMap(
             game_map,
             EmptyField,
-            game_map.width * game_map.height - MapFactory.BOTS - MapFactory.TREASURES
+            game_map.width * game_map.height - MapFactory.BOTS - MapFactory.TREASURES - MapFactory.BLOCKS
         )
 
     def test_create_small_map(self):
-        factory = MapFactory(width=4, height=1, bots=2, treasures=2)
+        factory = MapFactory(width=4, height=1, bots=2, treasures=2, blocks=0)
 
         with patch('random.randint', side_effect=(0, 0,
                                                   0, 0,

@@ -6,3 +6,4 @@ class Field(IntEnum):
     EMPTY = 0
     TREASURE = 1
     BOT = 2
+    BLOCK = 3

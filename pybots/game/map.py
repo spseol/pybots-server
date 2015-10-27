@@ -6,13 +6,7 @@ from pybots.game.utils import Exportable, get_next_position
 
 
 class Map(Exportable):
-    DEFAULT_MAP_WIDTH = 13
-    DEFAULT_MAP_HEIGHT = 11
-
-    def __init__(self,
-                 width=DEFAULT_MAP_WIDTH,
-                 height=DEFAULT_MAP_HEIGHT,
-                 default_field=EmptyField):
+    def __init__(self, width=0, height=0, default_field=EmptyField):
         assert isinstance(width, int) and width >= 1, 'Invalid map width'
         assert isinstance(height, int) and height >= 1, 'Invalid map height'
         assert isclass(default_field) and issubclass(default_field, Field), 'Unknown default field'

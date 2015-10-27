@@ -3,7 +3,7 @@ from flask.wrappers import Response
 
 from main import app
 from pybots.game.actions import Action
-from pybots.game.map import Map
+from pybots.game.map_factory import MapFactory
 from pybots.views.response_state import ResponseState
 from tests.pybots_test_case import TestCase
 
@@ -46,7 +46,7 @@ class TestActionView(TestCase):
         with self.client as c:
             bot_id = loads(c.get('/').data).get('bot_id')
             found_wall = False
-            for turn in range(Map.DEFAULT_MAP_HEIGHT):
+            for turn in range(MapFactory.MAP_HEIGHT):
                 r = c.post('/action', data=dict(bot_id=bot_id, action=Action.STEP.value))
                 self.assertEqual(r.status_code, 200)
                 if loads(r.data).get('state') in (ResponseState.MOVEMENT_ERROR.state, ResponseState.GAME_WON.state):

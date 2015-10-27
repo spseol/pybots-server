@@ -1,4 +1,5 @@
 from pybots.game.actions import Action
+from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map import Map, OutOfMapError
@@ -53,6 +54,8 @@ class Game(Exportable):
             raise GameFinished
         elif isinstance(new_field, BotField):
             raise MovementError('Cannot step on another bot.')
+        elif isinstance(new_field, BlockField):
+            raise MovementError('Cannot step on block.')
 
         self._map[new_position], self._map[actual_position] = actual_field, new_field
 

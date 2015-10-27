@@ -91,7 +91,7 @@ class TestGame(TestCase):
             game.action('bot_id', Action.STEP)
 
     def test_export_bots(self):
-        game = Game(MapFactory(width=2, height=1, bots=2, treasures=0).create())
+        game = Game(MapFactory(width=2, height=1, bots=2, treasures=0, blocks=0).create())
         my_bot_id = 0
         bots_export = game._export_bots(my_bot_id)
 
