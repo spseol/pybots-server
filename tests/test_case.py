@@ -1,9 +1,16 @@
 from unittest import case
 
+from main import app
+
 from pybots.game.map import Map
 
 
 class TestCase(case.TestCase):
+    @property
+    def test_client(self):
+        app.testing = True
+        return app.test_client()
+
     def assertIsInMap(self, game_map, field_cls, expected_count=1):
         assert isinstance(game_map, Map)
         count = 0

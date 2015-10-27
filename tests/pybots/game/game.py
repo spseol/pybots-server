@@ -6,7 +6,7 @@ from pybots.game.game import Game, MovementError, GameFinished, NoFreeBots
 from pybots.game.map import Map
 from pybots.game.map_factory import MapFactory
 from pybots.game.orientations import Orientation
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestGame(TestCase):
