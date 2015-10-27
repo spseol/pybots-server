@@ -40,7 +40,7 @@ class TestGameController(TestCase):
         )
 
     def test_action_simple(self):
-        controller = GameController(map_factory_options=dict(height=2, width=2, treasures=0))
+        controller = GameController(map_factory_options=dict(height=2, width=2, treasures=0, blocks=0))
         bot_id = 0
         with self.assertRaises(MovementError):
             for _ in range(controller.get(bot_id).map.height):
@@ -53,7 +53,7 @@ class TestGameController(TestCase):
                 controller.action(bot_id, Action.STEP)
 
     def test_finish_game(self):
-        controller = GameController(map_factory_options=dict(height=2, width=1, treasures=1, bots=1))
+        controller = GameController(map_factory_options=dict(height=2, width=1, treasures=1, bots=1, blocks=0))
         bot_id = 0
         with self.assertRaises(GameFinished):
             try:
