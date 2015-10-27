@@ -17,4 +17,4 @@ class GameView(MethodView):
         game = game_controller.get(bot_id)
 
         assert isinstance(game, Game)
-        return jsonify(game.export())
+        return jsonify(game.export(bot_id))

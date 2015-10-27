@@ -68,27 +68,35 @@ class Game(Exportable):
         assert isinstance(bot_field, BotField)
         bot_field.rotate(Action.TURN_RIGHT)
 
+    def get_bot_position(self, bot_id):
+        return self._bots_positions.get(bot_id)
+
     @property
     def is_filled(self):
         return not bool(self._empty_bots_positions)
 
-    def export(self):
+    def export(self, for_bot_id):
         return dict(
             map=self._map.export(),
             map_width=self._map.width,
             map_height=self._map.height,
             map_resolutions=(self._map.width, self._map.height),
-            bots=self._export_bots()
+            bots=self._export_bots(for_bot_id)
         )
 
-    def _export_bots(self):
+    def _export_bots(self, for_bot_id):
         return [
             dict(
                 x=bot_position[0],
                 y=bot_position[1],
                 position=bot_position,
-                orientation=self._map[bot_position].orientation
-            ) for bot_position in list(self._bots_positions.values()) + self._empty_bots_positions
+                orientation=self._map[bot_position].orientation,
+                your_bot=for_bot_id == bot_id
+            ) for bot_id, bot_position in dict(
+                list(self._bots_positions.items())
+                +
+                list((bot_id, position) for bot_id, position in enumerate(self._empty_bots_positions))
+            ).items()
         ]
 
 
