@@ -93,8 +93,7 @@ class Game(Exportable):
                 orientation=self._map[bot_position].orientation,
                 your_bot=for_bot_id == bot_id
             ) for bot_id, bot_position in dict(
-                list(self._bots_positions.items())
-                +
+                list(self._bots_positions.items()) +
                 list((bot_id, position) for bot_id, position in enumerate(self._empty_bots_positions))
             ).items()
         ]
