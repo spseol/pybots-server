@@ -15,10 +15,10 @@ class TestGame(TestCase):
         game = Game(game_map)
 
         self.assertCountEqual(
-            game.export(),
+            game.export(0),
             dict(
                 map=game_map.export(),
-                bots=game._export_bots(),
+                bots=game._export_bots(0),
                 map_width=game_map.width,
                 map_height=game_map.height,
                 map_resolutions=(game_map.width, game_map.height)
@@ -91,12 +91,15 @@ class TestGame(TestCase):
             game.action('bot_id', Action.STEP)
 
     def test_export_bots(self):
-        bots_export = Game(MapFactory(width=2, height=1, bots=2, treasures=0).create())._export_bots()
+        game = Game(MapFactory(width=2, height=1, bots=2, treasures=0).create())
+        my_bot_id = 0
+        bots_export = game._export_bots(my_bot_id)
 
+        my_bot_on_fist_field = game.get_bot_position(my_bot_id) == (0, 0)
         self.assertListEqual(
             bots_export,
             [
-                dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH),
-                dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH)
+                dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH, your_bot=not my_bot_on_fist_field),
+                dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH, your_bot=my_bot_on_fist_field)
             ]
         )

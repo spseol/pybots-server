@@ -21,9 +21,9 @@ class TestActionView(TestCase):
             self.assertEqual(r.status_code, 200, 'Valid request to turn left.')
             self.assertEqual(r.content_type, 'application/json')
             data = loads(r.data)
-            self.assertIn('map', data)
+            self.assertIn('game', data)
 
-            returned_map = data.get('map')
+            returned_map = data.get('game')
             self.assertIn('map', returned_map)
             self.assertIn('map_width', returned_map)
             self.assertIn('map_height', returned_map)

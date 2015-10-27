@@ -21,12 +21,13 @@ class ActionView(MethodView):
         except (ValueError, TypeError):
             return ResponseState.INVALID_ACTION.response
 
+        game = game_controller.get(bot_id)
         try:
             game = game_controller.action(
                 bot_id,
                 action
             )
-            return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(), map=game.export())
+            return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(bot_id))
         except NoFreeBots:
             # TODO: is it special state?
             pass
@@ -34,3 +35,5 @@ class ActionView(MethodView):
             return ResponseState.MOVEMENT_ERROR.response
         except GameFinished:
             return ResponseState.GAME_WON.response
+
+        return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(bot_id))
