@@ -1,15 +1,12 @@
 from flask.json import loads
-
 from flask.wrappers import Response
 
-from main import app
-
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestIndexView(TestCase):
     def test_get(self):
-        with app.test_client() as client:
+        with self.test_client as client:
             response = client.get('/')
             assert isinstance(response, Response)
             self.assertEqual(response.content_type, 'application/json')

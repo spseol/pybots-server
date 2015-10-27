@@ -4,7 +4,7 @@ from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map_factory import MapFactory
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestMapFactory(TestCase):

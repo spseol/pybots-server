@@ -1,17 +1,16 @@
 from flask.json import loads, dumps
 from flask.wrappers import Response
 
-from main import app
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
 from pybots.game.field import Field
 from pybots.views.response_state import ResponseState
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestInfoView(TestCase):
     def test_get(self):
-        with app.test_client() as client:
+        with self.test_client as client:
             response = client.get('/info')
             assert isinstance(response, Response)
             self.assertEqual(response.content_type, 'application/json')

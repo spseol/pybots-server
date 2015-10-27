@@ -3,9 +3,8 @@ import json
 from flask.json import loads
 
 from pybots.game.actions import Action
-
 from pybots.json_encoder import JSONEncoder
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestJsonEncoder(TestCase):

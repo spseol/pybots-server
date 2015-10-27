@@ -1,5 +1,5 @@
 from pybots.urls import urls
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestUrls(TestCase):

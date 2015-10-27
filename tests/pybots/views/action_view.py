@@ -1,19 +1,15 @@
 from flask.json import loads
 from flask.wrappers import Response
 
-from main import app
 from pybots.game.actions import Action
 from pybots.game.map_factory import MapFactory
 from pybots.views.response_state import ResponseState
-from tests.pybots_test_case import TestCase
+from tests.test_case import TestCase
 
 
 class TestActionView(TestCase):
-    def setUp(self):
-        self.client = app.test_client()
-
     def test_valid_request(self):
-        with self.client as c:
+        with self.test_client as c:
             bot_id = loads(c.get('/').data).get('bot_id')
 
             r = c.post('/action', data=dict(bot_id=bot_id, action=Action.TURN_LEFT.value))
@@ -30,7 +26,7 @@ class TestActionView(TestCase):
             self.assertIn('map_resolutions', returned_map)
 
     def test_invalid_request(self):
-        with self.client as c:
+        with self.test_client as c:
             bot_id = loads(c.get('/').data).get('bot_id')
 
             r = c.post('/action', data=dict(bot_id='', action=''))
@@ -43,7 +39,7 @@ class TestActionView(TestCase):
             self.assertEqual(r.status_code, 404, 'Request with invalid action.')
 
     def test_find_wall(self):
-        with self.client as c:
+        with self.test_client as c:
             bot_id = loads(c.get('/').data).get('bot_id')
             found_wall = False
             for turn in range(MapFactory.MAP_HEIGHT):
@@ -57,12 +53,13 @@ class TestActionView(TestCase):
                 raise self.failureException('Wall not found or game not finished.')
 
     def test_two_bots_in_map(self):
-        with self.client as c:
+        with self.test_client as c:
+            c.get('/')  # TODO: remove this get, it's hide dependency on odd request to app
             bot_id_1 = loads(c.get('/').data).get('bot_id')
             bot_id_2 = loads(c.get('/').data).get('bot_id')
             self.maxDiff = None
             self.assertNotEqual(bot_id_1, bot_id_2, 'Another bots')
-            # self.assertListEqual(
-            # loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
-            # loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
-            # )
+            self.assertListEqual(
+                loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
+                loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
+            )
