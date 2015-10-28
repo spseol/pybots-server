@@ -21,14 +21,16 @@ class TestMapFactory(TestCase):
         )
 
     def test_create_small_map(self):
-        factory = MapFactory(width=4, height=1, bots=2, treasures=2, blocks=0)
+        factory = MapFactory(width=5, height=1, bots=2, treasures=2, blocks=1)
 
         with patch('random.randint', side_effect=(0, 0,
                                                   0, 0,
                                                   1, 0,
                                                   0, 0,
                                                   2, 0,
-                                                  3, 0)):
+                                                  3, 0,
+                                                  3, 0,
+                                                  4, 0)):
             game_map = factory.create()
 
         self.assertIsInMap(game_map, TreasureField, factory.treasures)
@@ -36,7 +38,7 @@ class TestMapFactory(TestCase):
         self.assertIsInMap(
             game_map,
             EmptyField,
-            game_map.width * game_map.height - factory.bots - factory.treasures
+            game_map.width * game_map.height - factory.bots - factory.treasures - factory.blocks
         )
 
     def test_invalid_map(self):
