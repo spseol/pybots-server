@@ -1,4 +1,5 @@
 from pybots.game.actions import Action
+from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
@@ -85,9 +86,32 @@ class TestGame(TestCase):
         ]
         setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
         game = Game(game_map)
-        game._empty_bots_positions = game.map.get_field_occurrences(BotField)
 
         with self.assertRaises(GameFinished):
+            game.action('bot_id', Action.STEP)
+
+    def test_action_step_on_block(self):
+        game_map = Map(width=1, height=2)
+        fake_map = [
+            [BlockField()],
+            [BotField(Orientation.NORTH)],
+        ]
+        setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
+        game = Game(game_map)
+
+        with self.assertRaises(MovementError):
+            game.action('bot_id', Action.STEP)
+
+    def test_action_step_on_bot(self):
+        game_map = Map(width=1, height=2)
+        fake_map = [
+            [BotField(Orientation.SOUTH)],
+            [BotField(Orientation.NORTH)],
+        ]
+        setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
+        game = Game(game_map)
+
+        with self.assertRaises(MovementError):
             game.action('bot_id', Action.STEP)
 
     def test_export_bots(self):
