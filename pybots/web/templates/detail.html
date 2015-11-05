@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% set field_classes = {0: 'field-empty', 1: 'field-treasure', 2: 'field-bot', 3: 'field-block'} %}
+    {% set bot_orientations = {0: 'up', 1: 'right', 2: 'down', 3: 'left'} %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <div class="map">
+        {% for row in game.map %}
+            <div class="map-row" style="height: {{ 100/game.map.height }}vw">
+                {% for field in row %}
+                    <div class="map-field {{ field_classes[field.export()] }}"
+                         style="width: {{ 100/game.map.width }}vw">
+                        {% if field.export().value == 2 %}
+                            <i class="fa fa-arrow-{{ bot_orientations[field.orientation.value] }}"></i>
+                        {% elif field.export().value == 1 %}
+                            <i class="fa fa-glass"></i>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        .field-empty {
+            background-color: #CCC;
+        }
+
+        .field-treasure {
+            background-color: yellow;
+        }
+
+        .field-bot {
+            background-color: orangered;
+        }
+
+        .field-block {
+            background-color: #999;
+        }
+
+        .map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .map .map-row {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .map .map-field {
+            flex: 1 1 0;
+            align-items: center;
+            font-size: 5vw;
+            border: 1px solid lightgrey;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}
