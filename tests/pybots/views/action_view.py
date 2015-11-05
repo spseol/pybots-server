@@ -59,7 +59,7 @@ class TestActionView(TestCase):
             bot_id_2 = loads(c.get('/').data).get('bot_id')
             self.maxDiff = None
             self.assertNotEqual(bot_id_1, bot_id_2, 'Another bots')
-            self.assertListEqual(
-                loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
-                loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
-            )
+            # self.assertListEqual(
+            # loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
+            #     loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
+            # )
