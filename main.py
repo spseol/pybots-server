@@ -3,7 +3,9 @@ from logging import getLogger
 from logging.handlers import RotatingFileHandler
 import sys
 import os
-from os.path import join
+from os.path import join, dirname
+
+from jinja2.loaders import FileSystemLoader
 
 from pybots.json_encoder import JSONEncoder
 
@@ -25,6 +27,8 @@ PORT = 44822
 app = Flask(__name__)
 
 app.json_encoder = JSONEncoder
+app.jinja_loader = FileSystemLoader(join(dirname(__file__), 'pybots/web/templates'))
+
 for rule, view in urls:
     app.add_url_rule(rule, view_func=view)
 

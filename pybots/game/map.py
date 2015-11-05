@@ -24,6 +24,9 @@ class Map(Exportable):
             raise UnknownFieldError('Cannot set this field.', field)
         self.__map[index[1]][index[0]] = field
 
+    def __iter__(self):
+        return iter(self.__map)
+
     def export(self):
         return [[self._export_field(field) for field in row] for row in self.__map]
 

@@ -1,8 +1,10 @@
 from random import randint
 
+from pybots.configurations.configuration_provider import ConfigurationProvider
+from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.actions import Action
 from pybots.game.game import Game, MovementError, GameFinished
-from pybots.game.game_controller import game_controller, GameController
+from pybots.game.game_controller import GameController
 from tests.test_case import TestCase
 
 
@@ -12,6 +14,7 @@ class TestGameController(TestCase):
         bot_id_2 = randint(0, 10 ** 12)
         bot_id_3 = randint(0, 10 ** 12)
 
+        game_controller = GameController()
         game_1 = game_controller.get(bot_id_1)
         self.assertIsInstance(
             game_1,
@@ -40,7 +43,9 @@ class TestGameController(TestCase):
         )
 
     def test_action_simple(self):
-        controller = GameController(map_factory_options=dict(height=2, width=2, treasures=0, blocks=0))
+        provider = ConfigurationProvider()
+        provider.actual = CustomConfiguration(map_height=2, map_width=2, treasures=0, blocks=0, bots=1)
+        controller = GameController(provider)
         bot_id = 0
         with self.assertRaises(MovementError):
             for _ in range(controller.get(bot_id).map.height):
@@ -53,7 +58,9 @@ class TestGameController(TestCase):
                 controller.action(bot_id, Action.STEP)
 
     def test_finish_game(self):
-        controller = GameController(map_factory_options=dict(height=2, width=1, treasures=1, bots=1, blocks=0))
+        provider = ConfigurationProvider()
+        provider.actual = CustomConfiguration(map_height=2, map_width=1, treasures=1, bots=1, blocks=0)
+        controller = GameController(provider)
         bot_id = 0
         with self.assertRaises(GameFinished):
             try:

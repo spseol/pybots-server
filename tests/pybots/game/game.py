@@ -1,3 +1,5 @@
+from pybots.configurations.basic_configuration import BasicConfiguration
+from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.actions import Action
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
@@ -12,7 +14,7 @@ from tests.test_case import TestCase
 
 class TestGame(TestCase):
     def test_export(self):
-        game_map = MapFactory().create()
+        game_map = MapFactory().create(BasicConfiguration())
         game = Game(game_map)
 
         self.assertCountEqual(
@@ -27,7 +29,7 @@ class TestGame(TestCase):
         )
 
     def test_not_free_bots(self):
-        game_map = MapFactory(bots=0).create()
+        game_map = MapFactory().create(CustomConfiguration(map_width=2, map_height=1, bots=0, treasures=0, blocks=0))
         game = Game(game_map)
         with self.assertRaises(NoFreeBots):
             game.action('bot_id', Action.STEP)
@@ -115,7 +117,14 @@ class TestGame(TestCase):
             game.action('bot_id', Action.STEP)
 
     def test_export_bots(self):
-        game = Game(MapFactory(width=2, height=1, bots=2, treasures=0, blocks=0).create())
+        class Conf(BasicConfiguration):
+            map_width = 2
+            map_height = 1
+            bots = 2
+            treasures = 0
+            blocks = 0
+
+        game = Game(MapFactory().create(Conf()))
         my_bot_id = 0
         bots_export = game._export_bots(my_bot_id)
 
