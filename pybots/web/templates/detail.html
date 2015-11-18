@@ -10,9 +10,9 @@
                     <div class="map-field {{ field_classes[field.export()] }}"
                          style="width: {{ 100/game.map.width }}vw">
                         {% if field.export().value == 2 %}
-                            <i class="fa fa-arrow-{{ bot_orientations[field.orientation.value] }}"></i>
+                            <i class="{{ bot_orientations[field.orientation.value] }}"></i>
                         {% elif field.export().value == 1 %}
-                            <i class="fa fa-trophy"></i>
+                            <i class=""></i>
                         {% endif %}
                     </div>
                 {% endfor %}
