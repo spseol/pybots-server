@@ -7,5 +7,5 @@ class BasicConfiguration(BaseConfiguration):
     map_height = 50
     default_empty_map_field = EmptyField
     bots = 2
-    treasures = 5
-    blocks = 100
+    treasures = 1
+    blocks = 1500
