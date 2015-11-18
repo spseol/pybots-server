@@ -1,9 +1,10 @@
 from abc import ABCMeta
+from types import MethodType
 
 from pybots.game.fields.empty_field import EmptyField
 
 
-class BaseConfiguration(metaclass=ABCMeta):
+class BaseConfiguration(object, metaclass=ABCMeta):
     map_width = None
     map_height = None
     default_empty_map_field = EmptyField
@@ -17,23 +18,29 @@ class BaseConfiguration(metaclass=ABCMeta):
         ('bots', int),
         ('treasures', int),
         ('blocks', int),
-        ('default_empty_map_field', type)
+        ('default_empty_map_field', object)
     )
 
     def __init__(self):
         missing = []
-        for field in self._fields:
-            if not hasattr(self, field[0]):
-                missing.append(field[0])
+        for field_name, field_type in self._fields:
+            value = getattr(self, field_name, None)
+
+            if value is None:
+                missing.append(field_name)
                 continue
 
-            if getattr(self, field[0], None) is None:
-                missing.append(field[0])
-                continue
+            if field_type:
+                if isinstance(value, MethodType):
+                    lambda_ = getattr(self.__class__, field_name)
+                    setattr(self.__class__, field_name, property(lambda _: lambda_()))
 
-            if field[1]:
-                if not isinstance(getattr(self, field[0], None), field[1]):
-                    missing.append(field[0])
+                    if not isinstance(lambda_(), field_type):
+                        missing.append(field_name)
+                        continue
+
+                elif not isinstance(value, field_type):
+                    missing.append(field_name)
                     continue
 
         if missing:
