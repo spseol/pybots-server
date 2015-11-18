@@ -3,9 +3,9 @@ from pybots.game.fields.empty_field import EmptyField
 
 
 class BasicConfiguration(BaseConfiguration):
-    map_width = 7
-    map_height = 5
+    map_width = 70
+    map_height = 50
     default_empty_map_field = EmptyField
     bots = 2
-    treasures = 1
-    blocks = 5
+    treasures = 5
+    blocks = 100
