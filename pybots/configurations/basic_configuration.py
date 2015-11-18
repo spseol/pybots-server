@@ -8,4 +8,4 @@ class BasicConfiguration(BaseConfiguration):
     default_empty_map_field = EmptyField
     bots = 2
     treasures = 1
-    blocks = 1500
+    blocks = 1000
