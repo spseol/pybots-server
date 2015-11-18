@@ -16,7 +16,7 @@ class TestBaseConfiguration(TestCase):
         class Conf(BaseConfiguration):
             _fields = (
                 ('bar', int),
-                ('foo', )
+                ('foo', None)
             )
             bar = 5
 
