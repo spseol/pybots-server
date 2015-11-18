@@ -22,7 +22,7 @@ branches:
     - master
 
 before_script:
-  - "pep8 --ignore=E501 pybots" # ignore too long lines
+  - "pep8 --ignore=E501,E731 pybots" # ignore too long lines, lambda assigning
 
 matrix:
   allow_failures:
