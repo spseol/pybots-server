@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from pybots.configurations.basic_configuration import BasicConfiguration
+from pybots.configurations.basic_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
@@ -13,7 +13,7 @@ from tests.test_case import TestCase
 class TestMapFactory(TestCase):
     def test_create_basic(self):
         factory = MapFactory()
-        conf = BasicConfiguration()
+        conf = DefaultConfiguration()
         game_map = factory.create(conf)
 
         self.assertIsInMap(game_map, TreasureField)
