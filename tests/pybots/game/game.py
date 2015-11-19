@@ -1,4 +1,4 @@
-from pybots.configurations.basic_configuration import BasicConfiguration
+from pybots.configurations.basic_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.actions import Action
 from pybots.game.fields.block_field import BlockField
@@ -14,7 +14,7 @@ from tests.test_case import TestCase
 
 class TestGame(TestCase):
     def test_export(self):
-        game_map = MapFactory().create(BasicConfiguration())
+        game_map = MapFactory().create(DefaultConfiguration())
         game = Game(game_map)
 
         self.assertCountEqual(
@@ -117,7 +117,7 @@ class TestGame(TestCase):
             game.action('bot_id', Action.STEP)
 
     def test_export_bots(self):
-        class Conf(BasicConfiguration):
+        class Conf(DefaultConfiguration):
             map_width = 2
             map_height = 1
             bots = 2
