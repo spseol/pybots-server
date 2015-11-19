@@ -3,7 +3,7 @@ from pybots.configurations.configuration_provider import configuration_provider
 from tests.test_case import TestCase
 
 
-class TestBaseConfiguration(TestCase):
+class TestConfigurationProvider(TestCase):
     def test_actual(self):
         self.assertIsInstance(configuration_provider.actual, BaseConfiguration)
         self.assertIsInstance(configuration_provider.actual, configuration_provider.DEFAULT_CONFIGURATION)

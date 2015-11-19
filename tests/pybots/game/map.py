@@ -1,3 +1,4 @@
+from _collections_abc import Iterator
 import unittest
 
 from pybots.game.fields.bot_field import BotField
@@ -81,3 +82,8 @@ class TestMap(unittest.TestCase):
         self.assertIsNone(
             game_map.get_next_field((0, 0), Orientation.NORTH)
         )
+
+    def test_map_iterator(self):
+        game_map = Map(1, 1)
+        self.assertIsInstance(iter(game_map), Iterator)
+        self.assertEqual(len(list(iter(game_map))), 1)
