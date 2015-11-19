@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from random import randint
 
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
@@ -33,3 +34,7 @@ def get_next_orientation(orientation, action):
         return Orientation(divmod(orientation.value + 1, 4)[1])
     elif action == Action.TURN_LEFT:
         return Orientation(divmod(orientation.value - 1, 4)[1])
+
+
+def random_position(game_map):
+    return randint(0, game_map.width - 1), randint(0, game_map.height - 1)

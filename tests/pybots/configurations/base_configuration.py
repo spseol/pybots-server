@@ -32,4 +32,15 @@ class TestBaseConfiguration(TestCase):
         with self.assertRaises(ConfigurationError):
             Conf()
 
+    def test_lambda_fields(self):
+        class Conf(BaseConfiguration):
+            _fields = (
+                ('bar', int),
+            )
+            bar = lambda: 'foo'
+
+        with self.assertRaises(ConfigurationError):
+            Conf()
+
+
 
