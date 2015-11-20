@@ -1,9 +1,9 @@
 from pybots.configurations.base_configuration import BaseConfiguration
-from pybots.configurations.random_configuration import RandomConfiguration
+from pybots.configurations.basic_configuration import DefaultConfiguration
 
 
 class ConfigurationProvider(object):
-    DEFAULT_CONFIGURATION = RandomConfiguration
+    DEFAULT_CONFIGURATION = DefaultConfiguration
 
     def __init__(self):
         self._actual = None
