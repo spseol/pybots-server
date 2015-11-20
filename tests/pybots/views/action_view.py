@@ -1,7 +1,7 @@
 from flask.json import loads
 from flask.wrappers import Response
 
-from pybots.configurations.basic_configuration import BasicConfiguration
+from pybots.configurations.basic_configuration import DefaultConfiguration
 from pybots.game.actions import Action
 from pybots.views.response_state import ResponseState
 from tests.test_case import TestCase
@@ -42,7 +42,7 @@ class TestActionView(TestCase):
         with self.test_client as c:
             bot_id = loads(c.get('/').data).get('bot_id')
             found_wall = False
-            for turn in range(BasicConfiguration.map_height):
+            for turn in range(DefaultConfiguration.map_height):
                 r = c.post('/action', data=dict(bot_id=bot_id, action=Action.STEP.value))
                 self.assertEqual(r.status_code, 200)
                 if loads(r.data).get('state') in (ResponseState.MOVEMENT_ERROR.state, ResponseState.GAME_WON.state):
@@ -61,5 +61,5 @@ class TestActionView(TestCase):
             self.assertNotEqual(bot_id_1, bot_id_2, 'Another bots')
             # self.assertListEqual(
             # loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
-            #     loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
+            # loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
             # )
