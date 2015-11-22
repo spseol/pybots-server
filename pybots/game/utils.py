@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from random import randint
+import random
 
 from pybots.game.actions import Action
 from pybots.game.orientations import Orientation
@@ -37,4 +37,4 @@ def get_next_orientation(orientation, action):
 
 
 def random_position(game_map):
-    return randint(0, game_map.width - 1), randint(0, game_map.height - 1)
+    return random.randint(0, game_map.width - 1), random.randint(0, game_map.height - 1)
