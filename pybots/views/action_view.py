@@ -36,4 +36,3 @@ class ActionView(MethodView):
         except GameFinished:
             return ResponseState.GAME_WON.response
 
-        return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(bot_id))

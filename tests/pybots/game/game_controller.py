@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from random import randint
 
 from pybots.configurations.configuration_provider import ConfigurationProvider
@@ -71,3 +72,22 @@ class TestGameController(TestCase):
             controller.action(bot_id, Action.TURN_RIGHT)
             controller.action(bot_id, Action.TURN_RIGHT)
             controller.action(bot_id, Action.STEP)
+
+    def test_sorted_games(self):
+        bot_id_1 = randint(0, 10 ** 12)
+        bot_id_2 = randint(0, 10 ** 12)
+
+        game_controller = GameController()
+
+        game_1 = game_controller.get(bot_id_1)
+        game_2 = game_controller.get(bot_id_2)
+
+        sorted_games = game_controller.sorted_games()
+        self.assertIsInstance(sorted_games, OrderedDict)
+        self.assertEqual(len(sorted_games), 2)
+
+        self.assertListEqual(
+            [game_2, game_1],
+            list(sorted_games.values())
+        )
+
