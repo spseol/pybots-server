@@ -1,3 +1,6 @@
+from operator import attrgetter
+from collections import OrderedDict
+
 from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
 from pybots.game.game import Game, GameFinished
@@ -41,6 +44,9 @@ class GameController(object):
         except GameFinished:
             self.games = {bot_id: g for bot_id, g in self.games.items() if g is not game}
             raise
+
+    def sorted_games(self, key='last_modified_at', reverse=True):
+        return OrderedDict(sorted(self.games.items(), key=lambda x: attrgetter(key)(x[1]), reverse=reverse))
 
 
 game_controller = GameController()

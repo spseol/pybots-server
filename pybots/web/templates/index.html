@@ -10,16 +10,18 @@
                 <div class="card-block"><h4 class="card-title">{{ games|length }} bots:</h4></div>
                 <div class="card-block">
                     <ul class="list-group">
-                        {% for bot_id, game in games|dictsort('bot_id') %}
+                        {% for bot_id, game in games.items() %}
                             <li class="list-group-item">
-                                <strong>{{ bot_id }}</strong> in game
+                                <strong>{{ game.last_modified_at.strftime('%H:%M:%S.%f') }}</strong>
+
+                                <i class="fa fa-clock-o fa-fw"></i>
                                 <span class="label label-success label-pill">{{ game._bots_positions|length }}</span>
                                 active and
                                 <span class="label label-primary label-pill">{{ game._empty_bots_positions|length }}</span>
                                 free
                                 bots.
-                                <a class="btn btn-warning btn-sm pull-right"
-                                   href="{{ url_for('admin_game_detail', bot_id=bot_id) }}">E</a>
+                                <a class="btn btn-warning btn-sm pull-right fa fa-info-circle"
+                                   href="{{ url_for('admin_game_detail', bot_id=bot_id) }}"></a>
                             </li>
                         {% endfor %}
                     </ul>

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pybots.game.actions import Action
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
@@ -7,7 +9,7 @@ from pybots.game.utils import Exportable, get_next_position
 
 
 class Game(Exportable):
-    def __init__(self, game_map):
+    def __init__(self, game_map, created_at=None, last_modified_at=None):
         assert isinstance(game_map, Map)
         self._map = game_map
         self._empty_bots_positions = self.map.get_field_occurrences(BotField)
@@ -18,15 +20,14 @@ class Game(Exportable):
             Action.TURN_RIGHT: self._action_turn_right,
         }
 
-    @property
-    def map(self):
-        return self._map
+        self._created_at = created_at if created_at else datetime.now()
+        self._last_modified_at = last_modified_at if last_modified_at else datetime.now()
 
     def add_bot(self, bot_id):
         if bot_id not in self._bots_positions and self._empty_bots_positions:
             self._bots_positions[bot_id] = self._empty_bots_positions.pop()
         elif bot_id not in self._bots_positions and not self._empty_bots_positions:
-            raise NoFreeBots
+            raise NoFreeBots('In this map is not any free position for bot.')
 
     def action(self, bot_id, action):
         assert isinstance(action, Action)
@@ -34,6 +35,8 @@ class Game(Exportable):
         self.add_bot(bot_id)
         action_func = self._actions[action]
         action_func(**dict(bot_id=bot_id))
+
+        self._last_modified_at = datetime.now()
         return self
 
     def _action_step(self, bot_id, **kwargs):
@@ -77,6 +80,18 @@ class Game(Exportable):
     @property
     def is_filled(self):
         return not bool(self._empty_bots_positions)
+
+    @property
+    def map(self):
+        return self._map
+
+    @property
+    def created_at(self):
+        return self._created_at
+
+    @property
+    def last_modified_at(self):
+        return self._last_modified_at
 
     def export(self, for_bot_id):
         return dict(

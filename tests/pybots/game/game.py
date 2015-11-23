@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pybots.configurations.basic_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.actions import Action
@@ -135,4 +137,15 @@ class TestGame(TestCase):
                 dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH, your_bot=not my_bot_on_fist_field),
                 dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH, your_bot=my_bot_on_fist_field)
             ]
+        )
+
+    def test_game_time_flags(self):
+        dt = datetime.now()
+        game = Game(Map(1, 1))
+
+        self.assertAlmostEqual(
+            game.created_at.timestamp(),
+            dt.timestamp(),
+            places=0,
+            msg='created game at patched datetime'
         )

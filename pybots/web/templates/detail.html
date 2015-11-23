@@ -2,7 +2,6 @@
 {% block content %}
     {% set field_classes = {0: 'field-empty', 1: 'field-treasure', 2: 'field-bot', 3: 'field-block'} %}
     {% set bot_orientations = {0: 'up', 1: 'right', 2: 'down', 3: 'left'} %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <div class="map">
         {% for row in game.map %}
             <div class="map-row" style="height: {{ 100/game.map.height }}vw">
