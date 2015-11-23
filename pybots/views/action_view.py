@@ -35,4 +35,3 @@ class ActionView(MethodView):
             return ResponseState.MOVEMENT_ERROR.response
         except GameFinished:
             return ResponseState.GAME_WON.response
-
