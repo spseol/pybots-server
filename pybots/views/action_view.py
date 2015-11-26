@@ -16,12 +16,14 @@ class ActionView(MethodView):
         except (ValueError, TypeError):
             return ResponseState.UNKNOWN_BOT.response
 
+        if bot_id not in game_controller.games:
+            return ResponseState.UNKNOWN_BOT.response
+
         try:
             action = Action(action)
         except (ValueError, TypeError):
             return ResponseState.INVALID_ACTION.response
 
-        game = game_controller.get(bot_id)
         try:
             game = game_controller.action(
                 bot_id,

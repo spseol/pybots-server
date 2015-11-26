@@ -63,3 +63,8 @@ class TestActionView(TestCase):
             # loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
             # loads(c.get('/game/{}'.format(bot_id_2)).data).get('map')
             # )
+
+    def test_unknown_bot(self):
+        with self.test_client as c:
+            r = c.post('/action', data=dict(bot_id=123456789, action=Action.STEP.value))
+            self.assertEqual(r.status_code, 404, 'Request with unknown bot_id.')
