@@ -1,4 +1,5 @@
 from wtforms import Form
+from wtforms.fields.core import BooleanField
 from wtforms.fields.html5 import IntegerField
 from wtforms.validators import DataRequired, NumberRange
 
@@ -12,6 +13,7 @@ class ConfigurationForm(Form):
     blocks = IntegerField('count of blocks', validators=(DataRequired(), NumberRange(5, 100)), filters=(int, ))
     treasures = IntegerField('count of treasures', validators=(DataRequired(), NumberRange(1, 5)), filters=(int, ))
     bots = IntegerField('count of bots', validators=(DataRequired(), NumberRange(1, 5)), filters=(int, ))
+    rounded_game = BooleanField('game by rounds', default=False, validators=(), filters=(bool, ))
 
     @property
     def as_configuration(self):

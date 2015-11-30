@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask.helpers import url_for
 from flask.templating import render_template
 from flask.views import MethodView
@@ -16,7 +18,9 @@ class IndexView(MethodView):
         conf_form = ConfigurationForm(obj=configuration_provider.actual)
         return render_template('index.html',
                                games=game_controller.sorted_games(),
-                               form=conf_form)
+                               now=datetime.now(),
+                               form=conf_form,
+                               set=set)
 
     def post(self, **kwargs):
         form = ConfigurationForm(data=kwargs)
@@ -26,4 +30,6 @@ class IndexView(MethodView):
 
         return render_template('index.html',
                                games=game_controller.sorted_games(),
-                               form=form)
+                               now=datetime.now(),
+                               form=form,
+                               set=set)
