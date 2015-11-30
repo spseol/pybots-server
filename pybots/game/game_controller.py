@@ -22,9 +22,8 @@ class GameController(object):
             return game
 
         # try to find game with free bot
-        for game in self.games.values():
-            if game.is_filled:
-                continue
+        game = self.open_game
+        if game:
             game.add_bot(bot_id)
             self.games.update({
                 bot_id: game
@@ -36,17 +35,28 @@ class GameController(object):
         self.games.update({bot_id: game})
         return game
 
+    @property
+    def open_game(self):
+        for game in self.sorted_games(reverse=False).values():
+            if game.is_filled:
+                continue
+            return game
+        return None
+
     def action(self, bot_id, action):
         assert action in Action
         game = self.get(bot_id)
         try:
             return game.action(bot_id, action)
         except GameFinished:
-            self.games = {bot_id: g for bot_id, g in self.games.items() if g is not game}
+            self.remove_game(game)
             raise
 
     def sorted_games(self, key='last_modified_at', reverse=True):
         return OrderedDict(sorted(self.games.items(), key=lambda x: attrgetter(key)(x[1]), reverse=reverse))
+
+    def remove_game(self, game):
+        self.games = {bot_id: g for bot_id, g in self.games.items() if g is not game}
 
 
 game_controller = GameController()

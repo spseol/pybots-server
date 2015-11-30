@@ -7,10 +7,12 @@ from pybots.game.fields.empty_field import EmptyField
 class BaseConfiguration(object, metaclass=ABCMeta):
     map_width = None
     map_height = None
-    default_empty_map_field = EmptyField
     bots = None
     treasures = None
     blocks = None
+
+    default_empty_map_field = EmptyField
+    rounded_game = False
 
     _fields = (
         ('map_width', int),
@@ -18,7 +20,8 @@ class BaseConfiguration(object, metaclass=ABCMeta):
         ('bots', int),
         ('treasures', int),
         ('blocks', int),
-        ('default_empty_map_field', object)
+        ('default_empty_map_field', object),
+        ('rounded_game', bool)
     )
 
     def __init__(self):

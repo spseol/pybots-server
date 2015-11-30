@@ -1,5 +1,7 @@
+from collections import deque
 from datetime import datetime
 
+from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
@@ -9,7 +11,7 @@ from pybots.game.utils import Exportable, get_next_position
 
 
 class Game(Exportable):
-    def __init__(self, game_map, created_at=None, last_modified_at=None):
+    def __init__(self, game_map, created_at=None, last_modified_at=None, configuration=None):
         assert isinstance(game_map, Map)
         self._map = game_map
         self._empty_bots_positions = self.map.get_field_occurrences(BotField)
@@ -20,12 +22,16 @@ class Game(Exportable):
             Action.TURN_RIGHT: self._action_turn_right,
         }
 
+        self._configuration = configuration if configuration else configuration_provider.actual
         self._created_at = created_at if created_at else datetime.now()
         self._last_modified_at = last_modified_at if last_modified_at else datetime.now()
+
+        self._bots_deque = deque(maxlen=len(self._empty_bots_positions))
 
     def add_bot(self, bot_id):
         if bot_id not in self._bots_positions and self._empty_bots_positions:
             self._bots_positions[bot_id] = self._empty_bots_positions.pop()
+            self._bots_deque.append(bot_id)
         elif bot_id not in self._bots_positions and not self._empty_bots_positions:
             raise NoFreeBots('In this map is not any free position for bot.')
 
@@ -33,9 +39,14 @@ class Game(Exportable):
         assert isinstance(action, Action)
 
         self.add_bot(bot_id)
+
+        if self._configuration.rounded_game and not self.is_bot_on_turn(bot_id):
+            raise BotNotOnTurn('This bot is not on turn.')
+
         action_func = self._actions[action]
         action_func(**dict(bot_id=bot_id))
 
+        self._bots_deque.rotate(1)
         self._last_modified_at = datetime.now()
         return self
 
@@ -76,6 +87,9 @@ class Game(Exportable):
 
     def get_bot_position(self, bot_id):
         return self._bots_positions.get(bot_id)
+
+    def is_bot_on_turn(self, bot_id):
+        return self._bots_deque and self._bots_deque[0] == bot_id
 
     @property
     def is_filled(self):
@@ -126,4 +140,8 @@ class GameFinished(Exception):
 
 
 class NoFreeBots(Exception):
+    pass
+
+
+class BotNotOnTurn(Exception):
     pass

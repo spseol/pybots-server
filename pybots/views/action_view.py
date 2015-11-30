@@ -1,7 +1,7 @@
 from flask.views import MethodView
 
 from pybots.game.actions import Action
-from pybots.game.game import NoFreeBots, MovementError, GameFinished
+from pybots.game.game import NoFreeBots, MovementError, GameFinished, BotNotOnTurn
 from pybots.game.game_controller import game_controller
 from pybots.views.response_state import ResponseState
 from pybots.views.utils import form_to_kwargs
@@ -33,6 +33,8 @@ class ActionView(MethodView):
         except NoFreeBots:
             # TODO: is it special state?
             pass
+        except BotNotOnTurn:
+            return ResponseState.BOT_NOT_ON_TURN.response
         except MovementError:
             return ResponseState.MOVEMENT_ERROR.response
         except GameFinished:
