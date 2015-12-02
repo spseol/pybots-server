@@ -46,7 +46,7 @@ class Game(Exportable):
         action_func = self._actions[action]
         action_func(**dict(bot_id=bot_id))
 
-        self._bots_deque.rotate(1)
+        self._bots_deque.rotate(-1)
         self._last_modified_at = datetime.now()
         return self
 

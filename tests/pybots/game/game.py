@@ -7,7 +7,7 @@ from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
-from pybots.game.game import Game, MovementError, GameFinished, NoFreeBots
+from pybots.game.game import Game, MovementError, GameFinished, NoFreeBots, BotNotOnTurn
 from pybots.game.map import Map
 from pybots.game.map_factory import MapFactory
 from pybots.game.orientations import Orientation
@@ -130,12 +130,12 @@ class TestGame(TestCase):
         my_bot_id = 0
         bots_export = game._export_bots(my_bot_id)
 
-        my_bot_on_fist_field = game.get_bot_position(my_bot_id) == (0, 0)
+        my_bot_on_first_field = game.get_bot_position(my_bot_id) == (0, 0)
         self.assertListEqual(
             bots_export,
             [
-                dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH, your_bot=not my_bot_on_fist_field),
-                dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH, your_bot=my_bot_on_fist_field)
+                dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH, your_bot=not my_bot_on_first_field),
+                dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH, your_bot=my_bot_on_first_field)
             ]
         )
 
@@ -149,3 +149,41 @@ class TestGame(TestCase):
             places=0,
             msg='created game at patched datetime'
         )
+
+    def test_rounded_game(self):
+        class Conf(DefaultConfiguration):
+            map_width = 3
+            map_height = 1
+            bots = 3
+            treasures = 0
+            blocks = 0
+            rounded_game = True
+
+        conf = Conf()
+        game = Game(MapFactory().create(conf), configuration=conf)
+
+        my_bot_1 = 1
+        my_bot_2 = 2
+        my_bot_3 = 3
+
+        game.add_bot(my_bot_1)
+        game.add_bot(my_bot_2)
+
+        game.action(my_bot_1, Action.TURN_LEFT)
+        game.action(my_bot_2, Action.TURN_LEFT)
+
+        with self.assertRaises(BotNotOnTurn):
+            game.action(my_bot_2, Action.TURN_LEFT)
+
+        game.action(my_bot_1, Action.TURN_LEFT)
+
+        with self.assertRaises(BotNotOnTurn):
+            game.action(my_bot_1, Action.TURN_LEFT)
+
+        game.add_bot(my_bot_3)
+        with self.assertRaises(BotNotOnTurn):
+            game.action(my_bot_3, Action.TURN_LEFT)
+
+        game.action(my_bot_2, Action.TURN_LEFT)
+        game.action(my_bot_1, Action.TURN_LEFT)
+        game.action(my_bot_3, Action.TURN_LEFT)
