@@ -13,6 +13,9 @@ from pybots.game.utils import Exportable, get_next_position
 class Game(Exportable):
     def __init__(self, game_map, created_at=None, last_modified_at=None, configuration=None):
         assert isinstance(game_map, Map)
+        assert isinstance(created_at, (datetime, type(None)))
+        assert isinstance(last_modified_at, (datetime, type(None)))
+
         self._map = game_map
         self._empty_bots_positions = self.map.get_field_occurrences(BotField)
         self._bots_positions = {}

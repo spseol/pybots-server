@@ -21,7 +21,7 @@ class BaseConfiguration(object, metaclass=ABCMeta):
         ('treasures', int),
         ('blocks', int),
         ('default_empty_map_field', object),
-        ('rounded_game', bool)
+        ('rounded_game', bool),
     )
 
     def __init__(self):
