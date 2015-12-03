@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pybots.configurations.basic_configuration import DefaultConfiguration
+from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.actions import Action
 from pybots.game.fields.block_field import BlockField

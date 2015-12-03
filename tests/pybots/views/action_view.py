@@ -1,7 +1,7 @@
 from flask.json import loads
 from flask.wrappers import Response
 
-from pybots.configurations.basic_configuration import DefaultConfiguration
+from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.game.actions import Action
 from pybots.views.response_state import ResponseState
 from tests.test_case import TestCase

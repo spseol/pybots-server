@@ -1,10 +1,12 @@
 from abc import ABCMeta
 from types import MethodType
 
+from pybots.configurations.field_placer import FieldPlacerMixin
+
 from pybots.game.fields.empty_field import EmptyField
 
 
-class BaseConfiguration(object, metaclass=ABCMeta):
+class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
     map_width = None
     map_height = None
     bots = None
