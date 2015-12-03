@@ -25,7 +25,7 @@
                                 <a class="btn btn-warning btn-sm pull-right fa fa-info-circle"
                                    href="{{ url_for('admin_game_detail', bot_id=bot_id) }}"></a>
 
-                                {% if now.timestamp() - 5*60 > game.last_modified_at.timestamp() %}
+                                {% if now.timestamp() - TIMEOUT_DELETE > game.last_modified_at.timestamp() %}
                                     <form method="POST" action="{{ url_for('admin_game_delete', bot_id=bot_id) }}">
                                         <button class="btn btn-danger btn-sm pull-right fa fa-times"
                                                 type="submit"></button>
