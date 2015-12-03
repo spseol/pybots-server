@@ -15,6 +15,7 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
 
     default_empty_map_field = EmptyField
     rounded_game = False
+    maze_game = False
 
     _fields = (
         ('map_width', int),
@@ -24,6 +25,7 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
         ('blocks', int),
         ('default_empty_map_field', object),
         ('rounded_game', bool),
+        ('maze_game', bool),
     )
 
     def __init__(self):
