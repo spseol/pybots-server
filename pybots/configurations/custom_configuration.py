@@ -1,10 +1,11 @@
 from _operator import itemgetter
 
 from pybots.configurations.base_configuration import BaseConfiguration
-from pybots.configurations.basic_configuration import DefaultConfiguration
+from pybots.configurations.default_configuration import DefaultConfiguration
+from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 
 
-class CustomConfiguration(BaseConfiguration):
+class CustomConfiguration(BaseConfiguration, RandomFieldPlacerMixin):
     default_empty_map_field = DefaultConfiguration.default_empty_map_field
 
     def __init__(self, **kwargs):

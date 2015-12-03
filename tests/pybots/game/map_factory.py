@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from pybots.configurations.basic_configuration import DefaultConfiguration
+from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField

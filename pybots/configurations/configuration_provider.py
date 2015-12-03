@@ -1,5 +1,5 @@
 from pybots.configurations.base_configuration import BaseConfiguration
-from pybots.configurations.basic_configuration import DefaultConfiguration
+from pybots.configurations.default_configuration import DefaultConfiguration
 
 
 class ConfigurationProvider(object):
@@ -12,7 +12,6 @@ class ConfigurationProvider(object):
     def actual(self):
         if not self._actual:
             self._actual = self.DEFAULT_CONFIGURATION()
-            # raise ConfigurationError('')
         return self._actual
 
     @actual.setter
