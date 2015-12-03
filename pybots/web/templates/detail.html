@@ -1,66 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% set field_classes = {0: 'field-empty', 1: 'field-treasure', 2: 'field-bot', 3: 'field-block'} %}
-    {% set bot_orientations = {0: 'up', 1: 'right', 2: 'down', 3: 'left'} %}
-    <div class="map">
-        {% for row in game.map %}
-            <div class="map-row" style="height: {{ 100/game.map.height }}vw">
-                {% for field in row %}
-                    <div class="map-field {{ field_classes[field.export()] }}"
-                         style="width: {{ 100/game.map.width }}vw">
-                        {% if field.export().value == 2 %}
-                            <i class="{{ bot_orientations[field.orientation.value] }}"></i>
-                        {% elif field.export().value == 1 %}
-                            <i class=""></i>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </div>
-
     <style>
-        .field-empty {
-            background-color: #CCC;
-        }
-
-        .field-treasure {
-            background-color: yellow;
-        }
-
-        .field-bot {
-            background-color: orangered;
-        }
-
-        .field-block {
-            background-color: #999;
-        }
-
-        .map {
+        #c {
             position: absolute;
-            top: 0;
-            bottom: 0;
             left: 0;
             right: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .map .map-row {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: row;
-        }
-
-        .map .map-field {
-            flex: 1 1 0;
-            align-items: center;
-            font-size: 5vw;
-            border: 1px solid lightgrey;
-            text-align: center;
-            display: flex;
-            justify-content: center;
+            top: 0;
+            bottom: 0;
         }
     </style>
+    <canvas id="c"></canvas>
+
+    <script>
+        jQuery(function ($) {
+            var field2color = {
+                0: '#CCC',
+                1: 'yellow',
+                2: 'orangered',
+                3: '#999'
+            };
+            var height = $(window).height();
+            var width = $(window).width();
+
+            c.width = width;
+            c.height = height;
+            var canvas = new fabric.StaticCanvas('c', {renderOnAddRemove: false, backgroundColor: field2color[0]});
+
+            function renderMap(map) {
+                var rows = map.length, columns = map[0].length;
+                $.each(map, function (y, row) {
+                    $.each(row, function (x, field) {
+                        if (field == 0) {
+                            return;
+                        }
+                        canvas.add(new fabric.Rect({
+                            left: x * width / columns,
+                            top: y * height / rows,
+                            fill: field2color[field],
+                            width: width / columns,
+                            height: height / rows
+                        }));
+                    });
+                });
+                canvas.renderAll();
+            }
+
+            function refreshMap() {
+                $.ajax('{{ url_for('game', bot_id=bot_id) }}').success(function (data) {
+                    renderMap(data.map);
+                })
+            }
+
+            refreshMap();
+            setInterval(refreshMap, 2000);
+        });
+    </script>
+{% endblock %}
+{% block title %}
 {% endblock %}
