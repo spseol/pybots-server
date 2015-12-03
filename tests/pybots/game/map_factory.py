@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
-from pybots.configurations.default_configuration import DefaultConfiguration
+from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
+from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
@@ -13,7 +14,15 @@ from tests.test_case import TestCase
 class TestMapFactory(TestCase):
     def test_create_basic(self):
         factory = MapFactory()
-        conf = DefaultConfiguration()
+
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
+            map_width = 20
+            map_height = 10
+            bots = 2
+            treasures = 1
+            blocks = 10
+
+        conf = Conf()
         game_map = factory.create(conf)
 
         self.assertIsInMap(game_map, TreasureField)

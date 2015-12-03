@@ -1,7 +1,10 @@
 from datetime import datetime
 
+from pybots.configurations.base_configuration import BaseConfiguration
+
 from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
+from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from pybots.game.actions import Action
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
@@ -119,7 +122,7 @@ class TestGame(TestCase):
             game.action('bot_id', Action.STEP)
 
     def test_export_bots(self):
-        class Conf(DefaultConfiguration):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             map_width = 2
             map_height = 1
             bots = 2
@@ -151,7 +154,7 @@ class TestGame(TestCase):
         )
 
     def test_rounded_game(self):
-        class Conf(DefaultConfiguration):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             map_width = 3
             map_height = 1
             bots = 3

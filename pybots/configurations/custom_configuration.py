@@ -13,4 +13,4 @@ class CustomConfiguration(BaseConfiguration, RandomFieldPlacerMixin):
         for key, value in kwargs.items():
             if key in field_names:
                 setattr(self, key, value)
-        super().__init__()
+        super(BaseConfiguration, self).__init__()
