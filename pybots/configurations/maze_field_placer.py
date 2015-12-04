@@ -1,4 +1,4 @@
-from random import choice, randint
+from random import choice
 
 from pybots.configurations.base_configuration import ConfigurationError
 from pybots.configurations.field_placer import FieldPlacerMixin
@@ -55,7 +55,7 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
                 except OutOfMapError:
                     return
                 # TODO: probability of wall crossing, constant or configuration?
-                if isinstance(field, field_class) and randint(0, 100) > 5:
+                if isinstance(field, field_class):
                     return
                 if position in bases:
                     bases.remove(position)
