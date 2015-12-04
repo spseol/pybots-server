@@ -38,13 +38,15 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
         bases = set()
 
         # TODO: frequency of blocks, constant or configuration?
-        for y, row in list(enumerate(game_map))[::2]:
-            for x, _ in list(enumerate(row))[::2]:
+        for y, row in list(enumerate(game_map))[1:-1:2]:
+            for x, _ in list(enumerate(row))[1:-1:2]:
                 bases.add((x, y))
 
         def place_blocks_line(position, orientation):
             blocks = 0
-            while blocks < len(game_map.map) / 5:
+            max_blocks = len(game_map.map if orientation in (Orientation.NORTH, Orientation.SOUTH) else game_map.map[0]) / 5
+            max_blocks -= max_blocks % 2
+            while blocks < max_blocks:
                 # TODO: as constant or configuration?
                 game_map[position] = field_class()
                 position = get_next_position(position, orientation)
