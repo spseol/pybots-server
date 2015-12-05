@@ -21,6 +21,7 @@
             };
             var height = $(window).height();
             var width = $(window).width();
+            var wallsRendered = false;
 
             c.width = width;
             c.height = height;
@@ -30,7 +31,8 @@
                 var rows = map.length, columns = map[0].length;
                 $.each(map, function (y, row) {
                     $.each(row, function (x, field) {
-                        if (field == 0) {
+                        /* never render empty fields, blocks and treasures only once */
+                        if (field == 0 || (wallsRendered && field != 2)) {
                             return;
                         }
                         canvas.add(new fabric.Rect({
@@ -43,6 +45,7 @@
                     });
                 });
                 canvas.renderAll();
+                wallsRendered = true;
             }
 
             function refreshMap() {
