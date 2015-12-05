@@ -56,7 +56,6 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
                     field = game_map[position]
                 except OutOfMapError:
                     return
-                # TODO: probability of wall crossing, constant or configuration?
                 if isinstance(field, field_class):
                     return
                 if position in bases:
