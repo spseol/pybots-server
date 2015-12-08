@@ -1,10 +1,11 @@
 from pybots.configurations.base_configuration import BaseConfiguration, ConfigurationError
+from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from tests.test_case import TestCase
 
 
 class TestBaseConfiguration(TestCase):
     def test_init(self):
-        class Conf(BaseConfiguration):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             _fields = (
                 ('bar', int),
             )
@@ -13,7 +14,7 @@ class TestBaseConfiguration(TestCase):
         with self.assertRaises(ConfigurationError):
             Conf()
 
-        class Conf(BaseConfiguration):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             _fields = (
                 ('bar', int),
                 ('foo', None)
@@ -23,7 +24,7 @@ class TestBaseConfiguration(TestCase):
         with self.assertRaises(ConfigurationError):
             Conf()
 
-        class Conf(BaseConfiguration):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             _fields = (
                 ('bar', int),
             )
@@ -33,7 +34,7 @@ class TestBaseConfiguration(TestCase):
             Conf()
 
     def test_lambda_fields(self):
-        class Conf(BaseConfiguration):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             _fields = (
                 ('bar', int),
             )

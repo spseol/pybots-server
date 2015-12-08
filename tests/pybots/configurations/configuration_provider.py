@@ -1,5 +1,6 @@
 from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.configurations.configuration_provider import configuration_provider
+from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from tests.test_case import TestCase
 
 
@@ -12,7 +13,7 @@ class TestConfigurationProvider(TestCase):
         with self.assertRaises(AssertionError):
             configuration_provider.actual = None
 
-        class MyConf(BaseConfiguration):
+        class MyConf(BaseConfiguration, RandomFieldPlacerMixin):
             _fields = ()
 
         my_conf = MyConf()
