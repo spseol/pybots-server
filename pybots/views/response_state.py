@@ -13,6 +13,7 @@ class ResponseState(Enum):
     MOVEMENT_ERROR = 'movement_error', 200
     MOVEMENT_SUCCESS = 'movement_success', 200
     BOT_NOT_ON_TURN = 'bot_not_on_turn', 200
+    CRITICAL_BATTERY_LEVEL = 'critical_battery_level', 200
 
     def __init__(self, state, code=None):
         self.state = state

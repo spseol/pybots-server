@@ -2,7 +2,6 @@ from abc import ABCMeta
 from types import MethodType
 
 from pybots.configurations.field_placer import FieldPlacerMixin
-
 from pybots.game.fields.empty_field import EmptyField
 
 
@@ -16,21 +15,23 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
     default_empty_map_field = EmptyField
     rounded_game = False
     maze_game = False
+    battery_game = False
 
-    _fields = (
-        ('map_width', int),
-        ('map_height', int),
-        ('bots', int),
-        ('treasures', int),
-        ('blocks', int),
-        ('default_empty_map_field', object),
-        ('rounded_game', bool),
-        ('maze_game', bool),
+    _fields = dict(
+        map_width=int,
+        map_height=int,
+        bots=int,
+        treasures=int,
+        blocks=int,
+        default_empty_map_field=object,
+        rounded_game=bool,
+        maze_game=bool,
+        battery_game=bool
     )
 
     def __init__(self):
         missing = []
-        for field_name, field_type in self._fields:
+        for field_name, field_type in self._fields.items():
             value = getattr(self, field_name, None)
 
             if value is None:

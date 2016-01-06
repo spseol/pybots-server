@@ -3,6 +3,7 @@ from datetime import datetime
 
 from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
+from pybots.game.fields.battery_bot_field import BatteryBotField, CriticalBatteryLevel
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
@@ -23,6 +24,7 @@ class Game(Exportable):
             Action.STEP: self._action_step,
             Action.TURN_LEFT: self._action_turn_left,
             Action.TURN_RIGHT: self._action_turn_right,
+            Action.WAIT: self._action_wait
         }
 
         self._configuration = configuration if configuration else configuration_provider.actual
@@ -46,16 +48,17 @@ class Game(Exportable):
         if self._configuration.rounded_game and not self.is_bot_on_turn(bot_id):
             raise BotNotOnTurn('This bot is not on turn.')
 
+        bot_field = self.map[self._bots_positions[bot_id]]
         action_func = self._actions[action]
-        action_func(**dict(bot_id=bot_id))
+        action_func(**dict(bot_id=bot_id, bot_field=bot_field))
 
         self._bots_deque.rotate(-1)
         self._last_modified_at = datetime.now()
         return self
 
-    def _action_step(self, bot_id, **kwargs):
+    def _action_step(self, bot_id, bot_field, **kwargs):
         actual_position = self._bots_positions[bot_id]
-        actual_field = self._map[actual_position]
+        bot_field = self._map[actual_position]
 
         bot_orientation = self.map[actual_position].orientation
         new_position = get_next_position(
@@ -74,19 +77,28 @@ class Game(Exportable):
         elif isinstance(new_field, BlockField):
             raise MovementError('Cannot step on block.')
 
-        self._map[new_position], self._map[actual_position] = actual_field, new_field
+        if self._configuration.battery_game and isinstance(bot_field, BatteryBotField):
+            try:
+                bot_field.drain()
+            except CriticalBatteryLevel:
+                pass
+
+        self._map[new_position], self._map[actual_position] = bot_field, new_field
 
         self._bots_positions[bot_id] = new_position
 
-    def _action_turn_left(self, bot_id, **kwargs):
-        bot_field = self.map[self._bots_positions[bot_id]]
+    def _action_turn_left(self, bot_field, **kwargs):
         assert isinstance(bot_field, BotField)
         bot_field.rotate(Action.TURN_LEFT)
 
-    def _action_turn_right(self, bot_id, **kwargs):
-        bot_field = self.map[self._bots_positions[bot_id]]
+    def _action_turn_right(self, bot_field, **kwargs):
         assert isinstance(bot_field, BotField)
         bot_field.rotate(Action.TURN_RIGHT)
+
+    def _action_wait(self, bot_field, **kwargs):
+        if self._configuration.battery_game:
+            if isinstance(bot_field, BatteryBotField):
+                bot_field.charge()
 
     def get_bot_position(self, bot_id):
         return self._bots_positions.get(bot_id)

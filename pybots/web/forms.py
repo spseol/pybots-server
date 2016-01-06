@@ -1,9 +1,6 @@
 from wtforms import Form
-
 from wtforms.fields.core import BooleanField
-
 from wtforms.fields.html5 import IntegerField
-
 from wtforms.validators import DataRequired, NumberRange
 
 from pybots.configurations.custom_configuration import CustomConfiguration
@@ -20,6 +17,7 @@ class ConfigurationForm(Form):
     bots = IntegerField('count of bots', validators=(DataRequired(), NumberRange(1, 5)), filters=(int, ))
     rounded_game = BooleanField('game by rounds', default=False, validators=(), filters=(bool, ))
     maze_game = BooleanField('maze game', default=False, validators=(), filters=(bool, ))
+    battery_game = BooleanField('battery game', default=False, validators=(), filters=(bool, ))
 
     @property
     def as_configuration(self):

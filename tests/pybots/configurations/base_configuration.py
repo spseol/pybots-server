@@ -6,8 +6,8 @@ from tests.test_case import TestCase
 class TestBaseConfiguration(TestCase):
     def test_init(self):
         class Conf(BaseConfiguration, RandomFieldPlacerMixin):
-            _fields = (
-                ('bar', int),
+            _fields = dict(
+                bar=int,
             )
             bar = 'foo'
 
@@ -15,9 +15,9 @@ class TestBaseConfiguration(TestCase):
             Conf()
 
         class Conf(BaseConfiguration, RandomFieldPlacerMixin):
-            _fields = (
-                ('bar', int),
-                ('foo', None)
+            _fields = dict(
+                bar=int,
+                foo=None
             )
             bar = 5
 
@@ -25,8 +25,8 @@ class TestBaseConfiguration(TestCase):
             Conf()
 
         class Conf(BaseConfiguration, RandomFieldPlacerMixin):
-            _fields = (
-                ('bar', int),
+            _fields = dict(
+                bar=int,
             )
             bar = None
 
@@ -35,8 +35,8 @@ class TestBaseConfiguration(TestCase):
 
     def test_lambda_fields(self):
         class Conf(BaseConfiguration, RandomFieldPlacerMixin):
-            _fields = (
-                ('bar', int),
+            _fields = dict(
+                bar=int,
             )
             bar = lambda: 'foo'
 

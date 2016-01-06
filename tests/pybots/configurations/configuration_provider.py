@@ -14,7 +14,7 @@ class TestConfigurationProvider(TestCase):
             configuration_provider.actual = None
 
         class MyConf(BaseConfiguration, RandomFieldPlacerMixin):
-            _fields = ()
+            _fields = dict()
 
         my_conf = MyConf()
         configuration_provider.actual = my_conf
