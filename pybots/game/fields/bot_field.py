@@ -12,7 +12,7 @@ class BotField(Field):
         assert isinstance(orientation, Orientation)
         self._orientation = orientation
 
-    def export(self):
+    def export(self, *args, **kwargs):
         return FieldEnum.BOT
 
     @property
