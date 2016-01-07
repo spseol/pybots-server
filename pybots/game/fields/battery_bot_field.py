@@ -1,3 +1,4 @@
+from pybots.game.field import FIELD_KEY, Field
 from pybots.game.fields.bot_field import BotField
 
 
@@ -25,6 +26,12 @@ class BatteryBotField(BotField):
 
     def drain(self, level=1):
         self.actual_battery_level -= level
+
+    def export(self):
+        return {
+            FIELD_KEY: Field.BATTERY_BOT,
+            'battery_level': self.actual_battery_level
+        }
 
 
 class CriticalBatteryLevel(Exception):

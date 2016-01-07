@@ -28,7 +28,8 @@ class Map(Exportable):
         return iter(self.__map)
 
     def export(self):
-        return [[self._export_field(field) for field in row] for row in self.__map]
+        return [[self._export_field(field, x=x, y=y) for x, field in enumerate(row)] for y, row in
+                enumerate(self.__map)]
 
     def _getitem(self, index):
         assert isinstance(index, (list, tuple)) and len(index) == 2, 'Index has to have two items, x and y.'
@@ -54,7 +55,7 @@ class Map(Exportable):
         position = get_next_position(position, orientation)
         try:
             return self[position]
-        except OutOfMapError as e:
+        except OutOfMapError:
             return None
 
     @property
@@ -70,9 +71,9 @@ class Map(Exportable):
         return self.__map
 
     @classmethod
-    def _export_field(cls, field):
+    def _export_field(cls, field, *args, **kwargs):
         if isinstance(field, Field):
-            return field.export()
+            return field.export(*args, **kwargs)
         raise UnknownFieldError('Cannot export this unknown field.', field)
 
 

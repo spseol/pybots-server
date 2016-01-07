@@ -3,5 +3,5 @@ from pybots.game.field import Field as FieldEnum
 
 
 class BlockField(Field):
-    def export(self):
+    def export(self, *args, **kwargs):
         return FieldEnum.BLOCK
