@@ -1,6 +1,6 @@
 from pybots.game.actions import Action
 from pybots.game.fields.field import Field
-from pybots.game.field import Field as FieldEnum
+from pybots.game.field import Field as FieldEnum, FIELD_KEY
 from pybots.game.orientations import Orientation
 from pybots.game.utils import get_next_orientation
 
@@ -13,7 +13,10 @@ class BotField(Field):
         self._orientation = orientation
 
     def export(self, *args, **kwargs):
-        return FieldEnum.BOT
+        return {
+            FIELD_KEY: FieldEnum.BOT,
+            'orientation': self.orientation
+        }
 
     @property
     def orientation(self):

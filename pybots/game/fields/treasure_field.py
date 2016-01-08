@@ -9,5 +9,5 @@ class TreasureField(Field):
         assert isinstance(price, int), 'Price has to be int type'
         self.price = price
 
-    def export(self):
+    def export(self, *args, **kwargs):
         return FieldEnum.TREASURE

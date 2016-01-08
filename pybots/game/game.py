@@ -123,27 +123,15 @@ class Game(Exportable):
         return self._last_modified_at
 
     def export(self, for_bot_id):
+        game_map_export = self._map.export(for_bot_id=for_bot_id)
+        bot_position = self._bots_positions.get(for_bot_id)
+        game_map_export[bot_position[1]][bot_position[0]].update(dict(
+            your_bot=True
+        ))
         return dict(
-            map=self._map.export(),
-            map_width=self._map.width,
-            map_height=self._map.height,
-            map_resolutions=(self._map.width, self._map.height),
-            bots=self._export_bots(for_bot_id)
+            map=game_map_export,
+            map_resolutions=(self._map.width, self._map.height)
         )
-
-    def _export_bots(self, for_bot_id):
-        return [
-            dict(
-                x=bot_position[0],
-                y=bot_position[1],
-                position=bot_position,
-                orientation=self._map[bot_position].orientation,
-                your_bot=for_bot_id == bot_id
-            ) for bot_id, bot_position in dict(
-                list(self._bots_positions.items()) +
-                list((bot_id, position) for bot_id, position in enumerate(self._empty_bots_positions))
-            ).items()
-        ]
 
 
 class MovementError(Exception):
