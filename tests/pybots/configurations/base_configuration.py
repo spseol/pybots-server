@@ -1,4 +1,5 @@
-from pybots.configurations.base_configuration import BaseConfiguration, ConfigurationError
+from pybots.configurations import ConfigurationError
+from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from tests.test_case import TestCase
 
