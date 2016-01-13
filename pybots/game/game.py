@@ -71,7 +71,7 @@ class Game(Exportable):
             raise MovementError('New position is out of map.')
 
         if isinstance(new_field, TreasureField):
-            raise GameFinished
+            raise GameFinished()
         elif isinstance(new_field, BotField):
             raise MovementError('Cannot step on another bot.')
         elif isinstance(new_field, BlockField):
@@ -81,7 +81,7 @@ class Game(Exportable):
             try:
                 bot_field.drain()
             except CriticalBatteryLevel:
-                pass
+                raise MovementError('Low battery level.')
 
         self._map[new_position], self._map[actual_position] = bot_field, new_field
 
