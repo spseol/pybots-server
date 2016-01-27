@@ -1,10 +1,16 @@
 % \input utf8-t1
-\documentclass[a4]{article}
+\documentclass[12pt,titlepage,a4paper]{article}
 
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage{hyperref}
 
 \begin{document}
+
+\title{Pybots - herní server pro foo bar}
+\author{Josef Kolář}
+\date{leden 2016}
+\maketitle
 
 \section{Použité technologie}
 
@@ -14,12 +20,24 @@ Python je moderní interpretovaný programovací jazyk, který byl navržen v ro
 
 Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá ``CPython'' dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří ``Jython'' naprogramovaný v jazyce Java nebo ``IronPython'' v prostředích .NET a Mono.
 
-Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky https://pypi.python.org/pypi aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
+Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální 
+portál pro rozšiřující balíčky 
+\href{https:\/\/pypi.python.org\/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
 
 Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých vylepšení syntaxe jazyka.
 
 \subsection{Flask}
 
-Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti patři vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace.
+Flask je webový framework implementovaný v jazyce Python. Mezi jeho 
+přednosti patří vestavěný vývojářský server, plná podpora pro 
+unit testování a kvalitní dokumentace. Vzhledem k jeho variabilitě 
+a v základu tenké architektuře bylo nutné přidat abstraktní 
+vrstvy pro samotné zpracování herních akcích a podobně.
+
+\subsection{HTTP}
+
+HTTP (HyperText Transfer Protocol) je standardizovaný internetový 
+protokol pro výměnu HTML kódu. V dnešní době je používán nejen 
+k výměně HTML kódu, ale jeho rozšíření MIME \footnote{Multipurpose Internet Mail Extensions}
 
 \end{document}
