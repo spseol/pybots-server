@@ -1,5 +1,5 @@
 % \input utf8-t1
-\documentclass[14pt,titlepage,a4paper]{article}
+\documentclass[16pt,titlepage,a4paper]{article}
 
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
@@ -7,7 +7,7 @@
 
 \begin{document}
 
-\title{Pybots - herní server pro foo bar}
+\title{Pybots - server pro automatickou hru robotů}
 \author{Josef Kolář}
 \date{leden 2016}
 \maketitle
@@ -26,10 +26,15 @@ portál pro rozšiřující balíčky
 
 Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých vylepšení syntaxe jazyka.
 
+\subsubsection{Automatické testování}
+
+Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem ``bezchybnosti'' zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost testů projektu.
+
 \subsection{Flask}
 
 Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k jeho variabilitě a v základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcích a podobně.
 
+Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednodušše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
 \subsection{HTTP}
 
 HTTP (HyperText Transfer Protocol) je standardizovaný internetový protokol pro výměnu HTML kódu. Jeho první koncept vznikl v roce 1991 jako veze 0.9, o pět let později byla uvedena verze 1.1 a verze 1.1, která je používaná dodnes byla uvedena v červu roku 1999. V dnešní době je používán nejen k výměně HTML kódu, ale jeho rozšíření MIME \footnote{Multipurpose Internet Mail Extensions} poskytuje možnost přenosu souborů jakéhokoliv typu. Samotný HTTP nezajištuje zabezpečení ani integritu dat. Nadstavbu nad HTTP tvoří HTTPS, jehož komunikace je šifrována pomocí SSL nebo TLS.
@@ -38,7 +43,7 @@ HTTP pracuje na principu request-response (požadavek-odpověd). HTTP požadavek
 
 \subsection{JSON}
 
-JavaScript Object Notation je datový formát pro přenos dat nezávislý na platformě. JSON zvládne kódovat a následně dekódovat tyto datové typy:
+JavaScript Object Notation je datový formát pro přenos dat nezávislý na platformě. Oproti jeho hlavnímu konkurentu XML je datově úspornější, avšak je nevhodný k přenosu binárních informací. JSON je schopen kódovat a následně dekódovat tyto datové typy:
 
 \begin{itemize}
     \item
