@@ -29,7 +29,6 @@
 
 \subsubsection{Návrh interní struktury}
 
-\subsubsub
 O interní reprezentaci jedné instance hry se stará třída \lstinline|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovávvá jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. Game je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyolané interně uloženou mapou na vyjímky zvenku známé. V případě módu hry s tahy hlídá Game pořadí jednotlivých botů.
 Třída Game interně využívá třídu Map k uchování stavu hry. Třída Map je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. 
 
