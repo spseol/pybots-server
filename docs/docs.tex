@@ -7,6 +7,7 @@
 \usepackage{listings}
 % \usepackage{minted}
 
+\pagestyle{headings}
 \lstset{language=Python}
 
 \begin{document}
@@ -30,6 +31,7 @@
 \subsubsection{Návrh interní struktury}
 
 O interní reprezentaci jedné instance hry se stará třída \lstinline|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovávvá jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. Game je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyolané interně uloženou mapou na vyjímky zvenku známé. V případě módu hry s tahy hlídá Game pořadí jednotlivých botů.
+
 Třída Game interně využívá třídu Map k uchování stavu hry. Třída Map je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. 
 
 
@@ -45,7 +47,7 @@ Třída Game interně využívá třídu Map k uchování stavu hry. Třída Map
 
 Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procudurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
 
-Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá ``CPython'' dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří ``Jython'' naprogramovaný v jazyce Java nebo ``IronPython'' v prostředích .NET a Mono.
+Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \uv{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \uv{Jython} naprogramovaný v jazyce Java nebo \uv{IronPython} v prostředích .NET a Mono.
 
 Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální 
 portál pro rozšiřující balíčky 
@@ -55,7 +57,7 @@ Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 
 
 \subsubsection{Automatické testování}
 
-Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem ``bezchybnosti'' zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
+Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
 
 \subsection{Flask}
 
