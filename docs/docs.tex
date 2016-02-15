@@ -4,6 +4,10 @@
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
+\usepackage{listings}
+% \usepackage{minted}
+
+\lstset{language=Python}
 
 \begin{document}
 
@@ -24,6 +28,11 @@
 \subsection{Návrh architektury aplikace}
 
 \subsubsection{Návrh interní struktury}
+
+\subsubsub
+O interní reprezentaci jedné instance hry se stará třída \lstinline|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovávvá jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. Game je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyolané interně uloženou mapou na vyjímky zvenku známé. V případě módu hry s tahy hlídá Game pořadí jednotlivých botů.
+Třída Game interně využívá třídu Map k uchování stavu hry. Třída Map je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. 
+
 
 \subsubsection{Návrh vnějšího rozhraní}
 
@@ -47,7 +56,7 @@ Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 
 
 \subsubsection{Automatické testování}
 
-Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem ``bezchybnosti'' zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost testů projektu.
+Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem ``bezchybnosti'' zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
 
 \subsection{Flask}
 
