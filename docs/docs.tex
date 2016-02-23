@@ -1,14 +1,56 @@
 % \input utf8-t1
 \documentclass[16pt,titlepage,a4paper]{article}
 
+% ------ PACKAGES ------
+
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{newverbs}
 % \usepackage{minted}
 
-\pagestyle{headings}
-\lstset{language=Python}
+% ------ CUSTOM COLORS ------
+
+\colorlet{violet}{blue!75!red}
+\colorlet{lightgray}{gray!12}
+
+% ------ CUSTOM COMMANDS ------
+
+\makeatletter
+\newcommand\ic[1][green]{%
+    \@testopt{\@ic{#1}}{-#1}% Handle second optional argument
+}
+\def\@ic#1[#2]{%
+    \Collectverb{\@@ic{#1}{#2}}%
+}
+\def\@@ic#1#2#3{%
+    %\begingroup
+    %\fboxrule=0.9\baselineskip
+    %\fboxsep=...
+    \fcolorbox{white}{lightgray}{\lstinline[columns=fixed,basicstyle=\ttfamily\color{violet}]|#3|}%
+    %\endgroup
+}
+\makeatother
+
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}} % One single link
+
+% ------ LISTINGS  ------
+
+\lstset{
+	language=Python,
+	% frameround=fttt,
+	breaklines=true
+    keywordstyle=\color{blue}, 
+    basicstyle=\color{violet},
+    numberstyle=\color{black}
+}
+
+\lstMakeShortInline[
+	backgroundcolor=\color{gray!10},
+]|
 
 \begin{document}
 
@@ -30,16 +72,22 @@
 
 \subsubsection{Návrh interní struktury}
 
-O interní reprezentaci jedné instance hry se stará třída \lstinline|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovávvá jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. Game je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyolané interně uloženou mapou na vyjímky zvenku známé. V případě módu hry s tahy hlídá Game pořadí jednotlivých botů.
+\textit{
+	V této kapitole se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
+}
 
-Třída Game interně využívá třídu Map k uchování stavu hry. Třída Map je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. 
+O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovávvá jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyolané interně uloženou mapou na vyjímky zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
 
+Třída \ic|Game| interně využívá třídu Map k uchování stavu hry. Třída \ic|Map| je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - tzn. mj. ošetřuje stavy pro přístup mimo rozsah mapy.
+
+Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se příznačně nazývá \ic*GameController*
 
 \subsubsection{Návrh vnějšího rozhraní}
 
 \subsection{Administrace}
 
 \section{Implementace}
+\label{sec:implementation}
 
 \section{Použité technologie}
 
@@ -49,9 +97,7 @@ Python je moderní interpretovaný programovací jazyk, který byl navržen v ro
 
 Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \uv{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \uv{Jython} naprogramovaný v jazyce Java nebo \uv{IronPython} v prostředích .NET a Mono.
 
-Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální 
-portál pro rozšiřující balíčky 
-\href{https:\/\/pypi.python.org\/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
+Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https:\/\/pypi.python.org\/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
 
 Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých vylepšení syntaxe jazyka.
 
