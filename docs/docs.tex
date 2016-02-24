@@ -41,11 +41,13 @@
 
 \lstset{
 	language=Python,
-	% frameround=fttt,
+	frameround=fttf,
 	breaklines=true
     keywordstyle=\color{blue}, 
     basicstyle=\color{violet},
-    numberstyle=\color{black}
+    numberstyle=\color{black},
+	frame=single,
+	tabsize=4
 }
 
 \lstMakeShortInline[
@@ -80,7 +82,7 @@ O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která 
 
 Třída \ic|Game| interně využívá třídu Map k uchování stavu hry. Třída \ic|Map| je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - tzn. mj. ošetřuje stavy pro přístup mimo rozsah mapy.
 
-Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se příznačně nazývá \ic*GameController*
+Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se příznačně nazývá \ic*GameController*. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za přiřazování her
 
 \subsubsection{Návrh vnějšího rozhraní}
 
@@ -104,6 +106,18 @@ Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 
 \subsubsection{Automatické testování}
 
 Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
+
+Níže je uveden příklad třídy k testování. Třída \ic-MathOperations- je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
+\begin{lstlisting}
+class MathOperations(object):
+	@staticmethod
+	def add(a, b):
+		return a + b
+
+	@staticmethod
+	def div(a, b):
+		return a / b
+\end{lstlisting}
 
 \subsection{Flask}
 
