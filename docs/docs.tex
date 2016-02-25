@@ -19,6 +19,7 @@
 
 % ------ CUSTOM COMMANDS ------
 
+% \ic for inline code
 \makeatletter
 \newcommand\ic[1][green]{%
     \@testopt{\@ic{#1}}{-#1}% Handle second optional argument
@@ -35,24 +36,30 @@
 }
 \makeatother
 
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}} % One single link
+% reset ref section names
+\def\sectionautorefname{}
+\def\subsectionautorefname{}
+\def\subsubsectionautorefname{}
+
+% ref as <number of section> <title of section>
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
 % ------ LISTINGS  ------
 
 \lstset{
-	language=Python,
-	frameround=fttf,
-	breaklines=true,
+    language=Python,
+    frameround=fttf,
+    breaklines=true,
     keywordstyle=\color{violet!70!red}\ttfamily,
     basicstyle=\color{violet},
     numberstyle=\color{black},
-	frame=single,
-	tabsize=4
+    frame=single,
+    tabsize=4
 }
 
 \begin{document}
 
-    \title{Pybots - server pro automatickou hru robotů}
+    \title{PYBOTS - hra pro programátory}
     \author{Josef Kolář}
     \date{leden 2016}
 
