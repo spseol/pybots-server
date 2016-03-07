@@ -24,7 +24,8 @@ class Game(Exportable):
             Action.STEP: self._action_step,
             Action.TURN_LEFT: self._action_turn_left,
             Action.TURN_RIGHT: self._action_turn_right,
-            Action.WAIT: self._action_wait
+            Action.WAIT: self._action_wait,
+            Action.LASER_BEAM: self._action_laser_beam,
         }
 
         self._configuration = configuration if configuration else configuration_provider.actual
@@ -99,6 +100,9 @@ class Game(Exportable):
         if self._configuration.battery_game:
             if isinstance(bot_field, BatteryBotField):
                 bot_field.charge()
+
+    def _action_laser_beam(self, bot_field, **kwargs):
+        pass
 
     def get_bot_position(self, bot_id):
         return self._bots_positions.get(bot_id)

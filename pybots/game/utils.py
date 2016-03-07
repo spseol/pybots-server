@@ -36,5 +36,25 @@ def get_next_orientation(orientation, action):
         return Orientation(divmod(orientation.value - 1, 4)[1])
 
 
+def get_positions_in_row(game_map, position, orientation, limit=None):
+    from pybots.game.map import OutOfMapError, Map
+
+    assert isinstance(orientation, Orientation)
+    assert isinstance(position, (list, tuple)) and len(position) == 2
+    assert isinstance(game_map, Map)
+    assert limit is None or (isinstance(limit, int) and limit >= 0)
+
+    positions = list()
+    while True:
+        position = get_next_position(position, orientation)
+        try:
+            game_map.__getitem__(position)
+            positions.append(position)
+        except OutOfMapError:
+            break
+
+    return tuple(positions[:limit] if limit is not None else positions)
+
+
 def random_position(game_map):
     return random.randint(0, game_map.width - 1), random.randint(0, game_map.height - 1)
