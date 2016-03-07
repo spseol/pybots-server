@@ -1,4 +1,3 @@
-from pybots.configurations.base_configuration import ConfigurationError
 from pybots.configurations.field_placer import FieldPlacerMixin
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
@@ -36,8 +35,3 @@ class RandomFieldPlacerMixin(FieldPlacerMixin):
             while not isinstance(game_map[position], self.default_empty_map_field):
                 position = random_position(game_map)
             game_map[position] = block
-
-    @staticmethod
-    def _check_place_args(game_map, count, field_class):
-        if game_map is None or count is None or field_class is None:
-            raise ConfigurationError('Given parameters for placing methods is not valid.')

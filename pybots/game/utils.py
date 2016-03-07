@@ -7,7 +7,7 @@ from pybots.game.orientations import Orientation
 
 class Exportable(metaclass=ABCMeta):
     @abstractmethod
-    def export(self):
+    def export(self, *args, **kwargs):
         pass
 
 

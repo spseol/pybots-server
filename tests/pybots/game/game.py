@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from pybots.configurations.base_configuration import BaseConfiguration
-
 from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
@@ -21,14 +20,13 @@ class TestGame(TestCase):
     def test_export(self):
         game_map = MapFactory().create(DefaultConfiguration())
         game = Game(game_map)
+        bot_id = 0
+        game.add_bot(bot_id)
 
         self.assertCountEqual(
-            game.export(0),
+            game.export(bot_id),
             dict(
                 map=game_map.export(),
-                bots=game._export_bots(0),
-                map_width=game_map.width,
-                map_height=game_map.height,
                 map_resolutions=(game_map.width, game_map.height)
             )
         )
@@ -120,27 +118,6 @@ class TestGame(TestCase):
 
         with self.assertRaises(MovementError):
             game.action('bot_id', Action.STEP)
-
-    def test_export_bots(self):
-        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
-            map_width = 2
-            map_height = 1
-            bots = 2
-            treasures = 0
-            blocks = 0
-
-        game = Game(MapFactory().create(Conf()))
-        my_bot_id = 0
-        bots_export = game._export_bots(my_bot_id)
-
-        my_bot_on_first_field = game.get_bot_position(my_bot_id) == (0, 0)
-        self.assertListEqual(
-            bots_export,
-            [
-                dict(x=0, y=0, position=(0, 0), orientation=Orientation.NORTH, your_bot=not my_bot_on_first_field),
-                dict(x=1, y=0, position=(1, 0), orientation=Orientation.NORTH, your_bot=my_bot_on_first_field)
-            ]
-        )
 
     def test_game_time_flags(self):
         dt = datetime.now()
