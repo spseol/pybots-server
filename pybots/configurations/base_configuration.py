@@ -1,6 +1,8 @@
 from abc import ABCMeta
 from types import MethodType
 
+from pybots.configurations import ConfigurationError
+
 from pybots.configurations.field_placer import FieldPlacerMixin
 from pybots.game.fields.empty_field import EmptyField
 
@@ -54,7 +56,3 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
         if missing:
             raise ConfigurationError("Please provide all configuration fields, '{}' not found or isn't in correct type."
                                      .format(', '.join(missing)), missing)
-
-
-class ConfigurationError(Exception):
-    pass

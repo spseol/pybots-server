@@ -1,6 +1,5 @@
 from random import choice
 
-from pybots.configurations.base_configuration import ConfigurationError
 from pybots.configurations.field_placer import FieldPlacerMixin
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
@@ -44,7 +43,7 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
 
         def place_blocks_line(position, orientation):
             blocks = 0
-            max_blocks = len(game_map.map if orientation in (Orientation.NORTH, Orientation.SOUTH) else game_map.map[0]) / 5
+            max_blocks = len(game_map.map if orientation in (Orientation.NORTH, Orientation.SOUTH) else game_map.map[0])
             max_blocks -= max_blocks % 2
             while blocks < max_blocks:
                 # TODO: as constant or configuration?
@@ -64,8 +63,3 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
         while bases:
             base = bases.pop()
             place_blocks_line(base, choice(tuple(Orientation._member_map_.values())))
-
-    @staticmethod
-    def _check_place_args(game_map, count, field_class):
-        if game_map is None or count is None or field_class is None:
-            raise ConfigurationError('Given parameters for placing methods is not valid.')

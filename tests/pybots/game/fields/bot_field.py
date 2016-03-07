@@ -1,6 +1,6 @@
 from unittest.case import TestCase
 
-from pybots.game.field import Field
+from pybots.game.field import Field, FIELD_KEY
 from pybots.game.fields.bot_field import BotField
 from pybots.game.orientations import Orientation
 
@@ -12,4 +12,6 @@ class TestBotField(TestCase):
 
     def test_export(self):
         bot = BotField(Orientation.NORTH)
-        self.assertEqual(bot.export(), Field.BOT, 'Bot field export')
+        self.assertEqual(bot.export(), {
+            FIELD_KEY: Field.BOT, 'orientation': Orientation.NORTH
+        }, 'Bot field export')

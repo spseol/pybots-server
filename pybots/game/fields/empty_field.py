@@ -3,5 +3,5 @@ from pybots.game.field import Field as FieldEnum
 
 
 class EmptyField(Field):
-    def export(self):
+    def export(self, *args, **kwargs):
         return FieldEnum.EMPTY

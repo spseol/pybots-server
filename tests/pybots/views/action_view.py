@@ -21,8 +21,6 @@ class TestActionView(TestCase):
 
             returned_map = data.get('game')
             self.assertIn('map', returned_map)
-            self.assertIn('map_width', returned_map)
-            self.assertIn('map_height', returned_map)
             self.assertIn('map_resolutions', returned_map)
 
     def test_invalid_request(self):
@@ -57,7 +55,6 @@ class TestActionView(TestCase):
             c.get('/')  # TODO: remove this get, it's hide dependency on odd request to app
             bot_id_1 = loads(c.get('/').data).get('bot_id')
             bot_id_2 = loads(c.get('/').data).get('bot_id')
-            self.maxDiff = None
             self.assertNotEqual(bot_id_1, bot_id_2, 'Another bots')
             # self.assertListEqual(
             # loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
