@@ -18,6 +18,7 @@ class ConfigurationForm(Form):
     rounded_game = BooleanField('game by rounds', default=False, validators=(), filters=(bool, ))
     maze_game = BooleanField('maze game', default=False, validators=(), filters=(bool, ))
     battery_game = BooleanField('battery game', default=False, validators=(), filters=(bool, ))
+    laser_game = BooleanField('laser game', default=False, validators=(), filters=(bool, ))
 
     @property
     def as_configuration(self):
