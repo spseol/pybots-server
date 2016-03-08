@@ -44,16 +44,17 @@ def get_positions_in_row(game_map, position, orientation, limit=None):
     assert isinstance(game_map, Map)
     assert limit is None or (isinstance(limit, int) and limit >= 0)
 
-    positions = list()
+    i = 0
     while True:
         position = get_next_position(position, orientation)
         try:
             game_map.__getitem__(position)
-            positions.append(position)
+            yield position
+            i += 1
+            if limit is not None and i == limit:
+                return
         except OutOfMapError:
             break
-
-    return tuple(positions[:limit] if limit is not None else positions)
 
 
 def random_position(game_map):

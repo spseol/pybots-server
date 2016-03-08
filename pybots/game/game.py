@@ -8,7 +8,7 @@ from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map import Map, OutOfMapError
-from pybots.game.utils import Exportable, get_next_position
+from pybots.game.utils import Exportable, get_next_position, get_positions_in_row
 
 
 class Game(Exportable):
@@ -51,7 +51,7 @@ class Game(Exportable):
 
         bot_field = self.map[self._bots_positions[bot_id]]
         action_func = self._actions[action]
-        action_func(**dict(bot_id=bot_id, bot_field=bot_field))
+        action_func(**dict(bot_id=bot_id, bot_field=bot_field, bot_position=self._bots_positions[bot_id]))
 
         self._bots_deque.rotate(-1)
         self._last_modified_at = datetime.now()
@@ -97,12 +97,32 @@ class Game(Exportable):
         bot_field.rotate(Action.TURN_RIGHT)
 
     def _action_wait(self, bot_field, **kwargs):
-        if self._configuration.battery_game:
-            if isinstance(bot_field, BatteryBotField):
-                bot_field.charge()
+        if not self._configuration.battery_game:
+            raise ActionError('This game is not a battery game.')
 
-    def _action_laser_beam(self, bot_field, **kwargs):
-        pass
+        assert isinstance(bot_field, BatteryBotField)
+        bot_field.charge()
+
+    def _action_laser_beam(self, bot_field, bot_position, **kwargs):
+        if not self._configuration.laser_game:
+            raise ActionError('This game is not a laser game.')
+
+        assert isinstance(bot_field, BatteryBotField)
+        try:
+            bot_field.drain(2)  # TODO: as constant
+        except CriticalBatteryLevel as e:
+            raise MovementError(e)
+
+        for position in get_positions_in_row(self.map, bot_position, bot_field.orientation):
+            field = self.map[position]
+            if isinstance(field, self._configuration.default_empty_map_field):
+                continue
+            if isinstance(field, BatteryBotField):
+                field.drain()
+                break
+            if isinstance(field, BlockField):
+                self.map[position] = self._configuration.default_empty_map_field()
+                break
 
     def get_bot_position(self, bot_id):
         return self._bots_positions.get(bot_id)
@@ -139,6 +159,10 @@ class Game(Exportable):
 
 
 class MovementError(Exception):
+    pass
+
+
+class ActionError(Exception):
     pass
 
 
