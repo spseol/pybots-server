@@ -2,6 +2,7 @@ from unittest import case
 
 from main import app
 
+from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.game.map import Map
 
 
@@ -24,3 +25,10 @@ class TestCase(case.TestCase):
             raise self.failureException('Count of fields is not OK. Expected {}, found {} instances of {}.'.format(
                 expected_count, count, field_cls.__name__
             ))
+
+    def set_conf_to_test_client(self, conf, client):
+        assert isinstance(conf, BaseConfiguration)
+
+        kwargs = {field_name: getattr(conf, field_name) for field_name in conf._fields.keys()}
+        client.post('/admin', data=kwargs)
+        return client
