@@ -39,19 +39,19 @@ class TestGameUtils(TestCase):
         game_map = Map(width=3, height=3)
 
         with self.assertRaises(AssertionError):
-            get_positions_in_row(None, (0, 0), Orientation.WEST)
+            next(get_positions_in_row(None, (0, 0), Orientation.WEST))
 
         with self.assertRaises(AssertionError):
-            get_positions_in_row(game_map, None, Orientation.WEST)
+            next(get_positions_in_row(game_map, None, Orientation.WEST))
 
         with self.assertRaises(AssertionError):
-            get_positions_in_row(game_map, (0, 0), None)
+            next(get_positions_in_row(game_map, (0, 0), None))
 
         with self.assertRaises(AssertionError):
-            get_positions_in_row(game_map, (0, 0), Orientation.WEST, limit='foobar')
+            next(get_positions_in_row(game_map, (0, 0), Orientation.WEST, limit='foobar'))
 
         self.assertEqual(
-            get_positions_in_row(game_map, (0, 0), Orientation.SOUTH),
+            tuple(get_positions_in_row(game_map, (0, 0), Orientation.SOUTH)),
             (
                 (0, 1),
                 (0, 2)
@@ -59,12 +59,12 @@ class TestGameUtils(TestCase):
         )
 
         self.assertEqual(
-            get_positions_in_row(game_map, (0, 0), Orientation.WEST),
+            tuple(get_positions_in_row(game_map, (0, 0), Orientation.WEST)),
             ()
         )
 
         self.assertEqual(
-            get_positions_in_row(game_map, (0, 0), Orientation.SOUTH, limit=1),
+            tuple(get_positions_in_row(game_map, (0, 0), Orientation.SOUTH, limit=1)),
             (
                 (0, 1),
             )
