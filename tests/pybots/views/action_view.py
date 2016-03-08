@@ -1,6 +1,9 @@
+from random import randint
+
 from flask.json import loads
 from flask.wrappers import Response
 
+from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.game.actions import Action
 from pybots.views.response_state import ResponseState
@@ -65,3 +68,29 @@ class TestActionView(TestCase):
         with self.test_client as c:
             r = c.post('/action', data=dict(bot_id=123456789, action=Action.STEP.value))
             self.assertEqual(r.status_code, 404, 'Request with unknown bot_id.')
+
+    def test_index_post(self):
+        map_width, map_height = randint(5, 15), randint(10, 15)
+        bots, treasures, blocks = 1, 1, 25
+        conf = CustomConfiguration(
+            map_width=map_width,
+            map_height=map_height,
+            bots=bots,
+            treasures=treasures,
+            blocks=blocks
+        )
+        with self.test_client as c:
+            c.post('/reset')
+            c = self.set_conf_to_test_client(conf, c)
+            bot_id = loads(c.get('/').data).get('bot_id')
+            r = c.get('/game/{}'.format(bot_id))
+            data = loads(r.data)
+
+            self.assertEqual(
+                map_height,
+                len(data.get('map'))
+            )
+            self.assertEqual(
+                map_width,
+                len(data.get('map')[0])
+            )
