@@ -7,6 +7,8 @@ from os.path import join, dirname
 
 from jinja2.loaders import FileSystemLoader
 
+from flask.ext.cors import CORS
+
 from pybots.json_encoder import JSONEncoder
 
 
@@ -25,12 +27,14 @@ from pybots.urls import urls
 PORT = 44822
 
 app = Flask(__name__)
-
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.json_encoder = JSONEncoder
 app.jinja_loader = FileSystemLoader(join(dirname(__file__), 'pybots/web/templates'))
 
 for rule, view in urls:
     app.add_url_rule(rule, view_func=view)
+
+cors = CORS(app)
 
 
 def run():
