@@ -59,3 +59,23 @@ def get_positions_in_row(game_map, position, orientation, limit=None):
 
 def random_position(game_map):
     return random.randint(0, game_map.width - 1), random.randint(0, game_map.height - 1)
+
+
+class MovementError(Exception):
+    pass
+
+
+class ActionError(Exception):
+    pass
+
+
+class GameFinished(Exception):
+    pass
+
+
+class NoFreeBots(Exception):
+    pass
+
+
+class BotNotOnTurn(Exception):
+    pass

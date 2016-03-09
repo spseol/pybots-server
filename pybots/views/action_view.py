@@ -2,8 +2,8 @@ from flask.views import MethodView
 
 from pybots.game.actions import Action
 from pybots.game.fields.battery_bot_field import CriticalBatteryLevel
-from pybots.game.game import NoFreeBots, MovementError, GameFinished, BotNotOnTurn, ActionError
 from pybots.game.game_controller import game_controller
+from pybots.game.utils import MovementError, ActionError, GameFinished, NoFreeBots, BotNotOnTurn
 from pybots.views.response_state import ResponseState
 from pybots.views.utils import form_to_kwargs
 
