@@ -1,5 +1,5 @@
 % \input utf8-t1
-\documentclass[16pt,titlepage,a4paper]{article}
+\documentclass[10pt,titlepage,a4paper]{extarticle}
 
 % ------ PACKAGES ------
 
@@ -81,11 +81,15 @@
 	V této kapitole se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
 }
 
-O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovávvá jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyolané interně uloženou mapou na vyjímky zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
+O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
 
-Třída \ic|Game| interně využívá třídu Map k uchování stavu hry. Třída \ic|Map| je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - tzn. mj. ošetřuje stavy pro přístup mimo rozsah mapy.
+Třída \ic|Game| interně využívá třídu \ic|Map| k uchování stavu hry. Třída \ic|Map| je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - tzn. mj. ošetřuje stavy pro nevalidní přístup mimo rozsah mapy.
 
-Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se příznačně nazývá \ic*GameController*. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za přiřazování her
+Společným předkem pro všechny entity uložené v mapě je třída \ic|Field|. Jejím nejprimitivnějším potomkem je prázdné pole \ic|EmptyField|.
+
+Existenci bota v mapě reprezentuje třída \ic|BotField|, která je zopovědná za udržení jeho prostorové orientace a umí se na místě otáčet. V případě, že se jedná o hru s bateriemi, je tato třída nahrazena třídou \ic|BatteryBotField|, která se kromě orientace stará i o stav baterie. Ten je řízen pomocí metod \ic|BatteryBotField.charge()| pro nabíjení, resp. \ic|drain()| pro vybíjení. Výjimka \ic|CriticalBatteryLevel| je vyvolána v případě, kdy by mělo dojít k vybití baterie pod nulovou úrove\v{n}.
+
+Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za přiřazování her
 
 \subsubsection{Návrh vnějšího rozhraní}
 
@@ -93,6 +97,18 @@ Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se přízna
 
 \section{Implementace}
 \label{sec:implementation}
+
+Následující příklad ukazuje přetížené indexování mapy pomocí pozice uložené v vestavěném datovém typu \ic|tuple|. Výsledkem je instance prázdného herního pole. 
+
+\begin{lstlisting}
+position = 3, 2
+game_map = Map(width=10, height=10)
+
+assert isinstance(
+	game_map[position],
+	EmptyField
+)
+\end{lstlisting}
 
 \section{Použité technologie}
 
