@@ -4,8 +4,9 @@ from random import randint
 from pybots.configurations.configuration_provider import ConfigurationProvider
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.game.actions import Action
-from pybots.game.game import Game, MovementError, GameFinished
+from pybots.game.game import Game
 from pybots.game.game_controller import GameController
+from pybots.game.utils import MovementError, GameFinished
 from tests.test_case import TestCase
 
 

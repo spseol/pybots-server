@@ -1,5 +1,6 @@
 from pybots.game.field import FIELD_KEY, Field as FieldEnum
 from pybots.game.fields.bot_field import BotField
+from pybots.game.utils import MovementError
 
 
 class BatteryBotField(BotField):
@@ -18,7 +19,7 @@ class BatteryBotField(BotField):
     def actual_battery_level(self, level):
         assert isinstance(level, int)
         if level < 0:
-            raise CriticalBatteryLevel()
+            raise CriticalBatteryLevel('Low battery level.')
         self._actual_battery_level = level
 
     def charge(self, level=1):
@@ -36,5 +37,5 @@ class BatteryBotField(BotField):
         return export
 
 
-class CriticalBatteryLevel(Exception):
+class CriticalBatteryLevel(MovementError):
     pass

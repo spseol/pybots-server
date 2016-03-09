@@ -8,7 +8,8 @@ from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map import Map, OutOfMapError
-from pybots.game.utils import Exportable, get_next_position, get_positions_in_row
+from pybots.game.utils import Exportable, get_next_position, get_positions_in_row, MovementError, ActionError, \
+    GameFinished, NoFreeBots, BotNotOnTurn
 
 
 class Game(Exportable):
@@ -79,10 +80,7 @@ class Game(Exportable):
             raise MovementError('Cannot step on block.')
 
         if self._configuration.battery_game and isinstance(bot_field, BatteryBotField):
-            try:
-                bot_field.drain()
-            except CriticalBatteryLevel:
-                raise MovementError('Low battery level.')
+            bot_field.drain()
 
         self._map[new_position], self._map[actual_position] = bot_field, new_field
 
@@ -156,23 +154,3 @@ class Game(Exportable):
             map=game_map_export,
             map_resolutions=(self._map.width, self._map.height)
         )
-
-
-class MovementError(Exception):
-    pass
-
-
-class ActionError(Exception):
-    pass
-
-
-class GameFinished(Exception):
-    pass
-
-
-class NoFreeBots(Exception):
-    pass
-
-
-class BotNotOnTurn(Exception):
-    pass
