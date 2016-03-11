@@ -10,12 +10,13 @@
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{newverbs}
-% \usepackage{minted}
+\usepackage{todonotes}
 
 % ------ CUSTOM COLORS ------
 
 \colorlet{violet}{blue!75!red}
-\colorlet{lightgray}{gray!12}
+\colorlet{lightgray}{gray!5}
+
 
 % ------ CUSTOM COMMANDS ------
 
@@ -31,7 +32,7 @@
     %\begingroup
     %\fboxrule=0.9\baselineskip
     %\fboxsep=...
-    \fcolorbox{white}{lightgray}{\lstinline[columns=fixed,basicstyle=\ttfamily\color{violet}]|#3|}%
+    \fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{violet},breaklines=true]|#3|}%
     %\endgroup
 }
 \makeatother
@@ -44,7 +45,7 @@
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
-% ------ LISTINGS  ------
+% ------ LISTINGS SETUP ------
 
 \lstset{
     language=Python,
@@ -53,8 +54,18 @@
     keywordstyle=\color{violet!70!red}\ttfamily,
     basicstyle=\color{violet},
     numberstyle=\color{black},
+    backgroundcolor=\color{white},
     frame=single,
-    tabsize=4
+    tabsize=4,
+    breaklines=true
+}
+
+% ------ HYPERREF SETUP ------
+\hypersetup{
+	colorlinks,
+	linkcolor={red!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black},
 }
 
 \begin{document}
@@ -114,7 +125,7 @@ assert isinstance(
 
 \subsection{Python}
 
-Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procudurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
+Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
 
 Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \uv{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \uv{Jython} naprogramovaný v jazyce Java nebo \uv{IronPython} v prostředích .NET a Mono.
 
@@ -134,8 +145,68 @@ class MathOperations(object):
 		return a + b
 
 	@staticmethod
-	def div(a, b):
+	def divide(a, b):
 		return a / b
+\end{lstlisting}
+
+\begin{sloppypar}
+	Pomocí volání \ic|MathOperations.add(40, 2)| získáme \ic|42|, resp. při \ic|MathOperations.divide(36, 6)| je výsledkem \ic|6|. Ve své práci používám balíček pro testování \ic|unittest| dodávaný přímo s programovacím jazykem Python. Jako hlavní nástroj pro jednotkové testování nabízí tento balíček třídu \ic|TestCase|, která obsahuje celou řadu metod pro testování asercí (\ic|assertEqual|, \ic|assertTrue|, \ic|assertEqual|, \ic|assertIn|, \ic|assertIs| nebo i komplexnější jako \ic|assertDictEqual|, \ic|assertRegex| nebo \ic|assertDictContainsSubset|) a potomky této třídy je potom možno automaticky spouštět a vyhodnocovat. Tyto předpoklady tedy zapíšeme jako metody do obalující třídy:
+\end{sloppypar}
+
+\begin{lstlisting}
+class TestMathOperations(TestCase):
+	def test_add(self):
+		self.assertEqual(
+			MathOperations.add(40, 2),
+			42
+		)
+
+	def test_div(self):
+		self.assertEqual(
+			MathOperations.div(36, 6),
+			6
+		)
+\end{lstlisting}
+
+V případě spuštění a úspěšného otestování této třídy by byl výstup tento:
+\begin{lstlisting}[language=bash]
+test_add (TestMathOperations) ... ok
+test_div (TestMathOperations) ... ok
+
+------------------------------------
+Ran 2 tests in 38ms
+
+OK
+\end{lstlisting}
+
+
+\textit{
+	Ve svém projektu používám vlastní poděděnou třídu
+}
+\todo{opravit kurzívu společně s textem}
+\ic|TestCase|
+\textit{
+	, protože pro každé pokročilejší testování pohledů frameworku Flask je nutné mít správně nakonfigurovaný objekt pro \uv{vnější} přístup ke serveru, a také kvůli zobecnění některých častých operací v mých testech - detaily ohledně testů jsou v sekci \fullref{sec:implementation}.
+}
+
+
+Poté ale může dojít k následující změně zdrojového k\'{o}du - vznikne požadavek na metodu \ic|MathOperations.add|, a to konkrétně na zvýšení počtu parametrů na tři. Ne ve všech případech se ovšem bude volat tato metoda i se třetím parametrem, musí být tedy zajištěna \textbf{zpětná kompatibilita}.
+\begin{lstlisting}
+@staticmethod
+def add(a, b, c=0):
+	return a + b + c
+\end{lstlisting}
+Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
+\begin{lstlisting}
+def test_add(self):
+	self.assertEqual(
+		MathOperations.add(40, 2),
+		42
+	)
+	self.assertEqual(
+		MathOperations.add(10, 7, 3),
+		20
+	)
 \end{lstlisting}
 
 \subsection{Flask}
