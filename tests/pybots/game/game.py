@@ -5,7 +5,7 @@ from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from pybots.game.actions import Action
-from pybots.game.fields.battery_bot_field import CriticalBatteryLevel, BatteryBotField
+from pybots.game.fields.laser_battery_bot_field import CriticalBatteryLevel, LaserBatteryBotField
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
@@ -182,7 +182,7 @@ class TestGame(TestCase):
         conf = Conf()
         game_map = Map(width=12, height=1)
         fake_map = [
-            [BatteryBotField(Orientation.SOUTH)],
+            [LaserBatteryBotField(Orientation.SOUTH)],
         ]
         fake_map.extend([[EmptyField()] for _ in range(11)])
         setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
@@ -224,7 +224,7 @@ class TestGame(TestCase):
         conf = Conf()
         game_map = Map(width=3, height=1)
         fake_map = [
-            [BatteryBotField(Orientation.EAST)],
+            [LaserBatteryBotField(Orientation.EAST)],
             [EmptyField()],
             [EmptyField()]
         ]
@@ -237,25 +237,25 @@ class TestGame(TestCase):
         bot_field = game.map[game._bots_positions[my_bot_id]]
 
         game.action(my_bot_id, Action.TURN_RIGHT)
-        assert isinstance(bot_field, BatteryBotField)
-        self.assertEqual(BatteryBotField.DEFAULT_BATTERY_LEVEL,
+        assert isinstance(bot_field, LaserBatteryBotField)
+        self.assertEqual(LaserBatteryBotField.DEFAULT_BATTERY_LEVEL,
                          bot_field.actual_battery_level,
                          'Default battery level')
 
         game.action(my_bot_id, Action.STEP)
 
-        self.assertEqual(BatteryBotField.DEFAULT_BATTERY_LEVEL - 1,
+        self.assertEqual(LaserBatteryBotField.DEFAULT_BATTERY_LEVEL - 1,
                          bot_field.actual_battery_level,
                          'Drained battery level')
 
         game.action(my_bot_id, Action.WAIT)
 
-        self.assertEqual(BatteryBotField.DEFAULT_BATTERY_LEVEL,
+        self.assertEqual(LaserBatteryBotField.DEFAULT_BATTERY_LEVEL,
                          bot_field.actual_battery_level,
                          'Charged battery level to default.')
 
         game.action(my_bot_id, Action.WAIT)
 
-        self.assertEqual(BatteryBotField.DEFAULT_BATTERY_LEVEL + 1,
+        self.assertEqual(LaserBatteryBotField.DEFAULT_BATTERY_LEVEL + 1,
                          bot_field.actual_battery_level,
                          'Charged battery level to higher level than default.')
