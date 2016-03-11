@@ -128,7 +128,7 @@ Třída \ic|Game| interně využívá třídu \ic|Map| k uchování stavu hry. T
 
 Společným předkem pro všechny entity uložené v mapě je třída \ic|Field|. Jejím nejprimitivnějším potomkem je prázdné pole \ic|EmptyField|.
 
-Existenci bota v mapě reprezentuje třída \ic|BotField|, která je zopovědná za udržení jeho prostorové orientace a umí se na místě otáčet. V případě, že se jedná o hru s bateriemi, je tato třída nahrazena třídou \ic|BatteryBotField|, která se kromě orientace stará i o stav baterie. Ten je řízen pomocí metod \ic|BatteryBotField.charge()| pro nabíjení, resp. \ic|drain()| pro vybíjení. Výjimka \ic|CriticalBatteryLevel| je vyvolána v případě, kdy by mělo dojít k vybití baterie pod nulovou úrove\v{n}.
+Existenci bota v mapě reprezentuje třída \ic|BotField|, která je zopovědná za udržení jeho prostorové orientace a umí se na místě otáčet. V případě, že se jedná o hru s bateriemi, je tato třída nahrazena třídou \ic|LaserBatteryBotField|, která se kromě orientace stará i o stav baterie. Ten je řízen pomocí metod \ic|LaserBatteryBotField.charge()| pro nabíjení, resp. \ic|drain()| pro vybíjení. Výjimka \ic|CriticalBatteryLevel| je vyvolána v případě, kdy by mělo dojít k vybití baterie pod nulovou úrove\v{n}.
 
 Mezi další pomomky třídy \ic|Field| patří \ic|BlockField| reprezentující v mapě pole pevného bloku a \ic|TreasureField| zastupující poklad ve hře.
 
@@ -235,7 +235,7 @@ OK
 \todo{opravit kurzívu společně s inline kódem}
 \ic|TestCase|
 \textit{
-	, protože pro každé pokročilejší testování pohledů frameworku Flask je nutné mít správně nakonfigurovaný objekt pro \uv{vnější} přístup ke serveru, a také kvůli zobecnění některých častých operací v mých testech - detaily ohledně testů jsou v sekci \fullref{sec:implementation}.
+, protože pro každé pokročilejší testování pohledů frameworku Flask je nutné mít správně nakonfigurovaný objekt pro \uv{vnější} přístup ke serveru, a také kvůli zobecnění některých častých operací v mých testech - detaily ohledně testů jsou v sekci \fullref{sec:implementation}.
 }
 
 

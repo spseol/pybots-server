@@ -3,7 +3,7 @@ from datetime import datetime
 
 from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
-from pybots.game.fields.battery_bot_field import BatteryBotField, CriticalBatteryLevel
+from pybots.game.fields.laser_battery_bot_field import LaserBatteryBotField, CriticalBatteryLevel
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
@@ -79,8 +79,8 @@ class Game(Exportable):
         elif isinstance(new_field, BlockField):
             raise MovementError('Cannot step on block.')
 
-        if self._configuration.battery_game and isinstance(bot_field, BatteryBotField):
-            bot_field.drain()
+        if self._configuration.battery_game and isinstance(bot_field, LaserBatteryBotField):
+            bot_field.drain(bot_field.step_battery_cost)
 
         self._map[new_position], self._map[actual_position] = bot_field, new_field
 
@@ -98,16 +98,16 @@ class Game(Exportable):
         if not self._configuration.battery_game:
             raise ActionError('This game is not a battery game.')
 
-        assert isinstance(bot_field, BatteryBotField)
+        assert isinstance(bot_field, LaserBatteryBotField)
         bot_field.charge()
 
     def _action_laser_beam(self, bot_field, bot_position, **kwargs):
         if not self._configuration.laser_game:
             raise ActionError('This game is not a laser game.')
 
-        assert isinstance(bot_field, BatteryBotField)
+        assert isinstance(bot_field, LaserBatteryBotField)
         try:
-            bot_field.drain(2)  # TODO: as constant
+            bot_field.drain(bot_field.laser_battery_cost)
         except CriticalBatteryLevel as e:
             raise MovementError(e)
 
@@ -115,8 +115,8 @@ class Game(Exportable):
             field = self.map[position]
             if isinstance(field, self._configuration.default_empty_map_field):
                 continue
-            if isinstance(field, BatteryBotField):
-                field.drain()
+            if isinstance(field, LaserBatteryBotField):
+                field.drain(bot_field.laser_damage)
                 break
             if isinstance(field, BlockField):
                 self.map[position] = self._configuration.default_empty_map_field()
