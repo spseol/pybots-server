@@ -34,6 +34,17 @@ class TestBaseConfiguration(TestCase):
         with self.assertRaises(ConfigurationError):
             Conf()
 
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
+            _fields = dict(
+                battery_game=bool,
+                laser_game=bool
+            )
+            battery_game = False
+            laser_game = True
+
+        with self.assertRaises(ConfigurationError):
+            Conf()
+
     def test_lambda_fields(self):
         class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             _fields = dict(

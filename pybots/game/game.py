@@ -109,7 +109,7 @@ class Game(Exportable):
         try:
             bot_field.drain(bot_field.laser_battery_cost)
         except CriticalBatteryLevel as e:
-            raise MovementError(e)
+            raise
 
         for position in get_positions_in_row(self.map, bot_position, bot_field.orientation):
             field = self.map[position]

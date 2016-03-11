@@ -259,3 +259,125 @@ class TestGame(TestCase):
         self.assertEqual(LaserBatteryBotField.DEFAULT_BATTERY_LEVEL + 1,
                          bot_field.actual_battery_level,
                          'Charged battery level to higher level than default.')
+
+    def test_get_bot_position(self):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
+            map_width = 1
+            map_height = 1
+            bots = 1
+            treasures = 0
+            blocks = 0
+
+        conf = Conf()
+        game = Game(MapFactory().create(conf), configuration=conf)
+        bot_id = 1
+        game.add_bot(bot_id)
+        self.assertEqual(
+            game.get_bot_position(bot_id),
+            (0, 0)
+        )
+
+    def test_invalid_action_in_laser_game(self):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
+            map_width = 1
+            map_height = 1
+            bots = 1
+            treasures = 0
+            blocks = 0
+            battery_game = True
+            laser_game = False
+        conf = Conf()
+        game = Game(MapFactory().create(conf), configuration=conf)
+        bot_id = 1
+        game.add_bot(bot_id)
+        with self.assertRaises(ActionError):
+            game.action(bot_id, Action.LASER_BEAM)
+
+    def test_laser_beam_action_block_destroy(self):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
+            map_width = 1
+            map_height = 3
+            bots = 1
+            treasures = 0
+            blocks = 0
+            battery_game = True
+            laser_game = True
+
+        conf = Conf()
+        game_map = Map(width=3, height=1)
+        fake_map = [
+            [LaserBatteryBotField(Orientation.SOUTH)],
+            [EmptyField()],
+            [BlockField()]
+        ]
+        setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
+        game = Game(game_map, configuration=conf)
+        bot_id = 1
+
+        game.action(bot_id, Action.LASER_BEAM)
+        self.assertIsInstance(
+            game.map[0, 0],
+            LaserBatteryBotField
+        )
+        self.assertIsInstance(
+            game.map[0, 1],
+            EmptyField
+        )
+        self.assertIsInstance(
+            game.map[0, 2],
+            EmptyField
+        )
+        with self.assertRaises(MovementError):
+            while True:
+                game.action(bot_id, Action.LASER_BEAM)
+
+    def test_laser_beam_bot_fight(self):
+        class Conf(BaseConfiguration, RandomFieldPlacerMixin):
+            map_width = 1
+            map_height = 3
+            bots = 1
+            treasures = 0
+            blocks = 0
+            battery_game = True
+            laser_game = True
+
+        conf = Conf()
+        game_map = Map(width=3, height=1)
+        fake_map = [
+            [LaserBatteryBotField(Orientation.SOUTH)],
+            [EmptyField()],
+            [LaserBatteryBotField(Orientation.NORTH)]
+        ]
+        setattr(game_map, '_{}__map'.format(game_map.__class__.__name__), fake_map)
+        game = Game(game_map, configuration=conf)
+        bot_id = 1
+        game._bots_positions = {
+            bot_id: (0, 0)
+        }
+
+        game.action(bot_id, Action.LASER_BEAM)
+        self.assertIsInstance(
+            game.map[0, 0],
+            LaserBatteryBotField
+        )
+        self.assertIsInstance(
+            game.map[0, 1],
+            EmptyField
+        )
+        self.assertIsInstance(
+            game.map[0, 2],
+            LaserBatteryBotField
+        )
+
+        defender = game.map[0, 2]
+        assert isinstance(defender, LaserBatteryBotField)
+        self.assertEqual(
+            LaserBatteryBotField.DEFAULT_BATTERY_LEVEL - LaserBatteryBotField.DEFAULT_LASER_DAMAGE,
+            defender.actual_battery_level
+        )
+        attacker = game.map[0, 0]
+        assert isinstance(attacker, LaserBatteryBotField)
+        self.assertEqual(
+            LaserBatteryBotField.DEFAULT_BATTERY_LEVEL - LaserBatteryBotField.DEFAULT_LASER_BATTERY_COST,
+            attacker.actual_battery_level
+        )
