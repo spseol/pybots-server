@@ -152,5 +152,8 @@ class Game(Exportable):
         ))
         return dict(
             map=game_map_export,
-            map_resolutions=(self._map.width, self._map.height)
+            map_resolutions=(self._map.width, self._map.height),
+            rounded_game=self._configuration.rounded_game,
+            battery_game=self._configuration.battery_game,
+            laser_game=self._configuration.laser_game
         )

@@ -37,7 +37,7 @@ class ActionView(MethodView):
         except BotNotOnTurn:
             return ResponseState.BOT_NOT_ON_TURN.response
         except ActionError:
-            return ResponseState.INVALID_ACTION.response
+            return ResponseState.ACTION_ERROR.response
         except CriticalBatteryLevel:
             return ResponseState.CRITICAL_BATTERY_LEVEL.response
         except MovementError:
