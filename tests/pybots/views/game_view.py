@@ -24,3 +24,4 @@ class TestGameView(TestCase):
             self.assertEqual(response.status_code, 200)
             data = loads(response.data)
             self.assertIn('map', data)
+            self.assertIn('map_resolutions', data)
