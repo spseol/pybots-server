@@ -25,3 +25,6 @@ class TestGameView(TestCase):
             data = loads(response.data)
             self.assertIn('map', data)
             self.assertIn('map_resolutions', data)
+            self.assertIn('battery_game', data)
+            self.assertIn('laser_game', data)
+            self.assertIn('rounded_game', data)

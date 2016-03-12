@@ -29,7 +29,10 @@ class TestGame(TestCase):
             game.export(bot_id),
             dict(
                 map=game_map.export(),
-                map_resolutions=(game_map.width, game_map.height)
+                map_resolutions=(game_map.width, game_map.height),
+                rounded_game=DefaultConfiguration.rounded_game,
+                battery_game=DefaultConfiguration.battery_game,
+                laser_game=DefaultConfiguration.laser_game
             )
         )
 
