@@ -55,17 +55,22 @@ v mapě je identifikován jako `3`
 
 #### cizí bot
 tví nepřátelé, za každou cenu jim musíš zamezit přístup k pokladu a nebo je i zpomalit pomocí laseru tvého bota
-s reprezentací bota v mapě to bude trochu složitější, každý bot je reprezentován jako JSON objekt ```JSON
+s reprezentací bota v mapě to bude trochu složitější, každý bot je reprezentován jako JSON objekt
+```json
 {
 	"field": 2,
 	"orientation": 2
-}```
-při hře s baterkama je to lehce složitější, typ pole je odlišný a navíc je známa i hodnota nabití ```JSON
+}
+```
+
+při hře s baterkama je to lehce složitější, typ pole je odlišný a navíc je známa i hodnota nabití
+```json
 {
 	"field": 4,
 	"orientation": 0,
 	"battery_level": 3
-}```
+}
+```
 
 
 
