@@ -2,7 +2,6 @@ from abc import ABCMeta
 from types import MethodType
 
 from pybots.configurations import ConfigurationError
-
 from pybots.configurations.field_placer import FieldPlacerMixin
 from pybots.game.fields.empty_field import EmptyField
 
@@ -18,6 +17,7 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
     rounded_game = False
     maze_game = False
     battery_game = False
+    laser_game = False
 
     _fields = dict(
         map_width=int,
@@ -28,7 +28,8 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
         default_empty_map_field=object,
         rounded_game=bool,
         maze_game=bool,
-        battery_game=bool
+        battery_game=bool,
+        laser_game=bool,
     )
 
     def __init__(self):
@@ -56,3 +57,6 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
         if missing:
             raise ConfigurationError("Please provide all configuration fields, '{}' not found or isn't in correct type."
                                      .format(', '.join(missing)), missing)
+
+        if self.laser_game and not self.battery_game:
+            raise ConfigurationError('Laser game can be enabled only with battery game.')

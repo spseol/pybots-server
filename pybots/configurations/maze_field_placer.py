@@ -43,7 +43,7 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
 
         def place_blocks_line(position, orientation):
             blocks = 0
-            max_blocks = len(game_map.map if orientation in (Orientation.NORTH, Orientation.SOUTH) else game_map.map[0])
+            max_blocks = len(game_map.map if orientation.is_vertical else game_map.map[0])
             max_blocks -= max_blocks % 2
             while blocks < max_blocks:
                 # TODO: as constant or configuration?

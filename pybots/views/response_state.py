@@ -7,13 +7,15 @@ class ResponseState(Enum):
     GAME_WON = 'game_won', 200
     GAME_LOST = 'game_lost', 200
 
-    UNKNOWN_BOT = 'unknown_bot', 404
-    INVALID_ACTION = 'invalid_action', 404
+    UNKNOWN_BOT = 'unknown_bot', 404  # given bot_id is unknown
+    INVALID_ACTION = 'invalid_action', 404  # given action is unknown
+    # TODO: rename action error to better name
+    ACTION_ERROR = 'action_error', 404  # action is not OK for this game
 
-    MOVEMENT_ERROR = 'movement_error', 200
-    MOVEMENT_SUCCESS = 'movement_success', 200
-    BOT_NOT_ON_TURN = 'bot_not_on_turn', 200
-    CRITICAL_BATTERY_LEVEL = 'critical_battery_level', 200
+    MOVEMENT_ERROR = 'movement_error', 200  # movement into wall or bot is not OK
+    MOVEMENT_SUCCESS = 'movement_success', 200  # action was successful
+    BOT_NOT_ON_TURN = 'bot_not_on_turn', 200  # this bot is not on turn
+    CRITICAL_BATTERY_LEVEL = 'critical_battery_level', 200  # bot has not enough battery level for action
 
     def __init__(self, state, code=None):
         self.state = state
