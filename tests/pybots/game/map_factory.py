@@ -60,3 +60,8 @@ class TestMapFactory(TestCase):
         with self.assertRaises(InvalidMapError):
             factory.create(CustomConfiguration(bots=2, treasures=2, map_width=3, map_height=1, blocks=0))
 
+        with self.assertRaises(InvalidMapError):
+            factory.create(
+                CustomConfiguration(map_width=10, map_height=10, blocks=1, bots=1, treasures=1, laser_game=True,
+                                    battery_game=False))
+

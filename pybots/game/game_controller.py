@@ -3,8 +3,9 @@ from collections import OrderedDict
 
 from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
-from pybots.game.game import Game, GameFinished
+from pybots.game.game import Game
 from pybots.game.map_factory import MapFactory
+from pybots.game.utils import GameFinished
 
 
 class GameController(object):

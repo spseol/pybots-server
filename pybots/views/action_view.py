@@ -1,9 +1,9 @@
 from flask.views import MethodView
 
 from pybots.game.actions import Action
-from pybots.game.fields.battery_bot_field import CriticalBatteryLevel
-from pybots.game.game import NoFreeBots, MovementError, GameFinished, BotNotOnTurn
+from pybots.game.fields.laser_battery_bot_field import CriticalBatteryLevel
 from pybots.game.game_controller import game_controller
+from pybots.game.utils import MovementError, ActionError, GameFinished, NoFreeBots, BotNotOnTurn
 from pybots.views.response_state import ResponseState
 from pybots.views.utils import form_to_kwargs
 
@@ -36,6 +36,8 @@ class ActionView(MethodView):
             pass
         except BotNotOnTurn:
             return ResponseState.BOT_NOT_ON_TURN.response
+        except ActionError:
+            return ResponseState.ACTION_ERROR.response
         except CriticalBatteryLevel:
             return ResponseState.CRITICAL_BATTERY_LEVEL.response
         except MovementError:

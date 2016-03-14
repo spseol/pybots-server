@@ -13,6 +13,9 @@ class MapFactory(object):
             raise InvalidMapError('Cannot place {} bots, {} treasures and {} blocks into {}x{} map.'
                                   .format(conf.bots, conf.treasures, conf.blocks, game_map.width, game_map.height))
 
+        if conf.laser_game and not conf.battery_game:
+            raise InvalidMapError('Laser game need to enable batteries.')
+
         conf.place_fields(game_map=game_map, conf=conf)
         return game_map
 

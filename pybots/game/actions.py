@@ -7,3 +7,4 @@ class Action(Enum):
     TURN_LEFT = 'turn_left'
     TURN_RIGHT = 'turn_right'
     WAIT = 'wait'
+    LASER_BEAM = 'laser_beam'

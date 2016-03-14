@@ -1,6 +1,7 @@
 from pybots.game.actions import Action
+from pybots.game.map import Map
 from pybots.game.orientations import Orientation
-from pybots.game.utils import Exportable, get_next_position, get_next_orientation
+from pybots.game.utils import Exportable, get_next_position, get_next_orientation, get_positions_in_row
 from tests.test_case import TestCase
 
 
@@ -33,3 +34,38 @@ class TestGameUtils(TestCase):
 
         self.assertEqual(get_next_orientation(Orientation.NORTH, Action.TURN_RIGHT), Orientation.EAST)
         self.assertEqual(get_next_orientation(Orientation.NORTH, Action.TURN_LEFT), Orientation.WEST)
+
+    def test_get_positions_in_row(self):
+        game_map = Map(width=3, height=3)
+
+        with self.assertRaises(AssertionError):
+            next(get_positions_in_row(None, (0, 0), Orientation.WEST))
+
+        with self.assertRaises(AssertionError):
+            next(get_positions_in_row(game_map, None, Orientation.WEST))
+
+        with self.assertRaises(AssertionError):
+            next(get_positions_in_row(game_map, (0, 0), None))
+
+        with self.assertRaises(AssertionError):
+            next(get_positions_in_row(game_map, (0, 0), Orientation.WEST, limit='foobar'))
+
+        self.assertEqual(
+            tuple(get_positions_in_row(game_map, (0, 0), Orientation.SOUTH)),
+            (
+                (0, 1),
+                (0, 2)
+            )
+        )
+
+        self.assertEqual(
+            tuple(get_positions_in_row(game_map, (0, 0), Orientation.WEST)),
+            ()
+        )
+
+        self.assertEqual(
+            tuple(get_positions_in_row(game_map, (0, 0), Orientation.SOUTH, limit=1)),
+            (
+                (0, 1),
+            )
+        )

@@ -3,12 +3,13 @@ from datetime import datetime
 
 from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
-from pybots.game.fields.battery_bot_field import BatteryBotField, CriticalBatteryLevel
+from pybots.game.fields.laser_battery_bot_field import LaserBatteryBotField, CriticalBatteryLevel
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map import Map, OutOfMapError
-from pybots.game.utils import Exportable, get_next_position
+from pybots.game.utils import Exportable, get_next_position, get_positions_in_row, MovementError, ActionError, \
+    GameFinished, NoFreeBots, BotNotOnTurn
 
 
 class Game(Exportable):
@@ -24,7 +25,8 @@ class Game(Exportable):
             Action.STEP: self._action_step,
             Action.TURN_LEFT: self._action_turn_left,
             Action.TURN_RIGHT: self._action_turn_right,
-            Action.WAIT: self._action_wait
+            Action.WAIT: self._action_wait,
+            Action.LASER_BEAM: self._action_laser_beam,
         }
 
         self._configuration = configuration if configuration else configuration_provider.actual
@@ -50,7 +52,7 @@ class Game(Exportable):
 
         bot_field = self.map[self._bots_positions[bot_id]]
         action_func = self._actions[action]
-        action_func(**dict(bot_id=bot_id, bot_field=bot_field))
+        action_func(**dict(bot_id=bot_id, bot_field=bot_field, bot_position=self._bots_positions[bot_id]))
 
         self._bots_deque.rotate(-1)
         self._last_modified_at = datetime.now()
@@ -77,11 +79,8 @@ class Game(Exportable):
         elif isinstance(new_field, BlockField):
             raise MovementError('Cannot step on block.')
 
-        if self._configuration.battery_game and isinstance(bot_field, BatteryBotField):
-            try:
-                bot_field.drain()
-            except CriticalBatteryLevel:
-                raise MovementError('Low battery level.')
+        if self._configuration.battery_game and isinstance(bot_field, LaserBatteryBotField):
+            bot_field.drain(bot_field.step_battery_cost)
 
         self._map[new_position], self._map[actual_position] = bot_field, new_field
 
@@ -96,9 +95,32 @@ class Game(Exportable):
         bot_field.rotate(Action.TURN_RIGHT)
 
     def _action_wait(self, bot_field, **kwargs):
-        if self._configuration.battery_game:
-            if isinstance(bot_field, BatteryBotField):
-                bot_field.charge()
+        if not self._configuration.battery_game:
+            raise ActionError('This game is not a battery game.')
+
+        assert isinstance(bot_field, LaserBatteryBotField)
+        bot_field.charge(bot_field.battery_charge)
+
+    def _action_laser_beam(self, bot_field, bot_position, **kwargs):
+        if not self._configuration.laser_game:
+            raise ActionError('This game is not a laser game.')
+
+        assert isinstance(bot_field, LaserBatteryBotField)
+        try:
+            bot_field.drain(bot_field.laser_battery_cost)
+        except CriticalBatteryLevel as e:
+            raise
+
+        for position in get_positions_in_row(self.map, bot_position, bot_field.orientation):
+            field = self.map[position]
+            if isinstance(field, self._configuration.default_empty_map_field):
+                continue
+            if isinstance(field, LaserBatteryBotField):
+                field.drain(bot_field.laser_damage)
+                break
+            if isinstance(field, BlockField):
+                self.map[position] = self._configuration.default_empty_map_field()
+                break
 
     def get_bot_position(self, bot_id):
         return self._bots_positions.get(bot_id)
@@ -130,21 +152,8 @@ class Game(Exportable):
         ))
         return dict(
             map=game_map_export,
-            map_resolutions=(self._map.width, self._map.height)
+            map_resolutions=(self._map.width, self._map.height),
+            rounded_game=self._configuration.rounded_game,
+            battery_game=self._configuration.battery_game,
+            laser_game=self._configuration.laser_game
         )
-
-
-class MovementError(Exception):
-    pass
-
-
-class GameFinished(Exception):
-    pass
-
-
-class NoFreeBots(Exception):
-    pass
-
-
-class BotNotOnTurn(Exception):
-    pass
