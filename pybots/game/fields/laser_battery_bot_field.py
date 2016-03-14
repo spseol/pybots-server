@@ -6,6 +6,7 @@ from pybots.game.utils import MovementError
 class LaserBatteryBotField(BotField):
     DEFAULT_BATTERY_LEVEL = 10
     DEFAULT_LASER_DAMAGE = 4
+    DEFAULT_BATTERY_CHARGE = 1
 
     DEFAULT_LASER_BATTERY_COST = 2
     DEFAULT_STEP_BATTERY_COST = 1
@@ -15,13 +16,19 @@ class LaserBatteryBotField(BotField):
                  battery_level=DEFAULT_BATTERY_LEVEL,
                  laser_damage=DEFAULT_LASER_DAMAGE,
                  laser_battery_cost=DEFAULT_LASER_BATTERY_COST,
-                 step_battery_cost=DEFAULT_STEP_BATTERY_COST):
+                 step_battery_cost=DEFAULT_STEP_BATTERY_COST,
+                 battery_charge=DEFAULT_BATTERY_CHARGE):
         super().__init__(orientation)
-        assert isinstance(battery_level, int)
+        assert isinstance(battery_level, int), 'Actual battery level for bot.'
+        assert isinstance(laser_damage, int), 'Damage for bots\'s laser'
+        assert isinstance(laser_battery_cost, int), 'Cost of battery of firing laser'
+        assert isinstance(step_battery_cost, int), 'Cost of battery for bot step'
+        assert isinstance(battery_charge, int), 'Value of unit of bot charge'
         self._actual_battery_level = battery_level
         self._laser_battery_cost = laser_battery_cost
         self._laser_damage = laser_damage
         self._step_battery_cost = step_battery_cost
+        self._battery_charge = battery_charge
 
     @property
     def actual_battery_level(self):
@@ -45,6 +52,10 @@ class LaserBatteryBotField(BotField):
     @property
     def step_battery_cost(self):
         return self._step_battery_cost
+
+    @property
+    def battery_charge(self):
+        return self._battery_charge
 
     def charge(self, level=1):
         self.actual_battery_level += level
