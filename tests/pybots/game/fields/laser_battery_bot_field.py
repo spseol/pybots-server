@@ -42,8 +42,8 @@ class TestLaserBatteryBotField(TestCase):
     def test_battery_charging(self):
         battery_level = randint(10, 100)
         bot = LaserBatteryBotField(battery_level=battery_level)
-        bot.charge()
-        self.assertEqual(bot.actual_battery_level, battery_level + 1)
+        bot.charge(bot.battery_charge)
+        self.assertEqual(bot.actual_battery_level, battery_level + bot.battery_charge)
 
         bot.charge(2)
-        self.assertEqual(bot.actual_battery_level, battery_level + 1 + 2)
+        self.assertEqual(bot.actual_battery_level, battery_level + bot.battery_charge + 2)

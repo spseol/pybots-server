@@ -99,7 +99,7 @@ class Game(Exportable):
             raise ActionError('This game is not a battery game.')
 
         assert isinstance(bot_field, LaserBatteryBotField)
-        bot_field.charge()
+        bot_field.charge(bot_field.battery_charge)
 
     def _action_laser_beam(self, bot_field, bot_position, **kwargs):
         if not self._configuration.laser_game:
