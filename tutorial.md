@@ -13,6 +13,7 @@
 * pošli POST požadavek na `/action` s parametry `bot_id` = id tvého bota a `action` = jedna z hodnot vyjmenovaných níže v tabulce akcí
 * v odpovědi si pohlídej, že jsi úspěšně zahrál
 * pokračuj tak, aby jsi vyhrál!
+
 * * * 
 
 ## Co můžu v jednom tahu zahrát?
@@ -31,3 +32,40 @@ nestojí **nic z baterie**
 
 #### nabíjení
 tvůj bot bude tah čekat na místě a **nabije si baterii**
+
+### hra s lasery
+#### laser paprsek
+bot bude soustředit energii jedním směrem a vypálí urychlený proud fotonů, který dokáže **nepřátelskému botu ubrat energii** nebo **zničit pevný blok**
+energeticky to nebude úplně nejlevnější, **paprsek sežere** alespoň **dvě úrovně** baterie
+
+* * * 
+
+## Co vše můžu v mapě najít?
+#### prázdné pole
+jednoduché prázdné pole, bot na něj může v klidu vstoupit, laserem je propálitelný
+reprezentace tohoto pole v mapě je jednoduchá, prosté `0`
+
+#### poklad
+cíl tvého bota, uzmi si jej pro sebe vstoupením na něj!
+v mapě poklad najdeš jako jednoduchou hodnotu `1`
+
+#### pevný blok
+pevný blok, kterým jen tak jednodušše neprojdeš, ale **zničit** jej můžeš **laserem** svého bota
+v mapě je identifikován jako `3`
+
+#### cizí bot
+tví nepřátelé, za každou cenu jim musíš zamezit přístup k pokladu a nebo je i zpomalit pomocí laseru tvého bota
+s reprezentací bota v mapě to bude trochu složitější, každý bot je reprezentován jako JSON objekt ```JSON
+{
+	"field": 2,
+	"orientation": 2
+}```
+při hře s baterkama je to lehce složitější, typ pole je odlišný a navíc je známa i hodnota nabití ```JSON
+{
+	"field": 4,
+	"orientation": 0,
+	"battery_level": 3
+}```
+
+
+
