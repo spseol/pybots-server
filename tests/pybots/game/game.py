@@ -1,14 +1,14 @@
 from datetime import datetime
 
 from pybots.configurations.base_configuration import BaseConfiguration
-from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
+from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from pybots.game.actions import Action
-from pybots.game.fields.laser_battery_bot_field import CriticalBatteryLevel, LaserBatteryBotField
 from pybots.game.fields.block_field import BlockField
-from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
+from pybots.game.fields.empty_field import EmptyField
+from pybots.game.fields.laser_battery_bot_field import CriticalBatteryLevel, LaserBatteryBotField
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.game import Game
 from pybots.game.map import Map
@@ -29,10 +29,15 @@ class TestGame(TestCase):
             game.export(bot_id),
             dict(
                 map=game_map.export(),
-                map_resolutions=(game_map.width, game_map.height),
-                rounded_game=DefaultConfiguration.rounded_game,
-                battery_game=DefaultConfiguration.battery_game,
-                laser_game=DefaultConfiguration.laser_game
+                map_info=dict(
+                    map_resolutions=dict(
+                        width=game_map.width,
+                        height=game_map.height
+                    ),
+                    rounded_game=DefaultConfiguration.rounded_game,
+                    battery_game=DefaultConfiguration.battery_game,
+                    laser_game=DefaultConfiguration.laser_game
+                ),
             )
         )
 

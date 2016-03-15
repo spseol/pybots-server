@@ -2,7 +2,6 @@ from random import randint
 
 from flask.json import loads
 from flask.wrappers import Response
-
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.game.actions import Action
@@ -20,11 +19,18 @@ class TestActionView(TestCase):
             self.assertEqual(r.status_code, 200, 'Valid request to turn left.')
             self.assertEqual(r.content_type, 'application/json')
             data = loads(r.data)
-            self.assertIn('game', data)
 
-            returned_map = data.get('game')
-            self.assertIn('map', returned_map)
-            self.assertIn('map_resolutions', returned_map)
+            self.assertIn('game', data)
+            data = data.get('game')
+            self.assertIn('map', data)
+            self.assertIn('map_info', data)
+            map_info = data.get('map_info')
+            self.assertIn('map_resolutions', map_info)
+            self.assertIn('width', map_info.get('map_resolutions'))
+            self.assertIn('height', map_info.get('map_resolutions'))
+            self.assertIn('battery_game', map_info)
+            self.assertIn('laser_game', map_info)
+            self.assertIn('rounded_game', map_info)
 
     def test_invalid_request(self):
         with self.test_client as c:
