@@ -3,9 +3,9 @@ from datetime import datetime
 
 from pybots.configurations.configuration_provider import configuration_provider
 from pybots.game.actions import Action
-from pybots.game.fields.laser_battery_bot_field import LaserBatteryBotField, CriticalBatteryLevel
 from pybots.game.fields.block_field import BlockField
 from pybots.game.fields.bot_field import BotField
+from pybots.game.fields.laser_battery_bot_field import LaserBatteryBotField, CriticalBatteryLevel
 from pybots.game.fields.treasure_field import TreasureField
 from pybots.game.map import Map, OutOfMapError
 from pybots.game.utils import Exportable, get_next_position, get_positions_in_row, MovementError, ActionError, \
@@ -152,8 +152,13 @@ class Game(Exportable):
         ))
         return dict(
             map=game_map_export,
-            map_resolutions=(self._map.width, self._map.height),
-            rounded_game=self._configuration.rounded_game,
-            battery_game=self._configuration.battery_game,
-            laser_game=self._configuration.laser_game
+            map_info=dict(
+                map_resolutions=dict(
+                    width=self._map.width,
+                    height=self._map.height
+                ),
+                rounded_game=self._configuration.rounded_game,
+                battery_game=self._configuration.battery_game,
+                laser_game=self._configuration.laser_game
+            ),
         )
