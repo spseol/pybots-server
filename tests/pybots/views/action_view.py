@@ -23,14 +23,14 @@ class TestActionView(TestCase):
             self.assertIn('game', data)
             data = data.get('game')
             self.assertIn('map', data)
-            self.assertIn('map_info', data)
-            map_info = data.get('map_info')
-            self.assertIn('map_resolutions', map_info)
-            self.assertIn('width', map_info.get('map_resolutions'))
-            self.assertIn('height', map_info.get('map_resolutions'))
-            self.assertIn('battery_game', map_info)
-            self.assertIn('laser_game', map_info)
-            self.assertIn('rounded_game', map_info)
+            self.assertIn('game_info', data)
+            game_info = data.get('game_info')
+            self.assertIn('map_resolutions', game_info)
+            self.assertIn('width', game_info.get('map_resolutions'))
+            self.assertIn('height', game_info.get('map_resolutions'))
+            self.assertIn('battery_game', game_info)
+            self.assertIn('laser_game', game_info)
+            self.assertIn('rounded_game', game_info)
 
     def test_invalid_request(self):
         with self.test_client as c:
