@@ -152,7 +152,7 @@ class Game(Exportable):
         ))
         return dict(
             map=game_map_export,
-            map_info=dict(
+            game_info=dict(
                 map_resolutions=dict(
                     width=self._map.width,
                     height=self._map.height
