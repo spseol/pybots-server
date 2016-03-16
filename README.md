@@ -1,9 +1,7 @@
 Pybots -- server 
 ====================
 
-<p align="center">
 [![Build Status](https://travis-ci.org/spseol/pybots-server.svg?branch=master)](https://travis-ci.org/spseol/pybots-server) [![Coverage Status](https://coveralls.io/repos/spseol/pybots-server/badge.svg?branch=master&service=github)](https://coveralls.io/github/spseol/pybots-server?branch=master)
-</p>
 
 Zajímáš se o programování? Chceš vyřešit základní algoritmické problémy? Chceš si zkusit práci s HTTP protokolem a jeho metodami? Chceš porazit svého kamaráda v pořádné hře pro programátory? Pokud ano, tak přesně pro Tebe je hra PYBOTS!
 
