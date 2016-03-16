@@ -1,7 +1,9 @@
+from pybots.game.field import Field as FieldEnum, FIELD_KEY
 from pybots.game.fields.field import Field
-from pybots.game.field import Field as FieldEnum
 
 
 class BlockField(Field):
     def export(self, *args, **kwargs):
-        return FieldEnum.BLOCK
+        return {
+            FIELD_KEY: FieldEnum.BLOCK
+        }
