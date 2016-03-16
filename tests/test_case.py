@@ -1,5 +1,7 @@
 from unittest import case
 
+from flask.helpers import url_for
+
 from main import app
 from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.game.map import Map
@@ -29,7 +31,7 @@ class TestCase(case.TestCase):
         assert isinstance(conf, BaseConfiguration)
 
         kwargs = {field_name: getattr(conf, field_name) for field_name in conf._fields.keys()}
-        client.post('/admin', data=kwargs)
+        client.post(url_for('admin_index'), data=kwargs)
         return client
 
     def setUp(self):
