@@ -1,5 +1,5 @@
+from pybots.game.field import Field as FieldEnum, FIELD_KEY
 from pybots.game.fields.field import Field
-from pybots.game.field import Field as FieldEnum
 
 
 class TreasureField(Field):
@@ -10,4 +10,6 @@ class TreasureField(Field):
         self.price = price
 
     def export(self, *args, **kwargs):
-        return FieldEnum.TREASURE
+        return {
+            FIELD_KEY: FieldEnum.TREASURE
+        }
