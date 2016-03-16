@@ -1,5 +1,4 @@
-PYBOTS - hra pro programátory
-====================
+# PYBOTS - hra pro programátory
 
 [![Build Status](https://travis-ci.org/spseol/pybots-server.svg?branch=master)](https://travis-ci.org/spseol/pybots-server) [![Coverage Status](https://coveralls.io/repos/spseol/pybots-server/badge.svg?branch=master&service=github)](https://coveralls.io/github/spseol/pybots-server?branch=master)
 
@@ -46,7 +45,7 @@ tvůj bot bude tah čekat na místě a **nabije si baterii**
 
 ### hra s lasery
 #### laser paprsek
-bot bude soustředit energii jedním směrem a vypálí urychlený proud fotonů, který dokáže **nepřátelskému botu ubrat energii** nebo **zničit pevný blok**
+bot bude soustředit energii jedním směrem a vypálí usměrněný proud fotonů, který dokáže **nepřátelskému botu ubrat energii** nebo **zničit pevný blok**
 
 energeticky to nebude úplně nejlevnější, **paprsek sežere** alespoň **dvě úrovně** baterie
 

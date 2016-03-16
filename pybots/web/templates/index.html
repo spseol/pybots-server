@@ -1,56 +1,31 @@
-{% extends 'base.html' %}
-{% block content %}
-    <div class="row">
-        <div class="col-md-6">
-            {% from "_form_helpers.html" import render_form %}
-            {{ render_form(form, action_url=url_for('admin_index'), action_text='Reconfigure', btn_class='btn btn-primary') }}
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-block">
-                    <h4 class="card-title">{{ games|length }} bots
-                        in {{ set(games.values())|length }} games:
-                    <span class="pull-right">
-                        <form
-                                method="POST" action="{{ url_for('admin_game_delete', bot_id=0) }}">
-                            <button class="btn btn-danger btmd fa fa-times"
-                                    type="submit"></button>
-                        </form>
-                    </span>
-                    </h4>
-                </div>
-                <div class="card-block">
-                    <ul class="list-group">
-                        {% for bot_id, game in games.items() %}
-                            <li class="list-group-item">
-                                <strong>{{ game.last_modified_at.strftime('%H:%M:%S.%f') }}</strong>
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>PYBOTS - hra pro programátory</title>
 
-                                <i class="fa fa-clock-o fa-fw"></i>
-                                <span class="label label-success label-pill">{{ game._bots_positions|length }}</span>
-                                active and
-                                <span class="label label-primary label-pill">{{ game._empty_bots_positions|length }}</span>
-                                free
-                                bots.
-
-                                <a class="btn btn-warning btn-sm pull-right fa fa-info-circle"
-                                   href="{{ url_for('admin_game_detail', bot_id=bot_id) }}"></a>
-
-                                {% if now.timestamp() - TIMEOUT_DELETE > game.last_modified_at.timestamp() %}
-                                    <form method="POST" action="{{ url_for('admin_game_delete', bot_id=bot_id) }}">
-                                        <button class="btn btn-danger btn-sm pull-right fa fa-times"
-                                                type="submit"></button>
-                                    </form>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='github.css') }}"/>
     <style>
-        .list-group-item form {
-            display: inline;
+        body {
+            max-width: 960px;
+            margin: auto;
+        }
+
+        h1 {
+            float: left;
+        }
+
+        h1 + p {
+            float: right;
+        }
+
+        h1 + p + p {
+            clear: both;
         }
     </style>
-{% endblock %}
+</head>
+<body>
+{{ readme_html|safe }}
+</body>
+</html>

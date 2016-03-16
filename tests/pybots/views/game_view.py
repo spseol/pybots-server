@@ -14,13 +14,13 @@ class TestGameView(TestCase):
             assert isinstance(response, Response)
             self.assertEqual(response.status_code, 404)
 
-            response = client.get('/game/{}'.format(randint(1, 10 ** 9)))
+            response = client.get(url_for('game', bot_id=randint(1, 10 ** 9)))
             self.assertEqual(response.status_code, 404, 'Request to unknown game.')
 
     def test_valid_request(self):
         with self.test_client as client:
             bot_id = loads(client.get(url_for('init_game')).data).get('bot_id')
-            response = client.get('/game/{}'.format(bot_id))
+            response = client.get(url_for('game', bot_id=bot_id))
             self.assertEqual(response.content_type, 'application/json')
             self.assertEqual(response.status_code, 200)
             data = loads(response.data)
