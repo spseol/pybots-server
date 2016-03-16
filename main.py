@@ -6,7 +6,6 @@ import os
 from os.path import join, dirname
 
 from jinja2.loaders import FileSystemLoader
-
 from flask.ext.cors import CORS
 
 from pybots.json_encoder import JSONEncoder
@@ -47,7 +46,7 @@ def run():
 
         log_dir = os.path.dirname(__file__)
         file_handler = RotatingFileHandler(join(log_dir, 'robots.log'),
-                                           maxBytes=5000,
+                                           maxBytes=50000,
                                            backupCount=7)
 
         console_handler = logging.StreamHandler()

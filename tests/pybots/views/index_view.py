@@ -1,3 +1,4 @@
+from flask.helpers import url_for
 from flask.json import loads
 from flask.wrappers import Response
 
@@ -7,7 +8,7 @@ from tests.test_case import TestCase
 class TestIndexView(TestCase):
     def test_get(self):
         with self.test_client as client:
-            response = client.get('/')
+            response = client.get(url_for('init_game'))
             assert isinstance(response, Response)
             self.assertEqual(response.content_type, 'application/json')
             self.assertEqual(response.status_code, 200)
@@ -15,7 +16,7 @@ class TestIndexView(TestCase):
             self.assertIn('bot_id', data)
             first_bot_id = data.get('bot_id')
 
-            response = client.get('/')
+            response = client.get(url_for('init_game'))
             assert isinstance(response, Response)
             self.assertEqual(response.content_type, 'application/json')
             self.assertEqual(response.status_code, 200)

@@ -1,7 +1,6 @@
 from unittest import case
 
 from main import app
-
 from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.game.map import Map
 
@@ -32,3 +31,11 @@ class TestCase(case.TestCase):
         kwargs = {field_name: getattr(conf, field_name) for field_name in conf._fields.keys()}
         client.post('/admin', data=kwargs)
         return client
+
+    def setUp(self):
+        # because you have to pushed requests context to generating url addresses
+        self._test_ctx = app.test_request_context()
+        self._test_ctx.push()
+
+    def tearDown(self):
+        self._test_ctx.pop()
