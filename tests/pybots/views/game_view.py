@@ -1,7 +1,9 @@
 from random import randint
 
+from flask.helpers import url_for
 from flask.json import loads
 from flask.wrappers import Response
+
 from tests.test_case import TestCase
 
 
@@ -17,7 +19,7 @@ class TestGameView(TestCase):
 
     def test_valid_request(self):
         with self.test_client as client:
-            bot_id = loads(client.get('/').data).get('bot_id')
+            bot_id = loads(client.get(url_for('init_game')).data).get('bot_id')
             response = client.get('/game/{}'.format(bot_id))
             self.assertEqual(response.content_type, 'application/json')
             self.assertEqual(response.status_code, 200)
