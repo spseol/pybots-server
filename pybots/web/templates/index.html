@@ -7,8 +7,18 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-block"><h4 class="card-title">{{ games|length }} bots
-                    in {{ set(games.values())|length }} games:</h4></div>
+                <div class="card-block">
+                    <h4 class="card-title">{{ games|length }} bots
+                        in {{ set(games.values())|length }} games:
+                    <span class="pull-right">
+                        <form
+                                method="POST" action="{{ url_for('admin_game_delete', bot_id=0) }}">
+                            <button class="btn btn-danger btmd fa fa-times"
+                                    type="submit"></button>
+                        </form>
+                    </span>
+                    </h4>
+                </div>
                 <div class="card-block">
                     <ul class="list-group">
                         {% for bot_id, game in games.items() %}

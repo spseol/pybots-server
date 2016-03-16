@@ -21,10 +21,17 @@ class GameDetailView(MethodView):
         return render_template('detail.html', game=game, bot_id=bot_id)
 
     def post(self, bot_id=None, **kwargs):
-        game = game_controller.games.get(bot_id)
-        if not game:
-            return 'Game not found.', 404
-        if game.last_modified_at.timestamp() + self.TIMEOUT_DELETE > datetime.now().timestamp():
-            return 'Game cannot be deleted', 403
-        game_controller.remove_game(game)
+        if bot_id:
+            game = game_controller.games.get(bot_id)
+            if not game:
+                return 'Game not found.', 404
+            if game.last_modified_at.timestamp() + self.TIMEOUT_DELETE > datetime.now().timestamp():
+                return 'Game cannot be deleted', 403
+            game_controller.remove_game(game)
+        else:
+            now_timestamp = datetime.now().timestamp()
+            for game in game_controller.games.values():
+                if game.last_modified_at.timestamp() + self.TIMEOUT_DELETE > now_timestamp:
+                    game_controller.remove_game(game)
+
         return redirect(url_for('admin_index'))
