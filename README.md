@@ -82,8 +82,8 @@ při hře s baterkama je to lehce složitější, hodnota klíče `field` je `4`
 }
 ```
 ## Co se může hodit?
-na `/info` najdeš základní enumerace pro orientace botů, typy bloků v mapě a návratové hodnoty ze zpracování akce
-každý požadavek na `/action` vrací v odpovědi klíč `state`, který identifikuje status provedení žádáné akce, dle něj můžeš jednodušše poznat, zda se akce povedla, případně co bylo problémem (nemožnost vstoupit na blok, nedostatečná úroveň baterie, bot není na tahu, neznámé `bot_id` případné nevalidní akce)
+* na `/info` najdeš základní enumerace pro orientace botů, typy bloků v mapě a návratové hodnoty ze zpracování akce
+* každý požadavek na `/action` vrací v odpovědi klíč `state`, který identifikuje status provedení žádáné akce, dle něj můžeš jednodušše poznat, zda se akce povedla, případně co bylo problémem (nemožnost vstoupit na blok, nedostatečná úroveň baterie, bot není na tahu, neznámé `bot_id` případné nevalidní akce)
 
 ## FAQ
 \# TODO
