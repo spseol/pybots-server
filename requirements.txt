@@ -2,4 +2,4 @@ flask
 flask-wtf
 wtforms
 flask-cors
-misaka
+Flask-misaka
