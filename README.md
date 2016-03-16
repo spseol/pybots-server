@@ -31,11 +31,13 @@ Zajímáš se o programování? Chceš vyřešit základní algoritmické probl�
 
 #### krok
 tvůj bot se jednoduše pohne o pole dopředu, samozřejmě to nepůjde mimo mapu, do jiného bota nebo do pevného bloku - avšak při kroku na poklad **vyhraješ!**
+
 při hře s baterkami Tě to bude stát **jednu úroveň baterie** 
 
 #### otočení
 tvůj bot se otočí, doprava nebo doleva
-nestojí **nic z baterie**
+
+nestojí **nic z energie baterky**
 
 ### hra s bateriemi
 
@@ -45,6 +47,7 @@ tvůj bot bude tah čekat na místě a **nabije si baterii**
 ### hra s lasery
 #### laser paprsek
 bot bude soustředit energii jedním směrem a vypálí urychlený proud fotonů, který dokáže **nepřátelskému botu ubrat energii** nebo **zničit pevný blok**
+
 energeticky to nebude úplně nejlevnější, **paprsek sežere** alespoň **dvě úrovně** baterie
 
 * * * 
@@ -53,14 +56,17 @@ energeticky to nebude úplně nejlevnější, **paprsek sežere** alespoň **dv�
 každé pole je v mapě reprezentováno jako objekt vždy obsahující klíč `field`, který označuje typ pole, viz následující seznam 
 #### prázdné pole
 jednoduché prázdné pole, bot na něj může v klidu vstoupit, laserem je propálitelný
-reprezentace tohoto pole v mapě je jednoduchá, prosté `0`
+
+reprezentace tohoto pole v mapě je jednoduchá, prostá `0`
 
 #### poklad
 cíl tvého bota, uzmi si jej pro sebe vstoupením na něj!
+
 v mapě poklad najdeš jako jednoduchou hodnotu `1`
 
 #### pevný blok
 pevný blok, kterým jen tak jednodušše neprojdeš, ale **zničit** jej můžeš **laserem** svého bota
+
 v mapě je identifikován jako `3`
 
 #### cizí bot
