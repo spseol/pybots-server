@@ -7,7 +7,7 @@ python:
   - nightly
 
 before_install:
-  - "sudo apt-get update && sudo apt-get install --no-install-recommends texlive-full texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra texlive-latex-recommended texlive-lang-czechslovak latex-xcolor"
+  - "sudo apt-get update && sudo apt-get install --no-install-recommends inkscape texlive-full texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra texlive-latex-recommended texlive-lang-czechslovak latex-xcolor"
   - "wget -O docs/newverbs.sty http://chocolatshalba.ch/files/texlive/texmf-dist/tex/latex/newverbs/newverbs.sty"
 
 install:
@@ -25,10 +25,9 @@ script:
 
 after_success:
   - coveralls
-  - pdflatex -interaction=nonstopmode -output-directory docs docs/docs.tex
-  - pdflatex -interaction=nonstopmode -output-directory docs docs/docs.tex
-  - pdflatex -interaction=nonstopmode -output-directory docs docs/docs.tex
-  - pdflatex -interaction=nonstopmode -output-directory docs docs/docs.tex
+  - pdflatex --shell-escape -interaction=nonstopmode -output-directory docs docs/docs.tex
+  - pdflatex --shell-escape -interaction=nonstopmode -output-directory docs docs/docs.tex
+  - pdflatex --shell-escape -interaction=nonstopmode -output-directory docs docs/docs.tex
   - curl -X POST -F file=@docs/docs.pdf http://josefkolar.cz/receiver/receiver.php
 
 matrix:

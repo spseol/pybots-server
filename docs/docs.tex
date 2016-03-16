@@ -11,6 +11,10 @@
 \usepackage{xcolor}
 \usepackage{newverbs}
 \usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{float}
+
+\graphicspath {{images/}}
 
 % ------ CUSTOM COLORS ------
 
@@ -48,6 +52,20 @@
 
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
+
+% support command for includesvg
+\newcommand{\executeiffilenewer}[3]{%
+\ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+	{\pdffilemoddate{#2}}>0%
+	{\immediate\write18{#3}}\fi%
+}
+\newcommand{\includesvg}[1]{%
+	\executeiffilenewer{#1.svg}{#1.pdf}%
+	{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex}
+	\input{#1.pdf_tex}
+}
+
+\def\svgwidth{.7\textwidth}
 
 % ------ LISTINGS SETUP ------
 
@@ -174,6 +192,12 @@ assert isinstance(
 
 \subsection{Python}
 
+\begin{figure}[H]
+ \centering
+ \includesvg{images/python-logo}
+ \caption{Logo programovacího jazyka Python}
+\end{figure}
+
 Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
 
 Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \uv{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \uv{Jython} naprogramovaný v jazyce Java nebo \uv{IronPython} v prostředích .NET a Mono.
@@ -182,9 +206,9 @@ Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál 
 
 Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých vylepšení syntaxe jazyka.
 
-\subsubsection{Automatické testování}
+\subsubsection{Jednotkové testování}
 
-Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
+Jednotkové automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
 
 Níže je uveden příklad třídy k testování. Třída \ic-MathOperations- je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
 \begin{lstlisting}
@@ -275,6 +299,12 @@ def test_add(self):
 \end{lstlisting}
 \subsection{Flask}
 
+\begin{figure}[H]
+ \centering
+ \includesvg{images/flask-logo}
+ \caption{Logo webového framevorku Flask}
+\end{figure}
+
 Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k jeho variabilitě a v základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcích a podobně.
 
 Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednodušše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
@@ -328,5 +358,16 @@ Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSO
 }
 \end{lstlisting}
 
+\section{Použité metatechnologie}
+
+\subsection{Git}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/git-logo}
+ \caption{Logo verzovacího systému Git}
+\end{figure}
+
+Git je distribuovaný systém správy verzí, původně pro vývoj jádra Linuxu. Jako jeho autor je označován Linus Torvalds, jeho vznik se datuje kolem 2005 a v roce 2016 je nadále aktivně vyvíjen; jeho poslední verze nese označení 2.7.3 a byla vydána 10. března 2016. Nejčastěji slouží k verzování zdrojového kódu - vytváří historii pro každou část spravovaného repozitáře. Repozitář je v tomto systému základní nejvyšší jednotka pro správu zdrojového kódu, zapouzdřuje jednotlivé vývojové větvě
 
 \end{document}
