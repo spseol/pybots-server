@@ -11,7 +11,7 @@ Zajímáš se o programování? Chceš vyřešit základní algoritmické probl�
 
 * vyber si svůj oblíbený programovací jazyk - doporučuji Python, ale zvládne to i Javascript, Java, PHP, C/C++ nebo exotický Haskell
 * zjisti si, jak je na tom tvůj jazyk s podporou HTTP protokolu, stačit Ti budou GET a POST metody, a jak vlastně takový požadavek ze svého jazyka pošleš (od pythonu3 je to velmi jednoduché, obsahuje totiž modul `requests`, který to vše zvládne levou zadní)
-* pošli si prázdný GET požadavek na jakýkoliv server PYBOTS, třeba `http://hroch.spseol.cz:44822/` a sleduj, co se Ti vrátilo
+* pošli si prázdný GET požadavek na jakýkoliv server PYBOTS, třeba `http://hroch.spseol.cz:44822/init` a sleduj, co se Ti vrátilo
 * správně, je to JSON (pokud nevíš, co to je, [UTFG](https://www.google.cz/search?q=JSON)), překóduj si jej do svého datového typu - nejspíš nějaký slovník či hashmap (v pythonu koukej po modulu `json` a jeho metodě `json.loads`)
 * z dekódované odpovědi načti id svého bota z klíče `bot_id` a podíváme se na mapu
 * vem id svého bota a pošli GET požadavek na `/game/{bot_id}`
