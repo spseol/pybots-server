@@ -1,6 +1,6 @@
 from unittest.case import TestCase
 
-from pybots.game.field import Field
+from pybots.game.field import Field, FIELD_KEY
 from pybots.game.fields.treasure_field import TreasureField
 
 
@@ -15,4 +15,4 @@ class TestTreasureField(TestCase):
 
     def test_export(self):
         treasure = TreasureField()
-        self.assertEqual(treasure.export(), Field.TREASURE, 'Treasure field export')
+        self.assertEqual(treasure.export(), {FIELD_KEY: Field.TREASURE}, 'Treasure field export')
