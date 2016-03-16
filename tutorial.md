@@ -1,13 +1,17 @@
+Zajímáš se o programování? Chceš vyřešit základní algoritmické problémy? Chceš si zkusit práci s HTTP protokolem a jeho metodami? Chceš porazit svého kamaráda v pořádné hře pro programátory? Pokud ano, tak přesně pro Tebe je hra PYBOTS!
+
+PYBOTS je herní API server napsaný v pythonu, který zajištuje distribuci a zpracování herních map a herních akcí. Hrát může jakýkoliv program, co umí poslat GET/POST HTTP požadavek a vyřešit jednoduchý algoirický problém.
+
 ## Chci si zahrát, co mám dělat?
 
 * vyber si svůj oblíbený programovací jazyk - doporučuji Python, ale zvládne to i Javascript, Java, PHP, C/C++ nebo exotický Haskell
-* zjisti si, jak je na tom tvůj jazyk s podporou HTTP protokolu, stačit Ti budou GET a POST metody, a jak vlastně takový požadavek ze svého jazyk pošleš (od pythonu3 je to velmi jednoduché, obsahuje totiž modul `requests`, který to vše zvládne levou zadní)
+* zjisti si, jak je na tom tvůj jazyk s podporou HTTP protokolu, stačit Ti budou GET a POST metody, a jak vlastně takový požadavek ze svého jazyka pošleš (od pythonu3 je to velmi jednoduché, obsahuje totiž modul `requests`, který to vše zvládne levou zadní)
 * pošli si prázdný GET požadavek na jakýkoliv server PYBOTS, třeba `http://hroch.spseol.cz:44822/` a sleduj, co se Ti vrátilo
 * správně, je to JSON (pokud nevíš, co to je, [UTFG](https://www.google.cz/search?q=JSON)), překóduj si jej do svého datového typu - nejspíš nějaký slovník či hashmap (v pythonu koukej po modulu `json` a jeho metodě `json.loads`)
-* z dekódované odpovědi načti id svého bota z klíče `bot_id` a pokračuj na další bod, koukneme se na mapu
+* z dekódované odpovědi načti id svého bota z klíče `bot_id` a podíváme se na mapu
 * vem id svého bota a pošli GET požadavek na `/game/{bot_id}`
-* opět dekóduj a pojďme se podívat na to, jaké máš klíče v odpovědi:
-  *  `map_resolutions` uschovává pole [šířka, výška] mapy, může se hodit
+* opět dekóduj a můžeš vidět tyto klíče v odpovědi:
+  *  `game_info` uschovává další informace - například objekt `map_resolutions`, zapnutí tahů, laserů nebo baterek, může se hodit
   *  `map` označuje dvourozměrné pole celé mapy, první rozměr označuje výšku, druhý, zanořený, šířku; o hodnotách vevnitř mapy čti dále
 * spočítej, co chceš, aby tvůj bot udělal, krok, laser, čekat nebo se třeba otočit?
 * pošli POST požadavek na `/action` s parametry `bot_id` = id tvého bota a `action` = jedna z hodnot vyjmenovaných níže v tabulce akcí
@@ -22,7 +26,7 @@
 
 #### krok
 tvůj bot se jednoduše pohne o pole dopředu, samozřejmě to nepůjde mimo mapu, do jiného bota nebo do pevného bloku - avšak při kroku na poklad **vyhraješ!**
-při hře s baterkama Tě to bude stát **jednu úroveň baterie** 
+při hře s baterkami Tě to bude stát **jednu úroveň baterie** 
 
 #### otočení
 tvůj bot se otočí, doprava nebo doleva
@@ -41,6 +45,7 @@ energeticky to nebude úplně nejlevnější, **paprsek sežere** alespoň **dv�
 * * * 
 
 ## Co vše můžu v mapě najít?
+každé pole je v mapě reprezentováno jako objekt vždy obsahující klíč `field`, který označuje typ pole, viz následující seznam 
 #### prázdné pole
 jednoduché prázdné pole, bot na něj může v klidu vstoupit, laserem je propálitelný
 reprezentace tohoto pole v mapě je jednoduchá, prosté `0`
@@ -55,7 +60,7 @@ v mapě je identifikován jako `3`
 
 #### cizí bot
 tví nepřátelé, za každou cenu jim musíš zamezit přístup k pokladu a nebo je i zpomalit pomocí laseru tvého bota
-s reprezentací bota v mapě to bude trochu složitější, každý bot je reprezentován jako JSON objekt
+kromě klíče `field` se v botově objektu nachází i jeho orientace uložená v `orientation` 
 ```json
 {
 	"field": 2,
@@ -63,7 +68,7 @@ s reprezentací bota v mapě to bude trochu složitější, každý bot je repre
 }
 ```
 
-při hře s baterkama je to lehce složitější, typ pole je odlišný a navíc je známa i hodnota nabití
+při hře s baterkama je to lehce složitější, hodnota klíče `field` je `4` a navíc je známa i hodnota nabití baterie
 ```json
 {
 	"field": 4,
@@ -72,5 +77,8 @@ při hře s baterkama je to lehce složitější, typ pole je odlišný a navíc
 }
 ```
 
+## FAQ
+\# TODO
 
-
+## kontakt
+v případě jakýchkoliv problémů se serverem, klientem nebo jen žádostí o radu se na mě nebojte obrátit, @thejoeejoee na Githubu nebo [@thejoeejoee](https://twitter.com/thejoeejoee) 
