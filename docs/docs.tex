@@ -13,6 +13,7 @@
 \usepackage{todonotes}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{lipsum}
 
 \graphicspath {{images/}}
 
@@ -118,15 +119,21 @@
 
 \begin{document}
 
-    \title{PYBOTS - hra pro programátory}
-    \author{Josef Kolář}
-    \date{leden 2016}
-
+\title{PYBOTS - hra pro programátory}
+\author{Josef Kolář}
+\date{leden 2016}
 
 \maketitle
-\tableofcontents
-\newpage
 
+\begin{abstract}
+\section*{Prohlášení}
+\lipsum[2]
+\end{abstract} 
+
+\tableofcontents
+\addcontentsline{toc}{section}{Obsah}
+
+\newpage
 
 \section{Teoretický úvod}
 
@@ -301,6 +308,7 @@ def test_add(self):
 
 \begin{figure}[H]
  \centering
+ \def\svgwidth{.5\textwidth}
  \includesvg{images/flask-logo}
  \caption{Logo webového framevorku Flask}
 \end{figure}
@@ -369,5 +377,35 @@ Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSO
 \end{figure}
 
 Git je distribuovaný systém správy verzí, původně pro vývoj jádra Linuxu. Jako jeho autor je označován Linus Torvalds, jeho vznik se datuje kolem 2005 a v roce 2016 je nadále aktivně vyvíjen; jeho poslední verze nese označení 2.7.3 a byla vydána 10. března 2016. Nejčastěji slouží k verzování zdrojového kódu - vytváří historii pro každou část spravovaného repozitáře. Repozitář je v tomto systému základní nejvyšší jednotka pro správu zdrojového kódu, zapouzdřuje jednotlivé vývojové větvě
+
+
+\subsection{Travis CI}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/travis-logo}
+ \caption{Logo automatického buildovacího nástroje Travis CI}
+\end{figure}
+
+\subsection{Github}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/github-logo}
+ \caption{Logo systému pro správu git repozitářů GitHub}
+\end{figure}
+
+\subsection{Pycharm}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/pycharm-logo}
+ \caption{Logo vývojového nástroje Pycharm}
+\end{figure}
+
+\newpage
+
+\listoffigures
+\addcontentsline{toc}{section}{Seznam obrázk\r{u}}
 
 \end{document}
