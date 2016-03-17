@@ -14,10 +14,9 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{lipsum}
+\usepackage{svg}
 
-\graphicspath {{images/}}
-
-% ------ CUSTOM COLORS ------
+% ------ CONFIGURATION ------
 
 \colorlet{violet}{blue!80!red}
 \colorlet{lightgray}{gray!5}
@@ -25,6 +24,18 @@
 \colorlet{jsonnumber}{blue}
 \colorlet{jsonpunct}{red}
 \colorlet{jsondelim}{violet}
+
+% default width of svg
+\setsvg{width=.5\textwidth}
+\graphicspath{{images/}}
+
+% reset ref section names
+\def\sectionautorefname{}
+\def\subsectionautorefname{}
+\def\subsubsectionautorefname{}
+
+\renewcommand\lstlistlistingname{Seznam zdrojových kódů}
+\renewcommand\lstlistingname{Zdrojový kód}
 
 
 % ------ CUSTOM COMMANDS ------
@@ -46,27 +57,8 @@
 }
 \makeatother
 
-% reset ref section names
-\def\sectionautorefname{}
-\def\subsectionautorefname{}
-\def\subsubsectionautorefname{}
-
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
-
-% support command for includesvg
-\newcommand{\executeiffilenewer}[3]{%
-\ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
-	{\pdffilemoddate{#2}}>0%
-	{\immediate\write18{#3}}\fi%
-}
-\newcommand{\includesvg}[1]{%
-	\executeiffilenewer{#1.svg}{#1.pdf}%
-	{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex}
-	\input{#1.pdf_tex}
-}
-
-\def\svgwidth{.7\textwidth}
 
 % ------ LISTINGS SETUP ------
 
@@ -121,12 +113,16 @@
 
 \title{PYBOTS - hra pro programátory}
 \author{Josef Kolář}
-\date{leden 2016}
+\date{\today}
 
 \maketitle
 
-\begin{abstract}
+\newpage
 \section*{Prohlášení}
+\todo{okopírovat prohlíšení od SHN}
+
+\begin{abstract}
+\todo{sepsat abstrakt}
 \lipsum[2]
 \end{abstract} 
 
@@ -185,7 +181,7 @@ hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
 
 Následující příklad ukazuje přetížené indexování mapy pomocí pozice uložené v vestavěném datovém typu \ic|tuple|. Výsledkem je instance prázdného herního pole. 
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Příklad indexování třídy Map}]
 position = 3, 2
 game_map = Map(width=10, height=10)
 
@@ -308,14 +304,13 @@ def test_add(self):
 
 \begin{figure}[H]
  \centering
- \def\svgwidth{.5\textwidth}
- \includesvg{images/flask-logo}
- \caption{Logo webového framevorku Flask}
+ \includesvg[width=.3\textwidth]{images/flask-logo}
+ \caption{Logo webového frameworku Flask}
 \end{figure}
 
 Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k jeho variabilitě a v základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcích a podobně.
 
-Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednodušše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
+Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednoduše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
 \subsection{HTTP}
 
 HTTP (HyperText Transfer Protocol) je standardizovaný internetový protokol pro výměnu HTML kódu. Jeho první koncept vznikl v roce 1991 jako veze 0.9, o pět let později byla uvedena verze 1.1 a verze 1.1, která je používaná dodnes byla uvedena v červu roku 1999. V dnešní době je používán nejen k výměně HTML kódu, ale jeho rozšíření MIME \footnote{Multipurpose Internet Mail Extensions} poskytuje možnost přenosu souborů jakéhokoliv typu. Samotný HTTP nezajištuje zabezpečení ani integritu dat. Nadstavbu nad HTTP tvoří HTTPS, jehož komunikace je šifrována pomocí SSL nebo TLS.
@@ -403,9 +398,13 @@ Git je distribuovaný systém správy verzí, původně pro vývoj jádra Linuxu
  \caption{Logo vývojového nástroje Pycharm}
 \end{figure}
 
+
 \newpage
 
 \listoffigures
-\addcontentsline{toc}{section}{Seznam obrázk\r{u}}
+\addcontentsline{toc}{section}{Seznam obrázků}
+
+\lstlistoflistings
+\addcontentsline{toc}{section}{Seznam zdrojových kódů}
 
 \end{document}
