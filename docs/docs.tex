@@ -15,6 +15,8 @@
 \usepackage{float}
 \usepackage{lipsum}
 \usepackage{svg}
+\usepackage{caption}
+
 
 % ------ CONFIGURATION ------
 
@@ -72,8 +74,16 @@
     backgroundcolor=\color{white},
     frame=single,
     tabsize=4,
-    breaklines=true
+    breaklines=true,
+    captionpos=t,
+    xleftmargin=\fboxsep,
+    xrightmargin=-\fboxsep
 }
+\DeclareCaptionFormat{listing}{%
+	\colorlet{currentcolor}{.}%
+	{\color{violet}{\framebox[\textwidth+\fboxsep+\fboxsep+1pt]{\color{currentcolor}#1#2#3}}}%
+}
+\captionsetup[lstlisting]{format=listing, singlelinecheck=false}
 
 \lstdefinelanguage{json}{
     basicstyle=\color{violet},
@@ -134,13 +144,13 @@
 \section{Teoretický úvod}
 
 \subsection{Rozbor zadání}
-
+\todo{scan zadání + rozbor jednotlivých bodů}
 \subsection{Návrh architektury aplikace}
 
 \subsubsection{Návrh interní struktury}
 
 \textit{
-	V této kapitole se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
+	V této sekci se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
 }
 
 O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
@@ -173,9 +183,9 @@ hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
 \end{center}
 
 \subsubsection{Návrh vnějšího rozhraní}
-
+\todo{probrat URL, metody v závislosti na URL}
 \subsection{Administrace}
-
+\todo{změna konfigurace z formuláře, mazání her, náhled na hru}
 \section{Implementace}
 \label{sec:implementation}
 
@@ -371,16 +381,7 @@ Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSO
  \caption{Logo verzovacího systému Git}
 \end{figure}
 
-Git je distribuovaný systém správy verzí, původně pro vývoj jádra Linuxu. Jako jeho autor je označován Linus Torvalds, jeho vznik se datuje kolem 2005 a v roce 2016 je nadále aktivně vyvíjen; jeho poslední verze nese označení 2.7.3 a byla vydána 10. března 2016. Nejčastěji slouží k verzování zdrojového kódu - vytváří historii pro každou část spravovaného repozitáře. Repozitář je v tomto systému základní nejvyšší jednotka pro správu zdrojového kódu, zapouzdřuje jednotlivé vývojové větvě
-
-
-\subsection{Travis CI}
-
-\begin{figure}[H]
- \centering
- \includesvg{images/travis-logo}
- \caption{Logo automatického buildovacího nástroje Travis CI}
-\end{figure}
+Git je distribuovaný systém správy verzí, původně pro vývoj jádra Linuxu. Jako jeho autor je označován Linus Torvalds, jeho vznik se datuje kolem 2005 a v roce 2016 je nadále aktivně vyvíjen; jeho poslední verze nese označení 2.7.3 a byla vydána 10. března 2016. Nejčastěji slouží k verzování zdrojového kódu - vytváří historii pro každou část spravovaného repozitáře. Repozitář je v tomto systému základní nejvyšší jednotka pro správu zdrojového kódu, zapouzdřuje jednotlivé vývojové větvě, ve kterých může probíhat vývoj od jednotlivých vývojářů zcela odděleně. Git je oproti jiným verzovacím nástrojům velmi silný v následném spojování těchto větví - v případě nekonfliktních změn je toto spojení schopen provést zcela sám.
 
 \subsection{Github}
 
@@ -388,6 +389,14 @@ Git je distribuovaný systém správy verzí, původně pro vývoj jádra Linuxu
  \centering
  \includesvg{images/github-logo}
  \caption{Logo systému pro správu git repozitářů GitHub}
+\end{figure}
+
+\subsection{Travis CI}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/travis-logo}
+ \caption{Logo automatického buildovacího nástroje Travis CI}
 \end{figure}
 
 \subsection{Pycharm}
