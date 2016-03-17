@@ -12,7 +12,6 @@ class GameController(object):
     _map_factory = None
 
     def __init__(self, conf_provider=configuration_provider):
-        self._map_factory = MapFactory()
         self._conf_provider = conf_provider
         self.games = {}
 
@@ -31,7 +30,7 @@ class GameController(object):
             })
             return game
 
-        game = Game(self._map_factory.create(self._conf_provider.actual))
+        game = Game(MapFactory.create(self._conf_provider.actual))
         game.add_bot(bot_id)
         self.games.update({bot_id: game})
         return game

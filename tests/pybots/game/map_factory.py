@@ -13,7 +13,7 @@ from tests.test_case import TestCase
 
 class TestMapFactory(TestCase):
     def test_create_basic(self):
-        factory = MapFactory()
+        factory = MapFactory
 
         class Conf(BaseConfiguration, RandomFieldPlacerMixin):
             map_width = 20
@@ -34,7 +34,7 @@ class TestMapFactory(TestCase):
         )
 
     def test_create_small_map(self):
-        factory = MapFactory()
+        factory = MapFactory
         conf = CustomConfiguration(map_width=5, map_height=1, bots=2, treasures=2, blocks=1)
         with patch('random.randint', side_effect=(0, 0,
                                                   0, 0,
@@ -56,7 +56,7 @@ class TestMapFactory(TestCase):
         )
 
     def test_invalid_map(self):
-        factory = MapFactory()
+        factory = MapFactory
         with self.assertRaises(InvalidMapError):
             factory.create(CustomConfiguration(bots=2, treasures=2, map_width=3, map_height=1, blocks=0))
 

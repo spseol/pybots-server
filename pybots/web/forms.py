@@ -31,7 +31,7 @@ class ConfigurationForm(Form):
             return False
 
         try:
-            MapFactory().create(self.as_configuration)
+            MapFactory.create(self.as_configuration)
         except InvalidMapError as e:
             self.bots.errors.append(str(e))
             return False
