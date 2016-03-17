@@ -11,7 +11,9 @@ class TestBotField(TestCase):
         self.assertEqual(bot.orientation, Orientation.NORTH, 'Bot has to save orientation.')
 
     def test_export(self):
-        bot = BotField(Orientation.NORTH)
+        bot = BotField(Orientation.NORTH, 'Foobar')
         self.assertEqual(bot.export(), {
-            FIELD_KEY: Field.BOT, 'orientation': Orientation.NORTH
+            FIELD_KEY: Field.BOT,
+            'orientation': Orientation.NORTH,
+            'name': 'Foobar'
         }, 'Bot field export')

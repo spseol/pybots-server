@@ -17,8 +17,9 @@ class LaserBatteryBotField(BotField):
                  laser_damage=DEFAULT_LASER_DAMAGE,
                  laser_battery_cost=DEFAULT_LASER_BATTERY_COST,
                  step_battery_cost=DEFAULT_STEP_BATTERY_COST,
-                 battery_charge=DEFAULT_BATTERY_CHARGE):
-        super().__init__(orientation)
+                 battery_charge=DEFAULT_BATTERY_CHARGE,
+                 name=''):
+        super().__init__(orientation, name)
         assert isinstance(battery_level, int), 'Actual battery level for bot.'
         assert isinstance(laser_damage, int), 'Damage for bots\'s laser'
         assert isinstance(laser_battery_cost, int), 'Cost of battery of firing laser'

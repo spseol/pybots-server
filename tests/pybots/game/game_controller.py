@@ -16,7 +16,8 @@ class TestGameController(TestCase):
         bot_id_2 = randint(0, 10 ** 12)
         bot_id_3 = randint(0, 10 ** 12)
 
-        game_controller = GameController()
+        conf_provider = ConfigurationProvider()
+        game_controller = GameController(conf_provider)
         game_1 = game_controller.get(bot_id_1)
         self.assertIsInstance(
             game_1,

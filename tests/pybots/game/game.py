@@ -20,7 +20,7 @@ from tests.test_case import TestCase
 
 class TestGame(TestCase):
     def test_export(self):
-        game_map = MapFactory().create(DefaultConfiguration())
+        game_map = MapFactory.create(DefaultConfiguration())
         game = Game(game_map)
         bot_id = 0
         game.add_bot(bot_id)
@@ -42,7 +42,7 @@ class TestGame(TestCase):
         )
 
     def test_not_free_bots(self):
-        game_map = MapFactory().create(CustomConfiguration(map_width=2, map_height=1, bots=0, treasures=0, blocks=0))
+        game_map = MapFactory.create(CustomConfiguration(map_width=2, map_height=1, bots=0, treasures=0, blocks=0))
         game = Game(game_map)
         with self.assertRaises(NoFreeBots):
             game.action('bot_id', Action.STEP)
@@ -150,7 +150,7 @@ class TestGame(TestCase):
             rounded_game = True
 
         conf = Conf()
-        game = Game(MapFactory().create(conf), configuration=conf)
+        game = Game(MapFactory.create(conf), configuration=conf)
 
         my_bot_1 = 1
         my_bot_2 = 2
@@ -212,7 +212,7 @@ class TestGame(TestCase):
             battery_game = False
 
         conf = Conf()
-        game = Game(MapFactory().create(conf), configuration=conf)
+        game = Game(MapFactory.create(conf), configuration=conf)
 
         bot_id = 1
         game.add_bot(bot_id)
@@ -277,7 +277,7 @@ class TestGame(TestCase):
             blocks = 0
 
         conf = Conf()
-        game = Game(MapFactory().create(conf), configuration=conf)
+        game = Game(MapFactory.create(conf), configuration=conf)
         bot_id = 1
         game.add_bot(bot_id)
         self.assertEqual(
@@ -294,8 +294,9 @@ class TestGame(TestCase):
             blocks = 0
             battery_game = True
             laser_game = False
+
         conf = Conf()
-        game = Game(MapFactory().create(conf), configuration=conf)
+        game = Game(MapFactory.create(conf), configuration=conf)
         bot_id = 1
         game.add_bot(bot_id)
         with self.assertRaises(ActionError):
