@@ -70,11 +70,12 @@ v mapě je identifikován jako `3`
 
 #### cizí bot
 tví nepřátelé, za každou cenu jim musíš zamezit přístup k pokladu a nebo je i zpomalit pomocí laseru tvého bota
-kromě klíče `field` se v botově objektu nachází i jeho orientace uložená v `orientation` 
+kromě klíče `field` se v botově objektu nachází i jeho orientace uložená v `orientation` (a jako specialitka je tu unikátní `name`)
 ```json
 {
 	"field": 2,	
-	"orientation": 2
+	"orientation": 2,
+	"name": "John"
 }
 ```
 
@@ -83,12 +84,14 @@ při hře s baterkama je to lehce složitější, hodnota klíče `field` je `4`
 {
 	"field": 4,
 	"orientation": 0,
-	"battery_level": 3
+	"battery_level": 3,
+	"name": "Joe"
 }
 ```
 ## Co se může hodit?
 * na `/info` najdeš základní enumerace pro orientace botů, typy bloků v mapě a návratové hodnoty ze zpracování akce
 * každý požadavek na `/action` vrací v odpovědi klíč `state`, který identifikuje status provedení žádáné akce, dle něj můžeš jednodušše poznat, zda se akce povedla, případně co bylo problémem (nemožnost vstoupit na blok, nedostatečná úroveň baterie, bot není na tahu, neznámé `bot_id` případné nevalidní akce)
+* každý bot má ve své hře i své unikátní jméno! najdeš ho pod klíčem `name`
 
 ## FAQ
 \# TODO
