@@ -108,7 +108,7 @@ class Game(Exportable):
         assert isinstance(bot_field, LaserBatteryBotField)
         try:
             bot_field.drain(bot_field.laser_battery_cost)
-        except CriticalBatteryLevel as e:
+        except CriticalBatteryLevel:
             raise
 
         for position in get_positions_in_row(self.map, bot_position, bot_field.orientation):

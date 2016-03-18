@@ -57,6 +57,3 @@ class BaseConfiguration(FieldPlacerMixin, metaclass=ABCMeta):
         if missing:
             raise ConfigurationError("Please provide all configuration fields, '{}' not found or isn't in correct type."
                                      .format(', '.join(missing)), missing)
-
-        if self.laser_game and not self.battery_game:
-            raise ConfigurationError('Laser game can be enabled only with battery game.')
