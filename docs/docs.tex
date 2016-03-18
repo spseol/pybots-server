@@ -11,8 +11,14 @@
 \usepackage{xcolor}
 \usepackage{newverbs}
 \usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{lipsum}
+\usepackage{svg}
+\usepackage{caption}
 
-% ------ CUSTOM COLORS ------
+
+% ------ CONFIGURATION ------
 
 \colorlet{violet}{blue!80!red}
 \colorlet{lightgray}{gray!5}
@@ -20,6 +26,18 @@
 \colorlet{jsonnumber}{blue}
 \colorlet{jsonpunct}{red}
 \colorlet{jsondelim}{violet}
+
+% default width of svg
+\setsvg{width=.5\textwidth}
+\graphicspath{{images/}}
+
+% reset ref section names
+\def\sectionautorefname{}
+\def\subsectionautorefname{}
+\def\subsubsectionautorefname{}
+
+\renewcommand\lstlistlistingname{Seznam zdrojových kódů}
+\renewcommand\lstlistingname{Zdrojový kód}
 
 
 % ------ CUSTOM COMMANDS ------
@@ -41,11 +59,6 @@
 }
 \makeatother
 
-% reset ref section names
-\def\sectionautorefname{}
-\def\subsectionautorefname{}
-\def\subsubsectionautorefname{}
-
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
@@ -61,8 +74,16 @@
     backgroundcolor=\color{white},
     frame=single,
     tabsize=4,
-    breaklines=true
+    breaklines=true,
+    captionpos=t,
+    xleftmargin=\fboxsep,
+    xrightmargin=-\fboxsep
 }
+\DeclareCaptionFormat{listing}{%
+	\colorlet{currentcolor}{.}%
+	{\color{violet}{\framebox[\textwidth+\fboxsep+\fboxsep+1pt]{\color{currentcolor}#1#2#3}}}%
+}
+\captionsetup[lstlisting]{format=listing, singlelinecheck=false}
 
 \lstdefinelanguage{json}{
     basicstyle=\color{violet},
@@ -100,26 +121,36 @@
 
 \begin{document}
 
-    \title{PYBOTS - hra pro programátory}
-    \author{Josef Kolář}
-    \date{leden 2016}
-
+\title{PYBOTS - hra pro programátory}
+\author{Josef Kolář}
+\date{\today}
 
 \maketitle
-\tableofcontents
-\newpage
 
+\newpage
+\section*{Prohlášení}
+\todo{okopírovat prohlíšení od SHN}
+
+\begin{abstract}
+\todo{sepsat abstrakt}
+\lipsum[2]
+\end{abstract} 
+
+\tableofcontents
+\addcontentsline{toc}{section}{Obsah}
+
+\newpage
 
 \section{Teoretický úvod}
 
 \subsection{Rozbor zadání}
-
+\todo{scan zadání + rozbor jednotlivých bodů}
 \subsection{Návrh architektury aplikace}
 
 \subsubsection{Návrh interní struktury}
 
 \textit{
-	V této kapitole se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
+	V této sekci se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
 }
 
 O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
@@ -152,15 +183,15 @@ hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
 \end{center}
 
 \subsubsection{Návrh vnějšího rozhraní}
-
+\todo{probrat URL, metody v závislosti na URL}
 \subsection{Administrace}
-
+\todo{změna konfigurace z formuláře, mazání her, náhled na hru}
 \section{Implementace}
 \label{sec:implementation}
 
 Následující příklad ukazuje přetížené indexování mapy pomocí pozice uložené v vestavěném datovém typu \ic|tuple|. Výsledkem je instance prázdného herního pole. 
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Příklad indexování třídy Map}]
 position = 3, 2
 game_map = Map(width=10, height=10)
 
@@ -174,6 +205,12 @@ assert isinstance(
 
 \subsection{Python}
 
+\begin{figure}[H]
+ \centering
+ \includesvg{images/python-logo}
+ \caption{Logo programovacího jazyka Python}
+\end{figure}
+
 Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
 
 Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \uv{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \uv{Jython} naprogramovaný v jazyce Java nebo \uv{IronPython} v prostředích .NET a Mono.
@@ -182,9 +219,9 @@ Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál 
 
 Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých vylepšení syntaxe jazyka.
 
-\subsubsection{Automatické testování}
+\subsubsection{Jednotkové testování}
 
-Automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
+Jednotkové automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
 
 Níže je uveden příklad třídy k testování. Třída \ic-MathOperations- je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
 \begin{lstlisting}
@@ -275,9 +312,15 @@ def test_add(self):
 \end{lstlisting}
 \subsection{Flask}
 
+\begin{figure}[H]
+ \centering
+ \includesvg[width=.3\textwidth]{images/flask-logo}
+ \caption{Logo webového frameworku Flask}
+\end{figure}
+
 Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k jeho variabilitě a v základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcích a podobně.
 
-Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednodušše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
+Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednoduše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
 \subsection{HTTP}
 
 HTTP (HyperText Transfer Protocol) je standardizovaný internetový protokol pro výměnu HTML kódu. Jeho první koncept vznikl v roce 1991 jako veze 0.9, o pět let později byla uvedena verze 1.1 a verze 1.1, která je používaná dodnes byla uvedena v červu roku 1999. V dnešní době je používán nejen k výměně HTML kódu, ale jeho rozšíření MIME \footnote{Multipurpose Internet Mail Extensions} poskytuje možnost přenosu souborů jakéhokoliv typu. Samotný HTTP nezajištuje zabezpečení ani integritu dat. Nadstavbu nad HTTP tvoří HTTPS, jehož komunikace je šifrována pomocí SSL nebo TLS.
@@ -328,5 +371,65 @@ Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSO
 }
 \end{lstlisting}
 
+\section{Použité metatechnologie}
+
+\subsection{Git}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/git-logo}
+ \caption{Logo verzovacího systému Git}
+\end{figure}
+
+Git je distribuovaný systém správy verzí, původně určený pro vývoj jádra Linuxu. Jako jeho autor je označován Linus Torvalds, jeho vznik se datuje kolem 2005 a v roce 2016 je nadále aktivně vyvíjen; jeho poslední verze nese označení 2.7.3 a byla vydána 10. března 2016. Nejčastěji slouží k verzování zdrojového kódu - vytváří historii pro každou část spravovaného repozitáře. Repozitář je v tomto systému základní nejvyšší jednotka pro správu zdrojového kódu, zapouzdřuje jednotlivé vývojové větvě, ve kterých může probíhat vývoj od jednotlivých vývojářů zcela odděleně. Git je oproti jiným verzovacím nástrojům velmi silný v následném spojování těchto větví - v případě nekonfliktních změn je toto spojení schopen provést zcela sám.
+
+Git je plně ovladatelný z příkazové řádky, avšak existuje velké množství jeho grafických nadstaveb, například jednoduchý \href{http://git-cola.github.io/}{git-cola} nebo omnoho komplexnější \href{https://www.sourcetreeapp.com/}{SourceTree}.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=\textwidth]{images/source-tree-screenshot}
+ \caption{Screenshot z programu SourceTree}
+\end{figure}
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=\textwidth]{images/git-cola-screenshot}
+ \caption{Screenshot z programu git-cola}
+\end{figure}
+
+\subsection{Github}
+
+Github je webová služba poskytující podporu pro hostování git repozitářů. Pro veřejné repozitáře je tato služba zcela zdarma, pro soukromé repozitáře je zpoplatněna. Kromě hostování nabízí i širokou škálu služeb týkajících se zdrojového kódu, jako například komentování zdrojového k\'{o}du, komentování jeho změn, systém úkolů, soukromých zpráv mezi vývojáři nebo možnost zařazení repozitáře mezi oblíbené. Github spustili v roce 2008 Tom Preston-Werner, Chris Wanstrath a PJ Hyett.
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/github-logo}
+ \caption{Logo systému pro správu git repozitářů GitHub}
+\end{figure}
+
+\subsection{Travis CI}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/travis-logo}
+ \caption{Logo automatického buildovacího nástroje Travis CI}
+\end{figure}
+
+\subsection{Pycharm}
+
+\begin{figure}[H]
+ \centering
+ \includesvg{images/pycharm-logo}
+ \caption{Logo vývojového nástroje Pycharm}
+\end{figure}
+
+
+\newpage
+
+\listoffigures
+\addcontentsline{toc}{section}{Seznam obrázků}
+
+\lstlistoflistings
+\addcontentsline{toc}{section}{Seznam zdrojových kódů}
 
 \end{document}

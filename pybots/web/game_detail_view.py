@@ -31,7 +31,7 @@ class GameDetailView(MethodView):
         else:
             now_timestamp = datetime.now().timestamp()
             for game in game_controller.games.values():
-                if game.last_modified_at.timestamp() + self.TIMEOUT_DELETE > now_timestamp:
+                if game.last_modified_at.timestamp() + self.TIMEOUT_DELETE < now_timestamp:
                     game_controller.remove_game(game)
 
         return redirect(url_for('admin_index'))
