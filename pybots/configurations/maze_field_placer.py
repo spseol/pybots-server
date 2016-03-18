@@ -15,7 +15,7 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
 
     def place_bots(self, game_map=None, count=None, field_class=BotField, *args, **kwargs):
         self._check_place_args(game_map, count, field_class)
-        for _i in range(count):
+        for _ in range(count):
             bot = field_class(Orientation.NORTH)
             position = random_position(game_map)
             while not isinstance(game_map[position], self.default_empty_map_field):
@@ -24,7 +24,7 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
 
     def place_treasures(self, game_map=None, count=None, field_class=TreasureField, *args, **kwargs):
         self._check_place_args(game_map, count, field_class)
-        for _i in range(count):
+        for _ in range(count):
             treasure = field_class()
             position = random_position(game_map)
             while not isinstance(game_map[position], self.default_empty_map_field):
