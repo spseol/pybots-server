@@ -18,7 +18,7 @@ class TestGameController(TestCase):
 
         conf_provider = ConfigurationProvider()
         game_controller = GameController(conf_provider)
-
+        
         game_1 = game_controller.get(bot_id_1)
         self.assertIsInstance(
             game_1,
