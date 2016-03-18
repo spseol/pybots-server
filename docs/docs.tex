@@ -16,6 +16,7 @@
 \usepackage{lipsum}
 \usepackage{svg}
 \usepackage{caption}
+\usepackage{wrapfig}
 
 
 % ------ CONFIGURATION ------
@@ -203,12 +204,34 @@ hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
 \todo{probrat URL, metody v závislosti na URL}
 \subsection{Administrace}
 \todo{změna konfigurace z formuláře, mazání her, náhled na hru}
-\section{Implementace}
+
+
+\section{Interní implementace projektu}
 \label{sec:implementation}
 
-Následující příklad ukazuje přetížené indexování mapy pomocí pozice uložené v vestavěném datovém typu \ic|tuple|. Výsledkem je instance prázdného herního pole. 
+\subsection{Enumerace Orientation}
 
-\begin{lstlisting}[caption={Příklad indexování třídy Map}]
+Tato enumerace dědící ze třídy \ic|IntEnum| z balíčku \ic|enum| zajištuje především sjednocení udávaných orientací v projektu, v některých případech označuje i směr. Je označena dekorátorem \ic|unique|, který zajištuje unikátnost jednotlivých hodnot v enumeraci. Tato enumerace obsahuje klíče \ic|NORTH|, \ic|EAST|, \ic|SOUTH| a \ic|WEST| s hodnotami v rozsahu od 1 do 4. Jako jednoduché utility jsou ve třídě metody (resp. vlastnosti díky dekorátoru \ic|@property|) \ic|is_horizontal| a \ic|is_vertical| ověřující horizontální, resp. vertikální směr. Výhoda v předkovi \ic|IntEnum|, resp. \ic|Enum| tkví v možnosti testovat shodnost pomocí operátoru rovnosti a konstruovat tyto objekty pomocí číselné hodnoty, viz následující ukázka.
+
+\begin{lstlisting}[caption={Výhody třídy Enum}]
+orientation_by_key = Orientation.NORTH
+orientation_by_value = Orientation(0)
+
+assert orientation_by_value == orientation_by_key
+\end{lstlisting}
+
+\subsection{Enumerace Action}
+
+Enumerace \ic|Action| se v projektu používá jako jednoznačný identifikátor akce pro jednotlivé boty. Je stejně jako \ic|Orientation| odekorována pomocí \ic|@unique|, ale narozdíl od ní se nejedná o číselnou enumeraci, ale o enumeraci řetězců - pro snažší identifikaci v rámci požadavků na server.
+Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN_RIGHT| pro jeho otáčení, \ic|WAIT| pro čekání na místě (a nabití baterie) a \ic|LASER_BEAM| pro aktivaci laserového paprsku.
+
+\subsection{Kontejnerová třída Map}
+
+\ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k vyhledávání nad mapou, ale bohužel je její složitost vzhledem k implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k získávání vedlejší pole dle zadaných souřadnit a instance třídy \ic|Orientation|. V případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|. 
+
+Níže uvedení příklad znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+
+\begin{lstlisting}[caption={Přetížené indexování třídy Map}]
 position = 3, 2
 game_map = Map(width=10, height=10)
 
@@ -218,15 +241,23 @@ assert isinstance(
 )
 \end{lstlisting}
 
+\subsection{Třídy reprezentující herní bloky}
+
+\subsubsection{Společný abstraktní předek Field}
+\subsubsection{Prázdné pole EmptyField}
+\subsubsection{Pole bloku BlockField}
+\subsubsection{Pole pro poklad TreasureField}
+\subsubsection{Pole pro boty BotField a LaserBatteryBotField}
+
 \section{Použité technologie}
 
 \subsection{Python}
 
-\begin{figure}[H]
+\begin{wrapfigure}{R}{0.5\textwidth}
  \centering
- \includesvg{images/python-logo}
+ \includesvg[width=0.5\textwidth]{images/python-logo}
  \caption{Logo programovacího jazyka Python}
-\end{figure}
+\end{wrapfigure}
 
 Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
 
@@ -332,15 +363,22 @@ def test_add(self):
 \end{lstlisting}
 \subsection{Flask}
 
-\begin{figure}[H]
- \centering
- \includesvg[width=.3\textwidth]{images/flask-logo}
- \caption{Logo webového frameworku Flask}
-\end{figure}
+% \begin{figure}[H]
+%  \centering
+%  \includesvg[width=.3\textwidth]{images/flask-logo}
+%  \caption{Logo webového frameworku Flask}
+% \end{figure}
+
+\begin{wrapfigure}{R}{\textwidth/3}
+    \centering
+    \includegraphics[width=\textwidth/3]{images/flask-logo}
+    \caption{Logo webového frameworku Flask}
+\end{wrapfigure}
 
 Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k jeho variabilitě a v základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcích a podobně.
 
 Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednoduše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
+
 \subsection{HTTP}
 
 HTTP (HyperText Transfer Protocol) je standardizovaný internetový protokol pro výměnu HTML kódu. Jeho první koncept vznikl v roce 1991 jako veze 0.9, o pět let později byla uvedena verze 1.1 a verze 1.1, která je používaná dodnes byla uvedena v červu roku 1999. V dnešní době je používán nejen k výměně HTML kódu, ale jeho rozšíření MIME \footnote{Multipurpose Internet Mail Extensions} poskytuje možnost přenosu souborů jakéhokoliv typu. Samotný HTTP nezajištuje zabezpečení ani integritu dat. Nadstavbu nad HTTP tvoří HTTPS, jehož komunikace je šifrována pomocí SSL nebo TLS.
@@ -401,11 +439,11 @@ Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSO
 
 \subsection{Git}
 
-\begin{figure}[H]
+\begin{wrapfigure}{R}{0.5\textwidth}
  \centering
- \includesvg{images/git-logo}
+ \includesvg[width=0.5\textwidth]{images/git-logo}
  \caption{Logo verzovacího systému Git}
-\end{figure}
+\end{wrapfigure}
 
 Git je distribuovaný systém správy verzí, původně určený pro vývoj jádra Linuxu. Jako jeho autor je označován Linus Torvalds, jeho vznik se datuje kolem 2005 a v roce 2016 je nadále aktivně vyvíjen; jeho poslední verze nese označení 2.7.3 a byla vydána 10. března 2016. Nejčastěji slouží k verzování zdrojového kódu - vytváří historii pro každou část spravovaného repozitáře. Repozitář je v tomto systému základní nejvyšší jednotka pro správu zdrojového kódu, zapouzdřuje jednotlivé vývojové větvě, ve kterých může probíhat vývoj od jednotlivých vývojářů zcela odděleně. Git je oproti jiným verzovacím nástrojům velmi silný v následném spojování těchto větví - v případě nekonfliktních změn je toto spojení schopen provést zcela sám.
 
@@ -452,11 +490,13 @@ Github je webová služba poskytující podporu pro hostování git repozitář�
 \section{Závěr}
 
 Podařilo se mi naprogramovat herní server v plném rozsahu zadání.
+\todo{Zhodnotit a sepsat, jak je vše super}
 
 \subsection{Možná budoucí vylepšení}
 
 \begin{itemize}
- \item pro bezpečnější použití by bylo vhodné znovu navrhnout a vylepšit systém autorizace k přístupu k ovládání bota - \ic|bot_id| jakožto soukromý klíč přenášený po HTTP protokolu 
+ \item pro bezpečnější použití by bylo vhodné znovu navrhnout a vylepšit systém autorizace k přístupu k ovládání bota - \ic|bot_id| jakožto soukromý klíč přenášený po HTTP protokolu není nejbezpečnější metoda
+ \item přidat herní log, ze kterého bude možné zrekonstruovat celý průběh hry od vygenerování až po vítězství jednoho z botů  
  \item do samotné hry je poměrně snadné přidat herní prvky, takže není problém přidat bonusové herní bloky, teleporty bloků, systém min nebo obranná elektromagnetická pole
 \end{itemize}
 
