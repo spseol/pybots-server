@@ -40,6 +40,7 @@
 \renewcommand\lstlistingname{Zdrojový kód}
 
 
+
 % ------ CUSTOM COMMANDS ------
 
 % \ic for inline code
@@ -62,6 +63,8 @@
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
+\newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
+
 % ------ LISTINGS SETUP ------
 
 \lstset{
@@ -77,7 +80,10 @@
     breaklines=true,
     captionpos=t,
     xleftmargin=\fboxsep,
-    xrightmargin=-\fboxsep
+    xrightmargin=-\fboxsep,
+    numberstyle=\scriptsize,
+    numbersep=6pt,
+    numbers=left,
 }
 \DeclareCaptionFormat{listing}{%
 	\colorlet{currentcolor}{.}%
@@ -89,6 +95,7 @@
     basicstyle=\color{violet},
     numberstyle=\scriptsize,
     numbersep=8pt,
+    numbers=left,
     breaklines=true,
     frame=single,
     %backgroundcolor=\color{background},
@@ -129,7 +136,17 @@
 
 \newpage
 \section*{Prohlášení}
-\todo{okopírovat prohlíšení od SHN}
+\thispagestyle{empty}
+\todo{okopírovat prohlášení od SHN}
+\clearpage
+
+\begin{bottompar}
+\section*{Poděkování}
+\thispagestyle{empty}
+\lipsum[1]
+\todo{Poděkovat všem}
+\clearpage
+\end{bottompar}
 
 \begin{abstract}
 \todo{sepsat abstrakt}
@@ -217,14 +234,14 @@ Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veř
 
 Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https:\/\/pypi.python.org\/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
 
-Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých vylepšení syntaxe jazyka.
+Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých syntaktických vylepšení jazyka. Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání podpory pro asynchronní volání funkcí a podpory pro typovost parametrů a návratových hodnot funkcí a metod.
 
 \subsubsection{Jednotkové testování}
 
 Jednotkové automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu projektu, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost  a správnost testů projektu.
 
 Níže je uveden příklad třídy k testování. Třída \ic-MathOperations- je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Příklad třídy MathOperations k testování}]
 class MathOperations(object):
 	@staticmethod
 	def add(a, b):
@@ -239,7 +256,7 @@ class MathOperations(object):
 	Pomocí volání \ic|MathOperations.add(40, 2)| získáme \ic|42|, resp. při \ic|MathOperations.divide(36, 6)| je výsledkem \ic|6|. Ve své práci používám balíček pro testování \ic|unittest| dodávaný přímo s programovacím jazykem Python. Jako hlavní nástroj pro jednotkové testování nabízí tento balíček třídu \ic|TestCase|, která obsahuje celou řadu metod pro testování asercí (\ic|assertEqual|, \ic|assertTrue|, \ic|assertEqual|, \ic|assertIn|, \ic|assertIs| nebo i komplexnější jako \ic|assertDictEqual|, \ic|assertRegex| nebo \ic|assertDictContainsSubset|) a potomky této třídy je potom možno automaticky spouštět a vyhodnocovat. Tyto předpoklady tedy zapíšeme jako metody do obalující třídy:
 \end{sloppypar}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Základní TestCase pro třídu MathOperations}]
 class TestMathOperations(TestCase):
 	def test_add(self):
 		self.assertEqual(
@@ -255,7 +272,7 @@ class TestMathOperations(TestCase):
 \end{lstlisting}
 
 V případě spuštění a úspěšného otestování této třídy by byl výstup tento:
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[language=bash, caption={Ukázka výstupu ze spuštění testů}]
 test_add (TestMathOperations) ... ok
 test_div (TestMathOperations) ... ok
 
@@ -277,13 +294,13 @@ OK
 
 
 Poté ale může dojít k následující změně zdrojového k\'{o}du - vznikne požadavek na metodu \ic|MathOperations.add|, a to konkrétně na zvýšení počtu parametrů na tři. Ne ve všech případech se ovšem bude volat tato metoda i se třetím parametrem, musí být tedy zajištěna \textbf{zpětná kompatibilita}.
-\begin{lstlisting}
+\begin{lstlisting}[caption={Vylepšená implementace metoda MathOperations.add}]
 @staticmethod
 def add(a, b, c=0):
 	return a + b + c
 \end{lstlisting}
 Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
-\begin{lstlisting}
+\begin{lstlisting}[caption={Testovací metody pro upravenou implementaci MathOperations.add}]
 def test_add(self):
 	self.assertEqual(
 		MathOperations.add(40, 2),
@@ -295,13 +312,16 @@ def test_add(self):
 	)
 \end{lstlisting}
 Tímto testem máme potvrzenou korektní jak pro dvouparametrické volání, tak pro \uv{nové} tříparametrické volání. Podstata úprava zdrojového kódu tkví v zachování předchozích asercí - je tak zajištěna zpětná kompatibilita. Jako další požadavek na metodu \ic|MathOperations.add| může typicky přijít přidání dalšího parametru, kdy je vhodné vzhledem k aktuální implementaci metody \ic|add| tuto metodu přeimplementovat následovně:
-\begin{lstlisting}
+\begin{lstlisting}[caption={Finální implementace metody MathOperations.add}]
 @staticmethod
 def add(*values):
 	return sum(values)
 \end{lstlisting}
+\textit{
+  Zápis \\ic|*values| je velmi specifický pro jazyk Python. 
+}
 A ke testovacím asercím přidat i jednu komplexnější obsahující volání s vytším počtem parametrů:
-\begin{lstlisting}
+\begin{lstlisting}[caption={Finální test pro metody MathOperations.add}]
 def test_add(self):
 	...
 	values = tuple(randint(0, 100) for _ in range(10))
@@ -351,9 +371,15 @@ JavaScript Object Notation je datový formát pro přenos dat nezávislý na pla
     \textbf{object} - seznam prvků ve struktuře \textit{klíč} - \textit{hodnota}, např. \{"foo": 6, "bar": [1, 10, 100]\}.
 \end{itemize}
 
+\begin{figure}[H]
+ \centering
+ \includesvg{images/json-logo}
+ \caption{Logo datového formátu JSON}
+\end{figure}
+
 Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSON exportu z PYBOTS):
 
-\begin{lstlisting}[language=json]
+\begin{lstlisting}[language=json,caption={Ukázka datového formátu JSON}]
  {"map": [
     [
       1,
@@ -422,6 +448,17 @@ Github je webová služba poskytující podporu pro hostování git repozitář�
  \includesvg{images/pycharm-logo}
  \caption{Logo vývojového nástroje Pycharm}
 \end{figure}
+
+\section{Závěr}
+
+Podařilo se mi naprogramovat herní server v plném rozsahu zadání.
+
+\subsection{Možná budoucí vylepšení}
+
+\begin{itemize}
+ \item pro bezpečnější použití by bylo vhodné znovu navrhnout a vylepšit systém autorizace k přístupu k ovládání bota - \ic|bot_id| jakožto soukromý klíč přenášený po HTTP protokolu 
+ \item do samotné hry je poměrně snadné přidat herní prvky, takže není problém přidat bonusové herní bloky, teleporty bloků, systém min nebo obranná elektromagnetická pole
+\end{itemize}
 
 
 \newpage
