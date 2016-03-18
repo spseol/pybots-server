@@ -26,9 +26,11 @@ script:
 
 after_success:
   - coveralls
-  - pdflatex -interaction=nonstopmode -shell-escape -output-directory docs docs/docs.tex
-  - pdflatex -interaction=nonstopmode -shell-escape -output-directory docs docs/docs.tex
-  - pdflatex -interaction=nonstopmode -shell-escape -output-directory docs docs/docs.tex
+  - cd docs
+  - pdflatex -interaction=nonstopmode -shell-escape docs.tex
+  - pdflatex -interaction=nonstopmode -shell-escape docs.tex
+  - pdflatex -interaction=nonstopmode -shell-escape docs.tex
+  - cd ..
   - curl -X POST -F file=@docs/docs.pdf http://josefkolar.cz/receiver/receiver.php
 
 matrix:
