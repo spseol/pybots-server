@@ -1,7 +1,9 @@
 from random import randint
 
+from flask.helpers import url_for
 from flask.json import loads
 from flask.wrappers import Response
+
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.configurations.default_configuration import DefaultConfiguration
 from pybots.game.actions import Action
@@ -12,9 +14,9 @@ from tests.test_case import TestCase
 class TestActionView(TestCase):
     def test_valid_request(self):
         with self.test_client as c:
-            bot_id = loads(c.get('/').data).get('bot_id')
+            bot_id = loads(c.get(url_for('init_game')).data).get('bot_id')
 
-            r = c.post('/action', data=dict(bot_id=bot_id, action=Action.TURN_LEFT.value))
+            r = c.post(url_for('action'), data=dict(bot_id=bot_id, action=Action.TURN_LEFT.value))
             assert isinstance(r, Response)
             self.assertEqual(r.status_code, 200, 'Valid request to turn left.')
             self.assertEqual(r.content_type, 'application/json')
@@ -34,23 +36,23 @@ class TestActionView(TestCase):
 
     def test_invalid_request(self):
         with self.test_client as c:
-            bot_id = loads(c.get('/').data).get('bot_id')
+            bot_id = loads(c.get(url_for('init_game')).data).get('bot_id')
 
-            r = c.post('/action', data=dict(bot_id='', action=''))
+            r = c.post(url_for('action'), data=dict(bot_id='', action=''))
             self.assertEqual(r.status_code, 404, 'Request with empty action and bot_id.')
 
-            r = c.post('/action', data=dict(bot_id='foobar', action=Action.TURN_LEFT.value))
+            r = c.post(url_for('action'), data=dict(bot_id='foobar', action=Action.TURN_LEFT.value))
             self.assertEqual(r.status_code, 404, 'Request with invalid bot_id.')
 
-            r = c.post('/action', data=dict(bot_id=bot_id, action='foobar'))
+            r = c.post(url_for('action'), data=dict(bot_id=bot_id, action='foobar'))
             self.assertEqual(r.status_code, 404, 'Request with invalid action.')
 
     def test_find_wall(self):
         with self.test_client as c:
-            bot_id = loads(c.get('/').data).get('bot_id')
+            bot_id = loads(c.get(url_for('init_game')).data).get('bot_id')
             found_wall = False
             for turn in range(DefaultConfiguration.map_height):
-                r = c.post('/action', data=dict(bot_id=bot_id, action=Action.STEP.value))
+                r = c.post(url_for('action'), data=dict(bot_id=bot_id, action=Action.STEP.value))
                 self.assertEqual(r.status_code, 200)
                 if loads(r.data).get('state') in (ResponseState.MOVEMENT_ERROR.state, ResponseState.GAME_WON.state):
                     found_wall = True
@@ -61,9 +63,9 @@ class TestActionView(TestCase):
 
     def test_two_bots_in_map(self):
         with self.test_client as c:
-            c.get('/')  # TODO: remove this get, it's hide dependency on odd request to app
-            bot_id_1 = loads(c.get('/').data).get('bot_id')
-            bot_id_2 = loads(c.get('/').data).get('bot_id')
+            c.get(url_for('init_game'))  # TODO: remove this get, it's hide dependency on odd request to app
+            bot_id_1 = loads(c.get(url_for('init_game')).data).get('bot_id')
+            bot_id_2 = loads(c.get(url_for('init_game')).data).get('bot_id')
             self.assertNotEqual(bot_id_1, bot_id_2, 'Another bots')
             # self.assertListEqual(
             # loads(c.get('/game/{}'.format(bot_id_1)).data).get('map'),
@@ -86,10 +88,10 @@ class TestActionView(TestCase):
             blocks=blocks
         )
         with self.test_client as c:
-            c.post('/reset')
+            c.post(url_for('reset'))
             c = self.set_conf_to_test_client(conf, c)
-            bot_id = loads(c.get('/').data).get('bot_id')
-            r = c.get('/game/{}'.format(bot_id))
+            bot_id = loads(c.get(url_for('init_game')).data).get('bot_id')
+            r = c.get(url_for('game', bot_id=bot_id))
             data = loads(r.data)
 
             self.assertEqual(

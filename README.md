@@ -1,5 +1,4 @@
-PYBOTS - hra pro programátory
-====================
+# PYBOTS - hra pro programátory
 
 [![Build Status](https://travis-ci.org/spseol/pybots-server.svg?branch=master)](https://travis-ci.org/spseol/pybots-server) [![Coverage Status](https://coveralls.io/repos/spseol/pybots-server/badge.svg?branch=master&service=github)](https://coveralls.io/github/spseol/pybots-server?branch=master)
 
@@ -11,7 +10,7 @@ Zajímáš se o programování? Chceš vyřešit základní algoritmické probl�
 
 * vyber si svůj oblíbený programovací jazyk - doporučuji Python, ale zvládne to i Javascript, Java, PHP, C/C++ nebo exotický Haskell
 * zjisti si, jak je na tom tvůj jazyk s podporou HTTP protokolu, stačit Ti budou GET a POST metody, a jak vlastně takový požadavek ze svého jazyka pošleš (od pythonu3 je to velmi jednoduché, obsahuje totiž modul `requests`, který to vše zvládne levou zadní)
-* pošli si prázdný GET požadavek na jakýkoliv server PYBOTS, třeba `http://hroch.spseol.cz:44822/` a sleduj, co se Ti vrátilo
+* pošli si prázdný GET požadavek na jakýkoliv server PYBOTS, třeba `http://hroch.spseol.cz:44822/init` a sleduj, co se Ti vrátilo
 * správně, je to JSON (pokud nevíš, co to je, [UTFG](https://www.google.cz/search?q=JSON)), překóduj si jej do svého datového typu - nejspíš nějaký slovník či hashmap (v pythonu koukej po modulu `json` a jeho metodě `json.loads`)
 * z dekódované odpovědi načti id svého bota z klíče `bot_id` a podíváme se na mapu
 * vem id svého bota a pošli GET požadavek na `/game/{bot_id}`
@@ -46,7 +45,7 @@ tvůj bot bude tah čekat na místě a **nabije si baterii**
 
 ### hra s lasery
 #### laser paprsek
-bot bude soustředit energii jedním směrem a vypálí urychlený proud fotonů, který dokáže **nepřátelskému botu ubrat energii** nebo **zničit pevný blok**
+bot bude soustředit energii jedním směrem a vypálí usměrněný proud fotonů, který dokáže **nepřátelskému botu ubrat energii** nebo **zničit pevný blok**
 
 energeticky to nebude úplně nejlevnější, **paprsek sežere** alespoň **dvě úrovně** baterie
 

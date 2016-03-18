@@ -6,9 +6,9 @@ import os
 from os.path import join, dirname
 
 from jinja2.loaders import FileSystemLoader
-
 from flask.ext.cors import CORS
 
+from pybots import web
 from pybots.json_encoder import JSONEncoder
 
 
@@ -27,6 +27,7 @@ from pybots.urls import urls
 PORT = 44822
 
 app = Flask(__name__)
+app.static_folder = join(dirname(web.__file__), 'static')
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.json_encoder = JSONEncoder
 app.jinja_loader = FileSystemLoader(join(dirname(__file__), 'pybots/web/templates'))
@@ -47,7 +48,7 @@ def run():
 
         log_dir = os.path.dirname(__file__)
         file_handler = RotatingFileHandler(join(log_dir, 'robots.log'),
-                                           maxBytes=5000,
+                                           maxBytes=50000,
                                            backupCount=7)
 
         console_handler = logging.StreamHandler()
