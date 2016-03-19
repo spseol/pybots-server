@@ -3,7 +3,7 @@
 
 \subsection{Pomocná třída Exportable}
 
-Abstraktní třída \ic*Exportable* je určena k identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou metodu \ic|export|, která by v potomcích vracet jedině takové hednoty, které jsou zakódovat do formátu JSON - v naprosté většině případů se v aplikaci exportuje vestavěný datový typ \ic|dict|.
+Abstraktní třída \ic*Exportable* je určena k identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou metodu \ic|export|, která by v potomcích vracet jedině takové hednoty, které jsou zakódovat do formátu \nameref{subsec:json} - v naprosté většině případů se v aplikaci k exportu používá vestavěný datový typ \ic|dict|.
 
 \subsection{Enumerace Orientation}
 
@@ -54,5 +54,25 @@ Pro všechny instance polí existuje společný abstraktní předek - třída \i
 Jedná se o prázdnou variantu herního pole, je zodpovědná pouze za svůj korektní export.
 
 \subsubsection{Pole bloku BlockField}
+
+Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli. Jediný rozdíl skrývá rozdílný přístup třídy \ic|Game| při herních akcích - na pole s objektem této třídy není možné vstoupit botem, avšak při zapnutém parametru pro laser hru je možno tento blok zničit. Po zničení je instance pole s blokem nahrazena instancí prázdného pole.
+
 \subsubsection{Pole pro poklad TreasureField}
+
+Ve své podstatě se jedná o pole jako každé jiné v mapě, avšak má jednu spicální vlastnost. Při vstoupení na něj botem je vyvolána výjimka \ic|GameFinished| (o struktuře a systému výjimek v sekci \fullref{subsec:custom-exceptions}) a hra končí. 
+
 \subsubsection{Pole pro boty BotField a LaserBatteryBotField}
+
+\subsection{Systém a struktura vlastních výjimek}
+\label{subsec:custom-exceptions}
+
+Proces zpracování herní akce je záležitost, při které může dojít až k několika desítkám nevalidních nebo hru ukončujících stavů, jako např. bot mimo herní mapu, pohyb bota, který není na řadě, požadavek na neznámého bota, požadavek na neznámou mapu, nesprávná herní akce pro kontext hry anebo hra s již zaplněnými poli pro boty. Proto je v aplikaci navržen systém výjimek, které jsou vyhazovány v momentech, kdy je již proces zpracování akce zahájen.
+
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{| l | X |}
+		výjimka & její popis \\
+		\hline
+		asd & \lipsum[1] \\
+	\end{tabularx}
+	\caption{Seznam vlastních výjimek a jejich popis}
+\end{table}
