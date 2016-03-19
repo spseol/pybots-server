@@ -1,0 +1,58 @@
+\section{Interní implementace aplikace}
+\label{sec:implementation}
+
+\subsection{Pomocná třída Exportable}
+
+Abstraktní třída \ic*Exportable* je určena k identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou metodu \ic|export|, která by v potomcích vracet jedině takové hednoty, které jsou zakódovat do formátu JSON - v naprosté většině případů se v aplikaci exportuje vestavěný datový typ \ic|dict|.
+
+\subsection{Enumerace Orientation}
+
+Tato enumerace dědící ze třídy \ic|IntEnum| z balíčku \ic|enum| zajištuje především sjednocení udávaných orientací v aplikaci, v některých případech označuje i směr. Je označena dekorátorem \ic|unique|, který zajištuje unikátnost jednotlivých hodnot v enumeraci. Tato enumerace obsahuje klíče \ic|NORTH|, \ic|EAST|, \ic|SOUTH| a \ic|WEST| s hodnotami v rozsahu od 1 do 4. Jako jednoduché utility jsou ve třídě metody (resp. vlastnosti díky dekorátoru \ic|@property|) \ic|is_horizontal| a \ic|is_vertical| ověřující horizontální, resp. vertikální směr. Výhoda v předkovi \ic|IntEnum|, resp. \ic|Enum| tkví v možnosti testovat shodnost pomocí operátoru rovnosti a konstruovat tyto objekty pomocí číselné hodnoty, viz následující ukázka.
+
+\begin{lstlisting}[caption={Výhody třídy Enum}]
+orientation_by_key = Orientation.NORTH
+orientation_by_value = Orientation(0)
+
+assert orientation_by_value == orientation_by_key
+\end{lstlisting}
+
+\subsection{Enumerace Action}
+
+Enumerace \ic|Action| se v aplikaci používá jako jednoznačný identifikátor akce pro jednotlivé boty. Je stejně jako \ic|Orientation| odekorována pomocí \ic|@unique|, ale narozdíl od ní se nejedná o číselnou enumeraci, ale o enumeraci řetězců - pro snažší identifikaci v rámci požadavků na server.
+Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN_RIGHT| pro jeho otáčení, \ic|WAIT| pro čekání na místě (a nabití baterie) a \ic|LASER_BEAM| pro aktivaci laserového paprsku.
+
+\subsection{Enumerace Field}
+
+\todo{Enumerace Field a její klíče}
+
+\subsection{Kontejnerová třída Map}
+
+\ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k vyhledávání nad mapou, ale bohužel je její složitost vzhledem k implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k získávání vedlejší pole dle zadaných souřadnit a instance třídy \ic|Orientation|. V případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|. 
+
+Níže uvedení příklad znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+
+\begin{lstlisting}[caption={Přetížené indexování třídy Map}]
+position = 3, 2
+game_map = Map(width=10, height=10)
+
+assert isinstance(
+	game_map[position],
+	EmptyField
+)
+\end{lstlisting}
+
+\subsection{Třídy reprezentující herní bloky}
+
+Na tomto místě je nutno poznamenat, že potomci třídy \ic|Field|, jenž jsou umisťováni do mapy, nejsou zodpovědni za své umístění, tzv. neuchovávají žádné informace o své pozici, ale pouze informace o svém stavu, jako jsou například orientace, jméno nebo stav baterie. 
+
+\subsubsection{Společný abstraktní předek Field}
+
+Pro všechny instance polí existuje společný abstraktní předek - třída \ic|Field|, ze které dědí všechna možná pole umístitelná do mapy. Samotná třída je potomkem třídy \ic|Exportable|, znamená to tedy, že každý z potomků této třídy musí implementovat metodu \ic|export|, což zajištuje možnost reprezentace herní struktury i mimo aplikaci.
+
+\subsubsection{Prázdné pole EmptyField}
+
+Jedná se o prázdnou variantu herního pole, je zodpovědná pouze za svůj korektní export.
+
+\subsubsection{Pole bloku BlockField}
+\subsubsection{Pole pro poklad TreasureField}
+\subsubsection{Pole pro boty BotField a LaserBatteryBotField}
