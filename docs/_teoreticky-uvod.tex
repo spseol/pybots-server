@@ -11,7 +11,7 @@
 	V této sekci se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
 }
 
-O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu JSON a distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
+O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu \nameref{subsec:json}, jenž je následně distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
 
 Třída \ic|Game| interně využívá třídu \ic|Map| k uchování stavu hry. Třída \ic|Map| je v podstatě pouze zapouzdřený dvourozměrný kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - tzn. mj. ošetřuje stavy pro nevalidní přístup mimo rozsah mapy.
 
@@ -21,24 +21,26 @@ Existenci bota v mapě reprezentuje třída \ic|BotField|, která je zopovědná
 
 Mezi další pomomky třídy \ic|Field| patří \ic|BlockField| reprezentující v mapě pole pevného bloku a \ic|TreasureField| zastupující poklad ve hře.
 
-Třída, která kontroluje jednotlivé instance \ic-Game- v aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za vytváření her, resp. na svém vstupu příjmá instanci potomka třídy \ic|BaseConfiguration|, kterou následně předá do singletonu třídy \ic|MapFactory|, která sestaví instanci mapy.
+Třída, která kontroluje jednotlivé instance \ic|Game| v aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za vytváření her, resp. na svém vstupu příjmá instanci potomka třídy \ic|BaseConfiguration|, kterou následně předá do singletonu třídy \ic|MapFactory|, která sestaví instanci mapy.
 
-\ic|MapFactory| je třída zodpovědná za vygenerování mapy v závislosti na předané configuraci. Ze zadání plynou následující konfigurovatelné parametry:
+\ic|MapFactory| je třída zodpovědná za vygenerování mapy v závislosti na předané configuraci. Plný výčet parametů konfigurace lze najít v tabulce \fullref{table:conf-parameters}.
 
-\begin{center}
-\begin{tabular}{llll}
-český název & název parametru & vysvětlení & datový typ \\
-\hline
-šířka mapy & \ic|map_width| & počet bloků na šířku mapy & int \\
-výška mapy & \ic|map_heigth| & počet bloků na výšku mapy & int \\
-počet botů & \ic|bots| & maximální počet botů ve hře & int \\
-počet bloků & \ic|blocks| & maximální počet bloků ve hře & int \\
-počet pokladů & \ic|treasures| & počet pokladů ve hře & int \\
-hra s tahy & \ic|rounded_game| & hra botů v pořadí & bool \\
-hra s bateriemi & \ic|battery_game| & hra botů s bateriemi & bool \\
-hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
-\end{tabular}
-\end{center}
+\begin{table}[H]
+	\begin{tabular}{llll}
+		český název & název parametru & vysvětlení & datový typ \\
+		\hline
+		šířka mapy & \ic|map_width| & počet bloků na šířku mapy & int \\
+		výška mapy & \ic|map_heigth| & počet bloků na výšku mapy & int \\
+		počet botů & \ic|bots| & maximální počet botů ve hře & int \\
+		počet bloků & \ic|blocks| & maximální počet bloků ve hře & int \\
+		počet pokladů & \ic|treasures| & počet pokladů ve hře & int \\
+		hra s tahy & \ic|rounded_game| & hra botů v pořadí & bool \\
+		hra s bateriemi & \ic|battery_game| & hra botů s bateriemi & bool \\
+		hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
+	\end{tabular}
+	\caption{Seznam možných parametrů herní konfigurace s parametry}
+	\label{table:conf-parameters}
+\end{table}
 
 \subsubsection{Návrh vnějšího rozhraní}
 \todo{probrat URL, metody v závislosti na URL}

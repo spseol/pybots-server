@@ -21,6 +21,7 @@
 \usepackage{titling} % theauthor, thetitle
 \usepackage{fancyhdr} % zápatí, záhlaví
 \usepackage{lastpage} % lastpage label
+\usepackage{tabularx} % lastpage label
 
 % ------ CONFIGURATION ------
 
@@ -39,6 +40,7 @@
 \def\sectionautorefname{}
 \def\subsectionautorefname{}
 \def\subsubsectionautorefname{}
+\def\tableautorefname{}
 
 \renewcommand\lstlistlistingname{Seznam zdrojových kódů}
 \renewcommand\lstlistingname{Zdrojový kód}
@@ -164,10 +166,13 @@
 \input{_zaver.tex}
 \newpage
 
-\listoffigures
-\addcontentsline{toc}{section}{Seznam obrázků}
+\listoftables
+\addcontentsline{toc}{section}{Seznam tabulek}
 
 \lstlistoflistings
 \addcontentsline{toc}{section}{Seznam zdrojových kódů}
+
+\listoffigures
+\addcontentsline{toc}{section}{Seznam obrázků}
 
 \end{document}
