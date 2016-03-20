@@ -1,4 +1,5 @@
 from names import get_first_name
+from pybots.configurations import ConfigurationError
 
 from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.game.fields.bot_field import BotField
@@ -14,11 +15,11 @@ class MapFactory(object):
                        default_field=conf.default_empty_map_field)
 
         if game_map.width * game_map.height < sum((conf.bots, conf.treasures, conf.blocks)):
-            raise InvalidMapError('Cannot place {} bots, {} treasures and {} blocks into {}x{} map.'
-                                  .format(conf.bots, conf.treasures, conf.blocks, game_map.width, game_map.height))
+            raise ConfigurationError('Cannot place {} bots, {} treasures and {} blocks into {}x{} map.'
+                                     .format(conf.bots, conf.treasures, conf.blocks, game_map.width, game_map.height))
 
         if conf.laser_game and not conf.battery_game:
-            raise InvalidMapError('Laser game need to enable batteries.')
+            raise ConfigurationError('Laser game need to enable batteries.')
 
         conf.place_fields(game_map=game_map, conf=conf)
         MapFactory._provide_names_for_bots(game_map)
