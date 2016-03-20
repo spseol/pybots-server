@@ -14,7 +14,7 @@ Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veř
 
 Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https:\/\/pypi.python.org\/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
 
-Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII znaků a řetězce Unicode znaků), celočíselného dělení a některých syntaktických vylepšení jazyka. Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání podpory pro asynchronní volání funkcí a podpory pro typovost parametrů a návratových hodnot funkcí a metod.
+Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII\footnote{\href{https://cs.wikipedia.org/wiki/ASCII}{American Standard Code for Information Interchange} - kódová tabulka znaků z anglické abecedy a některých dalších kódových znaků} znaků a řetězce Unicode\footnote{\href{https://cs.wikipedia.org/wiki/Unicode}{Unicode} je vylepšená norma pro reprezentaci znaků do více bytů.} znaků), celočíselného dělení a některých syntaktických vylepšení jazyka. Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání podpory pro asynchronní volání funkcí a podpory pro typovost parametrů a návratových hodnot funkcí a metod.
 
 \subsubsection{Jednotkové testování}
 
@@ -75,7 +75,7 @@ def add(a, b, c=0):
 	return a + b + c
 \end{lstlisting}
 Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
-\begin{lstlisting}[caption={Testovací metody pro upravenou implementaci MathOperations.add}]
+\begin{lstlisting}[caption={Testovací metoda pro upravenou implementaci MathOperations.add}]
 def test_add(self):
 	self.assertEqual(
 		MathOperations.add(40, 2),
@@ -92,11 +92,12 @@ Tímto testem máme potvrzenou korektní jak pro dvouparametrické volání, tak
 def add(*values):
 	return sum(values)
 \end{lstlisting}
+\todo{popsat *values}
 \textit{
-  Zápis \\ic|*values| je velmi specifický pro jazyk Python. 
-}
-A ke testovacím asercím přidat i jednu komplexnější obsahující volání s vytším počtem parametrů:
-\begin{lstlisting}[caption={Finální test pro metody MathOperations.add}]
+  Zápis $*values$ je velmi specifický pro jazyk Python. V případě, že se jedná o volání funkce/metody, 
+} \\
+A ke testovacím asercím přidat i jednu komplexnější obsahující volání s vyšším počtem parametrů:
+\begin{lstlisting}[caption={Finální test pro metodu MathOperations.add}]
 def test_add(self):
 	...
 	values = tuple(randint(0, 100) for _ in range(10))
@@ -106,12 +107,6 @@ def test_add(self):
 	)
 \end{lstlisting}
 \subsection{Flask}
-
-% \begin{figure}[H]
-%  \centering
-%  \includesvg[width=.3\textwidth]{images/flask-logo}
-%  \caption{Logo webového frameworku Flask}
-% \end{figure}
 
 \begin{wrapfigure}{R}{\textwidth/3}
     \centering
@@ -132,7 +127,13 @@ HTTP pracuje na principu request-response (požadavek-odpověd). HTTP požadavek
 \subsection{JSON}
 \label{subsec:json}
 
-JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nezávislý na platformě. Oproti jeho hlavnímu konkurentu XML je datově úspornější, avšak je nevhodný k přenosu binárních informací. JSON je schopen kódovat a následně dekódovat tyto datové typy:
+\begin{figure}%{R}{\textwidth/4}
+    \centering
+    \includesvg[width=\textwidth/4]{images/json-logo}
+ 	\caption{Logo datového formátu JSON}
+\end{figure}
+
+JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nezávislý na platformě. Oproti jeho hlavnímu konkurentu XML\footnote{\href{https://cs.wikipedia.org/wiki/Extensible_Markup_Language}{Extensible Markup Language} je značkovací jazyk určený pro serializaci dat.} je datově úspornější, avšak je nevhodný k přenosu binárních informací. JSON je schopen kódovat a následně dekódovat tyto datové typy:
 
 \begin{itemize}
     \item
@@ -153,12 +154,6 @@ JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nez�
     \item
     \textbf{object} - seznam prvků ve struktuře \textit{klíč} - \textit{hodnota}, např. \{"foo": 6, "bar": [1, 10, 100]\}.
 \end{itemize}
-
-\begin{figure}[H]
- \centering
- \includesvg{images/json-logo}
- \caption{Logo datového formátu JSON}
-\end{figure}
 
 Příklad pokročilé struktury tohoto formátu (jedná se o upravenou verzi JSON exportu z PYBOTS):
 

@@ -3,7 +3,7 @@
 
 \subsection{Pomocná třída Exportable}
 
-Abstraktní třída \ic*Exportable* je určena k identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou metodu \ic|export|, která by v potomcích vracet jedině takové hednoty, které jsou zakódovat do formátu \nameref{subsec:json} - v naprosté většině případů se v aplikaci k exportu používá vestavěný datový typ \ic|dict|.
+Abstraktní třída \ic|Exportable| je určena k identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou metodu \ic|export|, která by v potomcích měla vracet jedině takové hednoty, které je možné překonvertovat do formátu \nameref{subsec:json} - v naprosté většině případů se v aplikaci k exportu používá vestavěný datový typ \ic|dict|.
 
 \subsection{Enumerace Orientation}
 
@@ -25,11 +25,15 @@ Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN
 
 \todo{Enumerace Field a její klíče}
 
+\subsection{Enumerace ReponseState}
+
+\todo{popsat ResponseState}
+
 \subsection{Kontejnerová třída Map}
 
-\ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k vyhledávání nad mapou, ale bohužel je její složitost vzhledem k implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k získávání vedlejší pole dle zadaných souřadnit a instance třídy \ic|Orientation|. V případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|. 
+\ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k vyhledávání nad mapou, ale bohužel je její složitost vzhledem k implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|. 
 
-Níže uvedení příklad znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+Níže uvedený příklad znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
 
 \begin{lstlisting}[caption={Přetížené indexování třídy Map}]
 position = 3, 2
@@ -47,7 +51,9 @@ Na tomto místě je nutno poznamenat, že potomci třídy \ic|Field|, jenž jsou
 
 \subsubsection{Společný abstraktní předek Field}
 
-Pro všechny instance polí existuje společný abstraktní předek - třída \ic|Field|, ze které dědí všechna možná pole umístitelná do mapy. Samotná třída je potomkem třídy \ic|Exportable|, znamená to tedy, že každý z potomků této třídy musí implementovat metodu \ic|export|, což zajištuje možnost reprezentace herní struktury i mimo aplikaci.
+\begin{sloppypar}
+	Pro všechny instance polí existuje společný abstraktní předek - třída \ic|Field|, ze které dědí všechna možná pole umístitelná do mapy. Samotná třída je potomkem třídy \ic|Exportable|, znamená to tedy, že každý z potomků této třídy musí implementovat metodu \ic|export|, což zajištuje možnost reprezentace herní struktury i mimo aplikaci.
+\end{sloppypar}
 
 \subsubsection{Prázdné pole EmptyField}
 
@@ -62,6 +68,7 @@ Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli
 Ve své podstatě se jedná o pole jako každé jiné v mapě, avšak má jednu spicální vlastnost. Při vstoupení na něj botem je vyvolána výjimka \ic|GameFinished| (o struktuře a systému výjimek v sekci \fullref{subsec:custom-exceptions}) a hra končí. 
 
 \subsubsection{Pole pro boty BotField a LaserBatteryBotField}
+\todo{popsat bot fieldy, především zodpovědnosti}
 
 \subsection{Systém a struktura vlastních výjimek}
 \label{subsec:custom-exceptions}
@@ -69,10 +76,43 @@ Ve své podstatě se jedná o pole jako každé jiné v mapě, avšak má jednu 
 Proces zpracování herní akce je záležitost, při které může dojít až k několika desítkám nevalidních nebo hru ukončujících stavů, jako např. bot mimo herní mapu, pohyb bota, který není na řadě, požadavek na neznámého bota, požadavek na neznámou mapu, nesprávná herní akce pro kontext hry anebo hra s již zaplněnými poli pro boty. Proto je v aplikaci navržen systém výjimek, které jsou vyhazovány v momentech, kdy je již proces zpracování akce zahájen.
 
 \begin{table}[H]
-	\begin{tabularx}{\textwidth}{| l | X |}
-		výjimka & její popis \\
-		\hline
-		asd & \lipsum[1] \\
-	\end{tabularx}
+	\newcolumntype{B}{>{\collectcell\icmacro}r<{\endcollectcell}}
+	\renewcommand{\arraystretch}{1.2}
+	\centering
+	
+	\begin{tabular}{ B || p{.6\textwidth} }
+		OutOfMapError & Tuto výjimku používá třída \ic|Map| k indikaci přístupu mimo rozsah mapy. Kromě utility \ic|get_positions_in_row| ji používá především třída \ic|Game| při procesu zpracování herní akce. \\
+
+		BotNotOnTurn & Výjimka tohoto typu je určena k indikaci stavu, kdy je vznesen požadavek na tah bota, který ve hře se zapnutým parametrem \ic|rounded_game| není na řadě. \\
+
+		NoFreeBots & Tento typ vyjímky slouží k rozpoznání stavu, kdy se řídící třída pokusí přidat bota do hry, v níž již není volné pole pro bota. \\
+
+		ConfigurationError & \ic|ConfigurationError| se používá pro signalizaci stavu nevalidní konfigurace. Ve dvou případech je užívána třídou \ic|MapFactory|, jenž její pomocí rozlišuje stavy při nevalidním požadavku na vytvoření mapy (nemožnost umístit příliš moc herních bloků do příliš malé mapy) a nelogickou konfiguraci parametrů \ic|battery_game = True| a \ic|laser_game = False|. Pomocí této výjimky se také kontroluje validita configuračního formuláře - více tomto formuláři v sekci \fullref{subsec:administration}. \\
+
+		GameFinished & Tato výjimka ukončuje hru - je vyvolána třídou \ic|Game| při vstoupení bota na pole třídy \ic|TreasureField|. Tuto výjimku očekává instance třídy \ic|GameController| v případě jejího zachycení zaznamenává tuto hru za ukončenou a bota, jenž provedl tento krok za výherce hry. \\
+
+		CriticalBatteryLevel & Výjimku, jenž je potomkem výjimky \ic|MovementError|, vyvolává třída pole \ic|LaserBatteryBotField| v případě požadavku na vybití baterie pod nulovou úroveň. Vzhledem k jejímu rodiči je tedy tato výjimka odchytávána jako nemožnost provést herní akci resp. nemožnost provést krok ve hře. \\
+	\end{tabular}
 	\caption{Seznam vlastních výjimek a jejich popis}
 \end{table}
+
+\subsection{Testy}
+\todo{popsat identickou strukturu testů, systém volání flasku}
+
+\subsubsection{TestCase}
+
+V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množinu testovacích metod \ic|TestCase|. Je rozšířená o tyto metody s těmito hlavičkami:
+\begin{description}
+	\item \ic|assertIsInMap(self, game_map, field_cls, expected_count=1)| \\
+	Tato metoda rozšiřuje testovací aserce v původní testovací třídě \ic|TestCase| o možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s výchozí hodnotou \ic|1|.
+	
+    \item \ic|test_client(self)| \\
+    \todo{dopsat text k metodám testCase}
+
+    \item \ic|set_conf_to_test_client(self, conf, client)| \\
+
+    \item \ic|setUp(self)| \\
+
+    \item \ic|tearDown(self)| \\
+
+\end{description}
