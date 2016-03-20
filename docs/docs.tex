@@ -21,7 +21,9 @@
 \usepackage{titling} % theauthor, thetitle
 \usepackage{fancyhdr} % zápatí, záhlaví
 \usepackage{lastpage} % lastpage label
-\usepackage{tabularx} % lastpage label
+\usepackage{tabularx} % pro responzivni tabulky
+\usepackage{array} % pro tabulkové zápis
+\usepackage[verb]{collcell} % pro sloupce s makrem
 
 % ------ CONFIGURATION ------
 
@@ -51,6 +53,8 @@
 \lfoot{}
 \cfoot{}
 \rfoot{Strana \thepage \hspace{1pt} z \pageref*{LastPage}}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{.5pt}
 
 % ------ CUSTOM COMMANDS ------
 
@@ -65,12 +69,15 @@
 \def\@@ic#1#2#3{%
     \fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{violet},breaklines=true]|#3|}%
 }
+\newcommand{\icmacro}[1]{\fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{violet},breaklines=true]|#1|}}
 \makeatother
 
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
 \newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
+
+\newcolumntype{I}{>{\collectcell\ic}l<{\endcollectcell}}
 
 % ------ LISTINGS SETUP ------
 
@@ -139,12 +146,9 @@
 \author{Josef Kolář}
 \date{\today}
 
-{
-	\newgeometry{margin=1in}
-	\input{_titulek_dmp.tex}
-	% \input{_titulek_soc.tex}
-	\restoregeometry
-}
+\input{_titulek_dmp.tex}
+% \input{_titulek_soc.tex}
+\listoftodos
 
 \input{_prohlaseni.tex}
 

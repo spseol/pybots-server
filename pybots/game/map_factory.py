@@ -39,6 +39,3 @@ class MapFactory(object):
             assert isinstance(bot, BotField)
             bot.name = names.pop()
 
-
-class InvalidMapError(Exception):
-    pass
