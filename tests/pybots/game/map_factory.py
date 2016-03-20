@@ -1,13 +1,14 @@
 from unittest.mock import patch
 
+from pybots.configurations import ConfigurationError
 from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.configurations.custom_configuration import CustomConfiguration
 from pybots.configurations.random_field_placer import RandomFieldPlacerMixin
 from pybots.game.fields.block_field import BlockField
-from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.bot_field import BotField
+from pybots.game.fields.empty_field import EmptyField
 from pybots.game.fields.treasure_field import TreasureField
-from pybots.game.map_factory import MapFactory, InvalidMapError
+from pybots.game.map_factory import MapFactory
 from tests.test_case import TestCase
 
 
@@ -57,10 +58,10 @@ class TestMapFactory(TestCase):
 
     def test_invalid_map(self):
         factory = MapFactory
-        with self.assertRaises(InvalidMapError):
+        with self.assertRaises(ConfigurationError):
             factory.create(CustomConfiguration(bots=2, treasures=2, map_width=3, map_height=1, blocks=0))
 
-        with self.assertRaises(InvalidMapError):
+        with self.assertRaises(ConfigurationError):
             factory.create(
                 CustomConfiguration(map_width=10, map_height=10, blocks=1, bots=1, treasures=1, laser_game=True,
                                     battery_game=False))
