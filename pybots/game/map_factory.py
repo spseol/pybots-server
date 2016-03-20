@@ -38,4 +38,3 @@ class MapFactory(object):
             bot = game_map[position]
             assert isinstance(bot, BotField)
             bot.name = names.pop()
-
