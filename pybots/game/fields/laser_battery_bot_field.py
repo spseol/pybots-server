@@ -67,7 +67,7 @@ class LaserBatteryBotField(BotField):
     def export(self, *args, **kwargs):
         export = super().export(*args, **kwargs)
         export.update({
-            FIELD_KEY: FieldEnum.BATTERY_BOT,
+            FIELD_KEY: FieldEnum.LASER_BATTERY_BOT,
             'battery_level': self.actual_battery_level,
         })
         return export
