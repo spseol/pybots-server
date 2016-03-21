@@ -69,12 +69,15 @@ OK
 
 
 Poté ale může dojít k následující změně zdrojového k\'{o}du - vznikne požadavek na metodu \ic|MathOperations.add|, a to konkrétně na zvýšení počtu parametrů na tři. Ne ve všech případech se ovšem bude volat tato metoda i se třetím parametrem, musí být tedy zajištěna \textbf{zpětná kompatibilita}.
+
 \begin{lstlisting}[caption={Vylepšená implementace metoda MathOperations.add}]
 @staticmethod
 def add(a, b, c=0):
 	return a + b + c
 \end{lstlisting}
+
 Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
+
 \begin{lstlisting}[caption={Testovací metoda pro upravenou implementaci MathOperations.add}]
 def test_add(self):
 	self.assertEqual(
@@ -86,17 +89,23 @@ def test_add(self):
 		20
 	)
 \end{lstlisting}
-Tímto testem máme potvrzenou korektní jak pro dvouparametrické volání, tak pro \uv{nové} tříparametrické volání. Podstata úprava zdrojového kódu tkví v zachování předchozích asercí - je tak zajištěna zpětná kompatibilita. Jako další požadavek na metodu \ic|MathOperations.add| může typicky přijít přidání dalšího parametru, kdy je vhodné vzhledem k aktuální implementaci metody \ic|add| tuto metodu přeimplementovat následovně:
+
+\begin{sloppypar}
+	Tímto testem máme potvrzenou korektní jak pro dvouparametrické volání, tak pro \uv{nové} tříparametrické volání. Podstata úprava zdrojového kódu tkví v zachování předchozích asercí - je tak zajištěna zpětná kompatibilita. Jako další požadavek na metodu \ic|MathOperations.add| může typicky přijít přidání dalšího parametru, kdy je vhodné vzhledem k aktuální implementaci metody \ic|add| tuto metodu přeimplementovat následovně:
+\end{sloppypar}
+
 \begin{lstlisting}[caption={Finální implementace metody MathOperations.add}]
 @staticmethod
 def add(*values):
 	return sum(values)
 \end{lstlisting}
-\todo{popsat *values}
+
 \textit{
-  Zápis $*values$ je velmi specifický pro jazyk Python. V případě, že se jedná o volání funkce/metody, 
-} \\
+  Zápis $*values$ je velmi specifický pro jazyk Python. V případě, že se jedná o volání funkce/metody, je objekt $values$ rozexpandován do jednotlivých parametrů. Nezáleží přitom, kolik má volaná metoda/funkce předepsaných parametrů, takže i v tomto případě může přijít $TypeError$. Jedinou podmínkou je možnost iterovat přes objekt $values$ (musí definovat interní metodu $\_\_init\_\_$). \\Druhý případ tohoto zápisu se může vyskytovat v hlavičce funkce/metody, v tomto případě znamená téměř pravý opak předchozího případu - předané parametry jsou použity pro vytvoření objektu $values$, jenž jako datový typ $tuple$ obsahuje všechny tyto parametry. 
+}
+
 A ke testovacím asercím přidat i jednu komplexnější obsahující volání s vyšším počtem parametrů:
+
 \begin{lstlisting}[caption={Finální test pro metodu MathOperations.add}]
 def test_add(self):
 	...
@@ -105,7 +114,9 @@ def test_add(self):
 		MathOperations.add(*values),
 		sum(values)
 	)
+
 \end{lstlisting}
+
 \subsection{Flask}
 
 \begin{wrapfigure}{R}{\textwidth/3}
