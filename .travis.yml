@@ -10,6 +10,7 @@ before_install:
   - "sudo apt-get update && sudo apt-get install inkscape texlive-full texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra texlive-latex-recommended texlive-lang-czechslovak latex-xcolor"
   - "wget -O docs/newverbs.sty http://chocolatshalba.ch/files/texlive/texmf-dist/tex/latex/newverbs/newverbs.sty"
   - "wget -O docs/svg.sty http://mirrors.ctan.org/graphics/svg/svg.sty"
+  - "wget -O docs/collcell.sty https://www.tug.org/texlive//Contents/live/texmf-dist/tex/latex/collcell/collcell.sty"
 
 install:
   - pip install -r requirements.txt
