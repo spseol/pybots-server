@@ -15,7 +15,7 @@ class TestLaserBatteryBotField(TestCase):
         battery_level = randint(0, 100)
         bot = LaserBatteryBotField(battery_level=battery_level, name='Tester')
         self.assertEqual(bot.export(), {
-            FIELD_KEY: Field.BATTERY_BOT,
+            FIELD_KEY: Field.LASER_BATTERY_BOT,
             'orientation': LaserBatteryBotField.DEFAULT_ORIENTATION,
             'battery_level': battery_level,
             'name': 'Tester'

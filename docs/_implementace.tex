@@ -23,7 +23,21 @@ Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN
 
 \subsection{Enumerace Field}
 
-\todo{Enumerace Field a její klíče}
+Jedná se o enumeraci typově rozlišující od sebe jednotlivé potomky abstraktní třídy \ic|Field| nacházejících se v mapě. Hodnoty této enumerace se poté nacházejí v mapě pro klienty.
+
+\begin{table}[H]
+	\begin{tabular}{ r r | l }
+		hodnota & klíč & odpovídající třída \\
+		\hline
+		$0$ & \ic|EMPTY| & \ic|EmptyField| \\
+		$1$ & \ic|TREASURE| & \ic|TreasureField| \\
+		$2$ & \ic|BOT| & \ic|BotField| \\
+		$3$ & \ic|BLOCK| & \ic|BlockField| \\
+		$4$ & \ic|BATTERY_BOT| & \ic|LaserBatteryBotField| \\
+	\end{tabular}
+	\caption{Seznam hodnot enumerace $Field$}
+	\label{table:field-enum-values}
+\end{table}
 
 \subsection{Enumerace ReponseState}
 
@@ -107,9 +121,10 @@ V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 	Tato metoda rozšiřuje testovací aserce v původní testovací třídě \ic|TestCase| o možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s výchozí hodnotou \ic|1|.
 	
     \item \ic|test_client(self)| \\
-    \todo{dopsat text k metodám testCase}
+    Jedná se o metodu vracející 
 
     \item \ic|set_conf_to_test_client(self, conf, client)| \\
+    \todo{dopsat text k metodám testCase}
 
     \item \ic|setUp(self)| \\
 

@@ -10,9 +10,9 @@
 
 Python je moderní interpretovaný programovací jazyk, který byl navržen v roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
 
-Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \uv{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \uv{Jython} naprogramovaný v jazyce Java nebo \uv{IronPython} v prostředích .NET a Mono.
+Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \href{https://en.wikipedia.org/wiki/CPython}{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \href{https://cs.wikipedia.org/wiki/Jython}{Jython} naprogramovaný v jazyce \href{https://cs.wikipedia.org/wiki/Java_%28programovac%C3%AD_jazyk%29}{Java} nebo \href{https://cs.wikipedia.org/wiki/IronPython}{IronPython} implementovaný v jazyce \href{https://cs.wikipedia.org/wiki/C_Sharp}{C\#} v prostředích \href{https://cs.wikipedia.org/wiki/.NET}{.NET} a \href{https://cs.wikipedia.org/wiki/Mono_%28platforma%29}{Mono}.
 
-Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https:\/\/pypi.python.org\/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
+Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https://pypi.python.org/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
 
 Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII\footnote{\href{https://cs.wikipedia.org/wiki/ASCII}{American Standard Code for Information Interchange} - kódová tabulka znaků z anglické abecedy a některých dalších kódových znaků} znaků a řetězce Unicode\footnote{\href{https://cs.wikipedia.org/wiki/Unicode}{Unicode} je vylepšená norma pro reprezentaci znaků do více bytů.} znaků), celočíselného dělení a některých syntaktických vylepšení jazyka. Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání podpory pro asynchronní volání funkcí a podpory pro typovost parametrů a návratových hodnot funkcí a metod.
 
@@ -20,8 +20,8 @@ Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 
 
 Jednotkové automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu aplikace, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost a správnost testů projektu.
 
-Níže je uveden příklad třídy k testování. Třída \ic-MathOperations- je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
-\begin{lstlisting}[caption={Příklad třídy MathOperations k testování}]
+Níže je uveden příklad třídy k testování. Třída \ic|MathOperations| je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
+\begin{lstlisting}[caption={Příklad třídy $MathOperations$ k testování}]
 class MathOperations(object):
 	@staticmethod
 	def add(a, b):
@@ -36,7 +36,7 @@ class MathOperations(object):
 	Pomocí volání \ic|MathOperations.add(40, 2)| získáme \ic|42|, resp. při \ic|MathOperations.divide(36, 6)| je výsledkem \ic|6|. Ve své práci používám balíček pro testování \ic|unittest| dodávaný přímo s programovacím jazykem Python. Jako hlavní nástroj pro jednotkové testování nabízí tento balíček třídu \ic|TestCase|, která obsahuje celou řadu metod pro testování asercí (\ic|assertEqual|, \ic|assertTrue|, \ic|assertEqual|, \ic|assertIn|, \ic|assertIs| nebo i komplexnější jako \ic|assertDictEqual|, \ic|assertRegex| nebo \ic|assertDictContainsSubset|) a potomky této třídy je potom možno automaticky spouštět a vyhodnocovat. Tyto předpoklady tedy zapíšeme jako metody do obalující třídy:
 \end{sloppypar}
 
-\begin{lstlisting}[caption={Základní TestCase pro třídu MathOperations}]
+\begin{lstlisting}[caption={Základní TestCase pro třídu $MathOperations$}]
 class TestMathOperations(TestCase):
 	def test_add(self):
 		self.assertEqual(
@@ -70,7 +70,7 @@ OK
 
 Poté ale může dojít k následující změně zdrojového k\'{o}du - vznikne požadavek na metodu \ic|MathOperations.add|, a to konkrétně na zvýšení počtu parametrů na tři. Ne ve všech případech se ovšem bude volat tato metoda i se třetím parametrem, musí být tedy zajištěna \textbf{zpětná kompatibilita}.
 
-\begin{lstlisting}[caption={Vylepšená implementace metoda MathOperations.add}]
+\begin{lstlisting}[caption={Vylepšená implementace metoda $MathOperations.add$}]
 @staticmethod
 def add(a, b, c=0):
 	return a + b + c
@@ -78,7 +78,7 @@ def add(a, b, c=0):
 
 Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
 
-\begin{lstlisting}[caption={Testovací metoda pro upravenou implementaci MathOperations.add}]
+\begin{lstlisting}[caption={Testovací metoda pro upravenou implementaci $MathOperations.add$}]
 def test_add(self):
 	self.assertEqual(
 		MathOperations.add(40, 2),
@@ -94,7 +94,7 @@ def test_add(self):
 	Tímto testem máme potvrzenou korektní jak pro dvouparametrické volání, tak pro \uv{nové} tříparametrické volání. Podstata úprava zdrojového kódu tkví v zachování předchozích asercí - je tak zajištěna zpětná kompatibilita. Jako další požadavek na metodu \ic|MathOperations.add| může typicky přijít přidání dalšího parametru, kdy je vhodné vzhledem k aktuální implementaci metody \ic|add| tuto metodu přeimplementovat následovně:
 \end{sloppypar}
 
-\begin{lstlisting}[caption={Finální implementace metody MathOperations.add}]
+\begin{lstlisting}[caption={Finální implementace metody $MathOperations.add$}]
 @staticmethod
 def add(*values):
 	return sum(values)
@@ -106,7 +106,7 @@ def add(*values):
 
 A ke testovacím asercím přidat i jednu komplexnější obsahující volání s vyšším počtem parametrů:
 
-\begin{lstlisting}[caption={Finální test pro metodu MathOperations.add}]
+\begin{lstlisting}[caption={Finální test pro metodu $MathOperations.add$}]
 def test_add(self):
 	...
 	values = tuple(randint(0, 100) for _ in range(10))

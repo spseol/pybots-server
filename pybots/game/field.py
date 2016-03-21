@@ -9,4 +9,4 @@ class Field(IntEnum):
     TREASURE = 1
     BOT = 2
     BLOCK = 3
-    BATTERY_BOT = 4
+    LASER_BATTERY_BOT = 4
