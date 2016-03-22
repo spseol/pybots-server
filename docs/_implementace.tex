@@ -121,13 +121,15 @@ V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 	Tato metoda rozšiřuje testovací aserce v původní testovací třídě \ic|TestCase| o možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s výchozí hodnotou \ic|1|.
 	
     \item \ic|test_client(self)| \\
-    Jedná se o metodu vracející 
+    Tato metoda vrací nakonfigurovaný objekt třídy \ic|FlaskClient|, jenž je schopen pokládat požadavky na instanci aplikace frameworku \nameref{subsec:flask} - základní informací pro tento požadavek je URL, možné je přidat parametry jak pro \nameref{subsec:http} metodu $GET$, tak pro metodu $POST$. Metoda \ic|test_client| provádí s tímto objektem jedinou úpravu - \ic|app_client.testing = True|, jenž zajišťuje probublávání výjimek skrz celý strom volání - nezachycené výjimky jdou poté vidět přímo v testech.
 
     \item \ic|set_conf_to_test_client(self, conf, client)| \\
     \todo{dopsat text k metodám testCase}
 
     \item \ic|setUp(self)| \\
+    Framework \nameref{subsec:flask} používá ke generování URL adres funkci \ic|url_for|, jenž pro svou funkci potřebuje aktivní objekt \ic|RequestContext| v globálním Flask objektu \todo{rly je to requests stack?} \ic|RequestStack|. V této metodě, jenž je volána při spuštění \ic|TestCase| se tedy tento \ic|RequestContext| nastavuje. 
 
     \item \ic|tearDown(self)| \\
+    Tato metoda je volána při ukončení testů z jedné třídy \ic|TestCase| a je v ní z globálního objektu třídy \ic|RequestStack| odebrán kontext (ten, jenž byl nastavený v metodě \ic|setUp|).
 
 \end{description}
