@@ -9,7 +9,7 @@ Abstraktní třída \ic|Exportable| je určena k identifikování všech tříd,
 
 Tato enumerace dědící ze třídy \ic|IntEnum| z balíčku \ic|enum| zajištuje především sjednocení udávaných orientací v aplikaci, v některých případech označuje i směr. Je označena dekorátorem \ic|unique|, který zajištuje unikátnost jednotlivých hodnot v enumeraci. Tato enumerace obsahuje klíče \ic|NORTH|, \ic|EAST|, \ic|SOUTH| a \ic|WEST| s hodnotami v rozsahu od 1 do 4. Jako jednoduché utility jsou ve třídě metody (resp. vlastnosti díky dekorátoru \ic|@property|) \ic|is_horizontal| a \ic|is_vertical| ověřující horizontální, resp. vertikální směr. Výhoda v předkovi \ic|IntEnum|, resp. \ic|Enum| tkví v možnosti testovat shodnost pomocí operátoru rovnosti a konstruovat tyto objekty pomocí číselné hodnoty, viz následující ukázka.
 
-\begin{lstlisting}[caption={Výhody třídy Enum}]
+\begin{lstlisting}[caption={Výhody třídy $Enum$}]
 orientation_by_key = Orientation.NORTH
 orientation_by_value = Orientation(0)
 
