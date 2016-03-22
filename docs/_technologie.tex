@@ -118,7 +118,7 @@ def test_add(self):
 \end{lstlisting}
 
 \subsection{Flask}
-
+\label{subsec:flask}
 \begin{wrapfigure}{R}{\textwidth/3}
     \centering
     \includesvg[width=\textwidth/3]{images/flask-logo}
@@ -130,7 +130,7 @@ Flask je webový framework implementovaný v jazyce Python. Mezi jeho přednosti
 Vzhledem k tomu, že je framework téměř stoprocentně pokryt testy, lze jednoduše usuzovat z těchto testů o funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
 
 \subsection{HTTP}
-
+\label{subsec:http}
 HTTP (HyperText Transfer Protocol) je standardizovaný internetový protokol pro výměnu HTML kódu. Jeho první koncept vznikl v roce 1991 jako veze 0.9, o pět let později byla uvedena verze 1.1 a verze 1.1, která je používaná dodnes byla uvedena v červu roku 1999. V dnešní době je používán nejen k výměně HTML kódu, ale jeho rozšíření MIME \footnote{Multipurpose Internet Mail Extensions} poskytuje možnost přenosu souborů jakéhokoliv typu. Samotný HTTP nezajištuje zabezpečení ani integritu dat. Nadstavbu nad HTTP tvoří HTTPS, jehož komunikace je šifrována pomocí SSL nebo TLS.
 
 HTTP pracuje na principu request-response (požadavek-odpověd). HTTP požadavek ve formě plaintextu je vyslán ze klientského zařízení, ten je serverem zpracován a nazpět jsou odeslány tzv. hlavičky odpovědi a poté i samotné její tělo. Vzhledem k tomu, že každý další následující dotaz klienta na server bude nezávislý na těch předchozích, je nutno označit tento protokol za bezstavový. Nelze tedy uchovávat stav komunikace a jednotlivé požadavky nemají mezi sebou souvislost. Tato vlastnost může být částečně potlačena použitím HTTP tzv. sušenek (\emph{cookies}), které jsou schopny téměř jednoznačně identifikovat klientské zařízení na serveru.
