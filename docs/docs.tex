@@ -25,6 +25,7 @@
 \usepackage{array} % pro tabulkové zápis
 \usepackage[verb]{collcell} % pro sloupce s makrem
 \usepackage{bookmark} % nenutnost spouštět dcakrát pro korektní reference
+\usepackage{pdfpages}
 
 % ------ CONFIGURATION ------
 
@@ -37,12 +38,13 @@
 
 % default width of svg
 \setsvg{width=.5\textwidth}
-\graphicspath{ {images/} }
+\graphicspath{ {assets/} }
 
 % reset ref section names
 \def\sectionautorefname{}
 \def\subsectionautorefname{}
 \def\subsubsectionautorefname{}
+\def\tableautorefname{}
 \def\tableautorefname{}
 
 \renewcommand\lstlistlistingname{Seznam zdrojových kódů}
@@ -54,9 +56,14 @@
 \lfoot{}
 \cfoot{}
 \rfoot{Strana \thepage \hspace{1pt} z \pageref*{LastPage}}
+\addtolength{\headheight}{1.2pt}
 \renewcommand{\headrulewidth}{2pt}
-\renewcommand{\footrulewidth}{.5pt}
+\renewcommand{\footrulewidth}{0pt}
 \renewcommand{\arraystretch}{1.2}
+
+\title{PYBOTS - hra pro programátory}
+\author{Josef Kolář}
+\date{\today}
 
 % ------ CUSTOM COMMANDS ------
 
@@ -143,26 +150,27 @@
 }
 
 \begin{document}
-
-\title{PYBOTS - hra pro programátory}
-\author{Josef Kolář}
-\date{\today}
+\pagestyle{fancy}
+\thispagestyle{empty}
 
 \input{_titulek_dmp.tex}
 % \input{_titulek_soc.tex}
-
-\thispagestyle{empty}
-\listoftodos
 
 \input{_prohlaseni.tex}
 
 \begin{abstract}
 \todo{sepsat abstrakt}
 \lipsum[2]
-\end{abstract} 
+\end{abstract}
+
+\setcounter{page}{4}
 
 \tableofcontents
 \addcontentsline{toc}{section}{Obsah}
+
+\newpage
+\includepdf[pages={1}]{assets/zadani.pdf}
+\addcontentsline{toc}{section}{Zadání}
 
 \newpage
 \pagestyle{fancy}
@@ -183,4 +191,6 @@
 \listoffigures
 \addcontentsline{toc}{section}{Seznam obrázků}
 
+\newpage
+{\Large \listoftodos}
 \end{document}

@@ -2,13 +2,13 @@
 \section{Teoretický úvod}
 
 \subsection{Rozbor zadání}
-\todo{scan zadání + rozbor jednotlivých bodů}
+\todo{rozbor jednotlivých bodů}
 \subsection{Návrh architektury aplikace}
 
 \subsubsection{Návrh interní struktury}
 
 \textit{
-	V této sekci se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci \fullref{sec:implementation}.
+	V této sekci se budu zabývat pouze teoretickým návrhem jednotlivých datových a řídící struktur. Popisu použitých algoritmů a jednotlivých implementačních rozhodnutí se budu věnovat v sekci\fullref{sec:implementation}.
 }
 
 O interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do slovníku, který je následně převeden do formátu \nameref{subsec:json}, jenž je následně distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V případě módu hry s tahy hlídá \ic|Game| pořadí jednotlivých botů.
@@ -25,7 +25,7 @@ Mezi další pomomky třídy \ic|Field| patří \ic|BlockField| reprezentující
 
 Třída, která kontroluje jednotlivé instance \ic|Game| v aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za vytváření her, resp. na svém vstupu příjmá instanci potomka třídy \ic|BaseConfiguration|, kterou následně předá do singletonu třídy \ic|MapFactory|, která sestaví instanci mapy.
 
-\ic|MapFactory| je třída zodpovědná za vygenerování mapy v závislosti na předané configuraci. Plný výčet parametů konfigurace lze najít v tabulce \fullref{table:conf-parameters}.
+\ic|MapFactory| je třída zodpovědná za vygenerování mapy v závislosti na předané configuraci. Plný výčet parametů konfigurace lze najít v tabulce\fullref{table:conf-parameters}.
 
 \begin{table}[H]
 	\centering
