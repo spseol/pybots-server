@@ -17,7 +17,7 @@ assert orientation_by_value == orientation_by_key
 \end{lstlisting}
 
 \subsection{Enumerace $Action$}
-
+\label{subsec:action-enum}
 Enumerace \ic|Action| se v aplikaci používá jako jednoznačný identifikátor akce pro jednotlivé boty. Je stejně jako \ic|Orientation| odekorována pomocí \ic|@unique|, ale narozdíl od ní se nejedná o číselnou enumeraci, ale o enumeraci řetězců - pro snažší identifikaci v rámci požadavků na server.
 Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN_RIGHT| pro jeho otáčení, \ic|WAIT| pro čekání na místě (a nabití baterie) a \ic|LASER_BEAM| pro aktivaci laserového paprsku.
 
@@ -80,7 +80,105 @@ assert isinstance(
 \end{lstlisting}
 
 \subsection{Třída hry $Game$}
-\todo{popsat $Game$}
+
+Třída \ic|Game| je jednou z nevyýznamnějších třídy v objektovém návrhu této aplikace. Zajišťuje zpracování klientské herních akce, deleguje herní povely na instance herních polí a kontroluje přiřazování prázdných polí novým botům. Dále si uchovává čas svého vytvoření a čas poslední modifikace, to kvůli administraci. V případě aktivního konfiguračního parametru \ic|rounded_game| hlídá pořadí tahů botů a v případně nesrovnalosti vyhazuje vyjímku \ic|BotNotOnTurn|.
+
+Jádro této třídy tvoří slovník akcí - jedná se o interní instanci datového typu \ic|dict| uloženého v lokálním kontextu objektu, viz \fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace \nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
+
+\begin{lstlisting}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
+self._actions = {
+    Action.STEP: self._action_step,
+    Action.TURN_LEFT: self._action_turn_left,
+    Action.TURN_RIGHT: self._action_turn_right,
+    Action.WAIT: self._action_wait,
+    Action.LASER_BEAM: self._action_laser_beam,
+}	
+\end{lstlisting}
+Implementace a popis jednotlivých metod:
+
+\subsubsection{Metoda akce kroku $\_action\_step$}
+
+\begin{lstlisting}[caption={Metoda $Game.\_action\_step$},label={lst:game-action-step},numbers=left]
+def _action_step(self, bot_id, bot_field, **kwargs):
+    actual_position = self._bots_positions.get(bot_id)
+
+    bot_orientation = bot_field.orientation
+    new_position = get_next_position(
+        actual_position,
+        bot_orientation
+    )
+    try:
+        new_field = self.map[new_position]
+    except OutOfMapError:
+        raise MovementError('New position is out of map.')
+
+    if isinstance(new_field, TreasureField):
+        raise GameFinished()
+    elif isinstance(new_field, BotField):
+        raise MovementError('Cannot step on another bot.')
+    elif isinstance(new_field, BlockField):
+        raise MovementError('Cannot step on block.')
+
+    if self._configuration.battery_game and isinstance(bot_field, LaserBatteryBotField):
+        bot_field.drain(bot_field.step_battery_cost)
+
+    self._map[new_position], self._map[actual_position] = bot_field, new_field
+
+    self._bots_positions[bot_id] = new_position
+\end{lstlisting}
+
+Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeho orientace. Volání na řádcích $5-8$ zajišťuje zjištění následující pozice ve směru natočení bota vzhledem k jeho akutální pozici. Následuje test na existenci pozice pomocí bloku \ic|try:| $...$ \ic|except OutOfMapError:|. Podmínka na řádku $14$ testuje, zda cílové pole není instancí \ic|TreasureField|, čehož skutečnost by způsobila vyvolání výjimky \ic|GameFinished| a ukončení hry. Následně se na řádcích $16-19$ ověřuje, zdy je možné na cílové bloky přesunout aktuálního bota.
+
+Na řádku $20$ lze v podstatě prohlásit akci za \emph{proveditelnou}. Na řádcích $21-21$ je následně pochycena hra s aktivním konfiguračním parametrem $battery_game$ a poté je již poveden pohyb bota pomocí vyměnění zdrojového a cílového pole v mapě. Před ukončím této metody je ještě aktualizována pozice bota.
+
+\subsubsection[Metody akcí změny orientace]{Metody akcí změny orientace $\_action\_turn\_left$ a $\_action\_turn\_right$}
+
+\begin{lstlisting}[caption={Metoda $Game.\_action\_turn\_left$},label={lst:game-action-turn-left},numbers=left]
+def _action_turn_left(self, bot_field, **kwargs):
+    assert isinstance(bot_field, BotField)
+    bot_field.rotate(Action.TURN_LEFT)
+\end{lstlisting}
+
+Dvojice metod \ic|Game._action_turn_left| a \ic|Game._action_turn_right| je si velmi podobná, jediný rozdíl tkví v hodnotě předané instanci bota - jedná se buď o \ic|Action.TURN_LEFT| nebo \ic|Action.TURN_RIGHT|. Implementačně se pouzde předeleguje požadavek na instanci \ic|BotField| předanou v parametru.
+
+\subsubsection{Metoda akce čekání $\_action\_wait$}
+
+\begin{lstlisting}[caption={Metoda $Game.\_action\_wait$},label={lst:game-action-wait},numbers=left]
+def _action_wait(self, bot_field, **kwargs):
+    if not self._configuration.battery_game:
+        raise ActionError('This game is not a battery game.')
+
+    assert isinstance(bot_field, LaserBatteryBotField)
+    bot_field.charge(bot_field.battery_charge)
+\end{lstlisting}
+
+Ihned na $2-3$ řádku je otestován parametr konfigurace \ic|battery_game|, protože bez něj nenní tato akce povolena. Pokud je vše v pořádku, je na instanci bota v mapě předelegován na řádku $6$ příkaz na čekání a nabíjení.
+
+\subsubsection{Metoda akce laseru $\_action\_laser\_beam$}
+
+\begin{lstlisting}[caption={Metoda $Game.\_action\_laser\_beam$},label={lst:game-action-laser-beam},numbers=left]
+def _action_laser_beam(self, bot_field, bot_position, **kwargs):
+    if not self._configuration.laser_game:
+        raise ActionError('This game is not a laser game.')
+
+    assert isinstance(bot_field, LaserBatteryBotField)
+    try:
+        bot_field.drain(bot_field.laser_battery_cost)
+    except CriticalBatteryLevel:
+        raise
+
+    for position in get_positions_in_row(self.map, bot_position, bot_field.orientation):
+        field = self.map[position]
+        if isinstance(field, self._configuration.default_empty_map_field):
+            continue
+        if isinstance(field, LaserBatteryBotField):
+            field.drain(bot_field.laser_damage)
+            break
+        if isinstance(field, BlockField):
+            self.map[position] = self._configuration.default_empty_map_field()
+            break
+\end{lstlisting}
+\todo{popsat $Game.\_action\_laser\_beam$}
 
 \subsection{Třídy reprezentující herní bloky}
 
@@ -155,5 +253,4 @@ V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 
     \item \ic|tearDown(self)| \\
     Tato metoda je volána při ukončení testů z jedné třídy \ic|TestCase| a je v ní z globálního objektu třídy \ic|RequestStack| odebrán kontext (ten, jenž byl nastavený v metodě \ic|setUp|).
-
 \end{description}

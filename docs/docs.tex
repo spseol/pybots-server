@@ -6,7 +6,7 @@
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[paper=a4paper]{geometry} % odsazení a velikosti stránek
-\usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolář},pdftitle={PYBOTS - hra pro programátory},pdfsubject={herní server PYBOTS pro programátory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
+\usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolar},pdftitle={Souboje virtualnich robotu PYBOTS},pdfsubject={herní server PYBOTS pro programátory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
 \usepackage{listings} % výpisy zdrojových kódů
 \usepackage{color} % barvy
 \usepackage{xcolor} % vytváření barev
@@ -25,7 +25,8 @@
 \usepackage{array} % pro tabulkové zápis
 \usepackage[verb]{collcell} % pro sloupce s makrem
 \usepackage{bookmark} % nenutnost spouštět dcakrát pro korektní reference
-\usepackage{pdfpages}
+\usepackage{pdfpages} % inlude pdf
+\usepackage{titlesec} % \section na nové stránce
 
 % ------ CONFIGURATION ------
 
@@ -46,7 +47,6 @@
 \def\subsubsectionautorefname{}
 \def\tableautorefname{}
 \def\tableautorefname{}
-
 \renewcommand\lstlistlistingname{Seznam zdrojových kódů}
 \renewcommand\lstlistingname{Zdrojový kód}
 
@@ -61,7 +61,7 @@
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\arraystretch}{1.2}
 
-\title{PYBOTS - hra pro programátory}
+\title{Souboje virtuálních robotů PYBOTS}
 \author{Josef Kolář}
 \date{\today}
 
@@ -106,7 +106,7 @@
     xrightmargin=-\fboxsep,
     numberstyle=\scriptsize,
     numbersep=6pt,
-    numbers=left,
+    % numbers=left,
 }
 \DeclareCaptionFormat{listing}{%
 	\colorlet{currentcolor}{.}%
@@ -148,7 +148,6 @@
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black},
 }
-
 \begin{document}
 \pagestyle{fancy}
 \thispagestyle{empty}
@@ -174,12 +173,15 @@
 
 \newpage
 \pagestyle{fancy}
+\newcommand\sectionbreak{\clearpage}
 
 \input{_teoreticky-uvod.tex}
 \input{_implementace.tex}
 \input{_technologie.tex}
 \input{_metatechnologie.tex}
 \input{_zaver.tex}
+
+\renewcommand\sectionbreak{}
 \newpage
 
 \listoftables
