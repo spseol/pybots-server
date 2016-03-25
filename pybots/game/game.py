@@ -59,10 +59,9 @@ class Game(Exportable):
         return self
 
     def _action_step(self, bot_id, bot_field, **kwargs):
-        actual_position = self._bots_positions[bot_id]
-        bot_field = self._map[actual_position]
+        actual_position = self._bots_positions.get(bot_id)
 
-        bot_orientation = self.map[actual_position].orientation
+        bot_orientation = bot_field.orientation
         new_position = get_next_position(
             actual_position,
             bot_orientation
