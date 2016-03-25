@@ -178,7 +178,46 @@ def _action_laser_beam(self, bot_field, bot_position, **kwargs):
             self.map[position] = self._configuration.default_empty_map_field()
             break
 \end{lstlisting}
-\todo{popsat $Game.\_action\_laser\_beam$}
+
+Metoda \ic|Game._action_laser_beam| je z metod zpracovávajících herní akce nejsložitější. Prvně je zkontrolován aktivní konfigurační parametr \ic|laser_game| a následně je na řádku $7$ proveden příkaz na vybítí baterie bota (s možným vyvoláním výjimky \ic|CriticalBatteryLevel| ze třídy \ic|LaserBatteryBotField|).
+
+\begin{figure}
+    {\itshape
+    Zápis klíčového slova \ic|raise| v bloku \ic|except| bez parametru je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:
+    }
+    \begin{minipage}{.475\textwidth}
+    \vspace{10pt}
+    \begin{lstlisting}
+try:
+    pass
+except Exception as e:
+    raise e
+    \end{lstlisting}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{.475\textwidth}
+    \vspace{10pt}
+    \begin{lstlisting}
+try:
+    pass
+except:
+    raise
+    \end{lstlisting}
+    \end{minipage}
+\end{figure}
+\footnotetext{Syntactic sugar (Syntaktický cukr) je určitá forma zjednodušení syntaxe jazyka určená ke zvýšení čitelnosti či zkrácení zápis zdrojového kódu - například $x += 1$ namísto $x = x + 1$.}
+
+Na řádku $11$ poté začíná samotný proces laserového paprsku. Pomocí funkce \ic|get_positions_in_row| jsou získány všechny pozice směrem předaným v parametru \ic|orientation| ze startovní pozice předané v parametru \ic|position|. Těmito pozicemi se následně iteruje a získává se instance herního pole do promněnné \ic|field|. Podmínky na řádcích $13-20$ odlišují tyto 3 situace:
+\begin{description}
+    \item Pole je instancí výchozího prázdného pole v mapě \\
+        Tento případ nezpůsobuje žádnou změnu - laser prochází dále.
+
+    \item Pole je instancí třídy \ic|LaserBatteryBotField| \\
+        Dochází k poškození nepřátelského bota - baterie je tomuto botu vybita o hodnotu poškození útočícího bota a celý cyklus \emph{iterace je zastaven}.
+
+    \item Pole je instancí třídy \ic|BlockField| \\
+        Dochází ke zničení pole bloku, který je nahrazen výchozím prázdným polem a celý cyklus \emph{iterace je zastaven}.
+\end{description}
 
 \subsection{Třídy reprezentující herní bloky}
 

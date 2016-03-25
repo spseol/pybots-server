@@ -6,7 +6,7 @@
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[paper=a4paper]{geometry} % odsazení a velikosti stránek
-\usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolar},pdftitle={Souboje virtualnich robotu PYBOTS},pdfsubject={herní server PYBOTS pro programátory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
+\usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolar},pdftitle={Souboje virtualnich robotu PYBOTS},pdfsubject={herni server PYBOTS pro programatory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
 \usepackage{listings} % výpisy zdrojových kódů
 \usepackage{color} % barvy
 \usepackage{xcolor} % vytváření barev
@@ -24,7 +24,7 @@
 \usepackage{tabularx} % pro responzivni tabulky
 \usepackage{array} % pro tabulkové zápis
 \usepackage[verb]{collcell} % pro sloupce s makrem
-\usepackage{bookmark} % nenutnost spouštět dcakrát pro korektní reference
+\usepackage{bookmark} % nenutnost spouštět dvakrát pro korektní reference
 \usepackage{pdfpages} % inlude pdf
 \usepackage{titlesec} % \section na nové stránce
 
@@ -147,15 +147,18 @@
 	linkcolor={red!50!black},
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black},
+  bookmarks,
+  bookmarksopen,
+  bookmarksdepth=2
 }
 \begin{document}
 \pagestyle{fancy}
 \thispagestyle{empty}
 
-\input{_titulek_dmp.tex}
+\input{_titulek_dmp}
 % \input{_titulek_soc.tex}
 
-\input{_prohlaseni.tex}
+\input{_prohlaseni}
 
 \begin{abstract}
 \todo{sepsat abstrakt}
@@ -175,11 +178,11 @@
 \pagestyle{fancy}
 \newcommand\sectionbreak{\clearpage}
 
-\input{_teoreticky-uvod.tex}
-\input{_implementace.tex}
-\input{_technologie.tex}
-\input{_metatechnologie.tex}
-\input{_zaver.tex}
+\input{_teoreticky-uvod}
+\input{_implementace}
+\input{_technologie}
+\input{_metatechnologie}
+\input{_zaver}
 
 \renewcommand\sectionbreak{}
 \newpage
