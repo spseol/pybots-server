@@ -31,12 +31,20 @@
 
 % ------ CONFIGURATION ------
 
-\colorlet{violet}{blue!80!red}
+% violet 3300CC
+% red CC0011
+\definecolor{codeprimary}{HTML}{3300CC}
+\colorlet{keywordstyle}{codeprimary!50!black}
+
+\definecolor{linkcolor}{HTML}{CC0011}
+\colorlet{keywordstyle}{linkcolor}
+
+% \colorlet{codeprimary}{blue!80!red}
 \colorlet{lightgray}{gray!5}
 
 \colorlet{jsonnumber}{blue}
 \colorlet{jsonpunct}{red}
-\colorlet{jsondelim}{violet}
+\colorlet{jsondelim}{codeprimary}
 
 \definecolor{emptyfield}{HTML}{CCCCCC}
 \definecolor{treasurefield}{HTML}{FFFF00}
@@ -57,12 +65,12 @@
 \renewcommand\lstlistlistingname{Seznam zdrojových kódů}
 \renewcommand\lstlistingname{Zdrojový kód}
 
-\lhead{Praktická zkouška z odborných předmětů - Souboje virtuálních robotů PYBOTS}
+\lhead{Praktická zkouška z~odborných předmětů - Souboje virtuálních robotů PYBOTS}
 \chead{}
 \rhead{}
 \lfoot{}
 \cfoot{}
-\rfoot{Strana \thepage \hspace{1pt} z \pageref*{LastPage}}
+\rfoot{Strana \thepage \hspace{1pt} z~\pageref*{LastPage}}
 \addtolength{\headheight}{1.2pt}
 \renewcommand{\headrulewidth}{2pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -83,9 +91,9 @@
     \Collectverb{\@@ic{#1}{#2}}%
 }
 \def\@@ic#1#2#3{%
-    \fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{violet},breaklines=true]|#3|}%
+    \fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{codeprimary},breaklines=true]|#3|}%
 }
-\newcommand{\icmacro}[1]{\fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{violet},breaklines=true]|#1|}}
+\newcommand{\icmacro}[1]{\fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{codeprimary},breaklines=true]|#1|}}
 \makeatother
 
 % ref as <number of section> <title of section>
@@ -101,8 +109,8 @@
     language=Python,
     frameround=fttf,
     breaklines=true,
-    keywordstyle=\color{violet!50!red}\ttfamily,
-    basicstyle=\color{violet},
+    keywordstyle=\color{keywordstyle}\ttfamily,
+    basicstyle=\color{codeprimary},
     numberstyle=\color{black},
     backgroundcolor=\color{white},
     frame=single,
@@ -114,15 +122,16 @@
     numberstyle=\scriptsize,
     numbersep=6pt,
     % numbers=left,
+    showstringspaces=false
 }
 \DeclareCaptionFormat{listing}{%
 	\colorlet{currentcolor}{.}%
-	{\color{violet}{\framebox[\textwidth+\fboxsep+\fboxsep+1pt]{\color{currentcolor}#1#2#3}}}%
+	{\color{codeprimary}{\framebox[\textwidth+\fboxsep+\fboxsep+1pt]{\color{currentcolor}#1#2#3}}}%
 }
 \captionsetup[lstlisting]{format=listing, singlelinecheck=false}
 
 \lstdefinelanguage{json}{
-    basicstyle=\color{violet},
+    basicstyle=\color{codeprimary},
     numberstyle=\scriptsize,
     numbersep=8pt,
     numbers=left,
@@ -151,9 +160,9 @@
 % ------ HYPERREF SETUP ------
 \hypersetup{
 	colorlinks,
-	linkcolor={red!50!black},
-	citecolor={blue!50!black},
-	urlcolor={blue!80!black},
+	linkcolor=linkcolor,
+	citecolor=linkcolor,
+	urlcolor=linkcolor,
   bookmarks,
   bookmarksopen,
   bookmarksdepth=2

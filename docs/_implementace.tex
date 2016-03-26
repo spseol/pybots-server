@@ -65,9 +65,11 @@ Tato enumerace je určena pro definici návratových statusů pro klientské po�
 
 \subsection{Kontejnerová třída $Map$}
 
-\ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k vyhledávání nad mapou, ale bohužel je její složitost vzhledem k implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|. 
+\begin{sloppypar}
+    \ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k vyhledávání nad mapou, ale bohužel je její složitost vzhledem k implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|.
+\end{sloppypar}
 
-Zdrojový kód \fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+Zdrojový kód\fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
 
 \begin{lstlisting}[caption={Přetížené indexování třídy $Map$},label={lst:map-indexing}]
 position = 3, 2
@@ -83,7 +85,7 @@ assert isinstance(
 
 Třída \ic|Game| je jednou z nevyýznamnějších třídy v objektovém návrhu této aplikace. Zajišťuje zpracování klientské herních akce, deleguje herní povely na instance herních polí a kontroluje přiřazování prázdných polí novým botům. Dále si uchovává čas svého vytvoření a čas poslední modifikace, to kvůli administraci. V případě aktivního konfiguračního parametru \ic|rounded_game| hlídá pořadí tahů botů a v případně nesrovnalosti vyhazuje vyjímku \ic|BotNotOnTurn|.
 
-Jádro této třídy tvoří slovník akcí - jedná se o interní instanci datového typu \ic|dict| uloženého v lokálním kontextu objektu, viz \fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace \nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
+Jádro této třídy tvoří slovník akcí - jedná se o interní instanci datového typu \ic|dict| uloženého v lokálním kontextu objektu, viz\fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace\nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
 
 \begin{lstlisting}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
 self._actions = {
@@ -270,7 +272,7 @@ Proces zpracování herní akce je záležitost, při které může dojít až k
 
 		NoFreeBots & Tento typ vyjímky slouží k rozpoznání stavu, kdy se řídící třída pokusí přidat bota do hry, v níž již není volné pole pro bota. \\
 
-		ConfigurationError & \ic|ConfigurationError| se používá pro signalizaci stavu nevalidní konfigurace. Ve dvou případech je užívána třídou \ic|MapFactory|, jenž její pomocí rozlišuje stavy při nevalidním požadavku na vytvoření mapy (nemožnost umístit příliš moc herních bloků do příliš malé mapy) a nelogickou konfiguraci parametrů \ic|battery_game = True| a \ic|laser_game = False|. Pomocí této výjimky se také kontroluje validita configuračního formuláře - více tomto formuláři v sekci\fullref{subsec:administration}. \\
+		ConfigurationError & \ic|ConfigurationError| se používá pro signalizaci stavu nevalidní konfigurace. Ve dvou případech je užívána třídou \ic|MapFactory|, jenž její pomocí rozlišuje stavy při nevalidním požadavku na vytvoření mapy (nemožnost umístit příliš moc herních bloků do příliš malé mapy) a nelogickou konfiguraci parametrů \ic|battery_game = True| a \ic|laser_game = False|. Pomocí této výjimky se také kontroluje validita configuračního formuláře - více o tomto formuláři v sekci\fullref{subsec:administration}. \\
 
 		GameFinished & Tato výjimka ukončuje hru - je vyvolána třídou \ic|Game| při vstoupení bota na pole třídy \ic|TreasureField|. Tuto výjimku očekává instance třídy \ic|GameController| v případě jejího zachycení zaznamenává tuto hru za ukončenou a bota, jenž provedl tento krok za výherce hry. \\
 
@@ -281,7 +283,7 @@ Proces zpracování herní akce je záležitost, při které může dojít až k
 
 \subsection{Testy}
 \begin{sloppypar}
-    V této aplikaci jsem se snažil klást důraz na \textbf{co nejvyšší pokrytí} zdrojového kódu \textbf{jednotkovými testy}. Bylo tedy nutné navrhnout testy tak, aby byly schopné pokrýt všechny testované třídy a případy. V kořenovém adresáři projektu tedy vznikl Python balíček \ic|tests| obsahující identickou adresářovou i souborovou strukturu, jako samotné zdrojové kódy ve složce \ic|pybots| - znamená to, že například třída \ic|pybots.game.GameController| má $TestCase$ \ic|tests.pybots.game.TestGameController|. Kromě modulu \ic|tests| vznikl i skript s příznačným jménem \ic|test.py| zajišťující spuštění balíčku \ic|unittest|, jenž zajištuje spouštění testů v Pythonu - více ve sekci \fullref{subsec:python}.
+    V této aplikaci jsem se snažil klást důraz na \textbf{co nejvyšší pokrytí} zdrojového kódu \textbf{jednotkovými testy}. Bylo tedy nutné navrhnout testy tak, aby byly schopné pokrýt všechny testované třídy a případy. V kořenovém adresáři projektu tedy vznikl Python balíček \ic|tests| obsahující identickou adresářovou i souborovou strukturu, jako samotné zdrojové kódy ve složce \ic|pybots| - znamená to, že například třída \ic|pybots.game.GameController| má $TestCase$ \ic|tests.pybots.game.TestGameController|. Kromě modulu \ic|tests| vznikl i skript s příznačným jménem \ic|test.py| zajišťující spuštění balíčku \ic|unittest|, jenž zajištuje spouštění testů v Pythonu - více v sekci\fullref{subsec:python}.
 \end{sloppypar}
 
 \subsubsection{Vlastní $TestCase$}
@@ -301,9 +303,10 @@ V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
     Tato metoda vrací nakonfigurovaný objekt třídy \ic|FlaskClient|, jenž je schopen pokládat požadavky na instanci aplikace frameworku \nameref{subsec:flask} - základní informací pro tento požadavek je URL, možné je přidat parametry jak pro \nameref{subsec:http} metodu $GET$, tak pro metodu $POST$. Metoda \ic|test_client| provádí s tímto objektem jedinou úpravu - \ic|app_client.testing = True|, jenž zajišťuje probublávání výjimek skrz celý strom volání - nezachycené výjimky jdou poté vidět přímo v testech.
 
     \item \ic|set_conf_to_test_client(self, conf, client)| \\
-    Pomocí této metody lze konfigurovat běžící aplikaci přímo v testech - volání této metody způsobí odeslání POST požadavku na URL adresu administrace s daty předanými v parametru \ic|conf|. Je přitom použit testovací klient předaný v parametru \ic|client|. Výhodou této metody je především možnost nakonfigurovat aplikaci před každým testem, je možnost nastavit kterýkoliv z parametrů uvedených v tabulce \fullref{table:conf-parameters}. 
+    Pomocí této metody lze konfigurovat běžící aplikaci přímo v testech - volání této metody způsobí odeslání POST požadavku na URL adresu administrace s daty předanými v parametru \ic|conf|. Je přitom použit testovací klient předaný v parametru \ic|client|. Výhodou této metody je především možnost nakonfigurovat aplikaci před každým testem, je možnost nastavit kterýkoliv z parametrů uvedených v tabulce\fullref{table:conf-parameters}. 
 \end{description}
 
 \subsection{Administrace}
+\label{subsec:administration}
 
-Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná z obecné třídy \ic|Form| pocházející z balíčku \ic|wtforms| zajištující generování, typovost, validaci a vykreslování formulářů do HTML\footnote{}.
+Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná z obecné třídy \ic|Form| pocházející z balíčku \ic|wtforms| zajištující generování, typovost, validaci a vykreslování formulářů do \href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HTML}\footnote{\href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HyperText Markup Language} je značkovací jazyk určený pro tvorbu webových stránek vycházející z jazyka XML.}.
