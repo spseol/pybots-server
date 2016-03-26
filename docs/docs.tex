@@ -5,7 +5,7 @@
 
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage[paper=a4paper]{geometry} % odsazení a velikosti stránek
+\usepackage[paper=a4paper,top=2.5cm,left=3.5cm,right=2.5cm,bottom=2.5cm,includefoot]{geometry} % odsazení a velikosti stránek
 \usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolar},pdftitle={Souboje virtualnich robotu PYBOTS},pdfsubject={herni server PYBOTS pro programatory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
 \usepackage{listings} % výpisy zdrojových kódů
 \usepackage{color} % barvy
@@ -16,7 +16,7 @@
 \usepackage{float} % podpora pro figure s H pozicí
 \usepackage{lipsum} % dummy text
 \usepackage{svg} % inludesvg
-\usepackage{caption} % vlastní styly pro caption
+\usepackage[tableposition=below]{caption} % vlastní styly pro caption
 \usepackage{wrapfig} % figure v textu
 \usepackage{titling} % theauthor, thetitle
 \usepackage{fancyhdr} % zápatí, záhlaví
@@ -27,6 +27,7 @@
 \usepackage{bookmark} % nenutnost spouštět dvakrát pro korektní reference
 \usepackage{pdfpages} % inlude pdf
 \usepackage{titlesec} % \section na nové stránce
+\usepackage{longtable} % tabulka přes více stránek
 
 % ------ CONFIGURATION ------
 
@@ -46,7 +47,7 @@
 \def\subsectionautorefname{}
 \def\subsubsectionautorefname{}
 \def\tableautorefname{}
-\def\tableautorefname{}
+\def\figureautorefname{}
 \renewcommand\lstlistlistingname{Seznam zdrojových kódů}
 \renewcommand\lstlistingname{Zdrojový kód}
 
