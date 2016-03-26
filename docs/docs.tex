@@ -38,6 +38,12 @@
 \colorlet{jsonpunct}{red}
 \colorlet{jsondelim}{violet}
 
+\definecolor{emptyfield}{HTML}{CCCCCC}
+\definecolor{treasurefield}{HTML}{FFFF00}
+\definecolor{botfield}{HTML}{FF4500}
+\definecolor{blockfield}{HTML}{999999}
+\definecolor{laserbatterybotfield}{HTML}{7D2A69}
+
 % default width of svg
 \setsvg{width=.5\textwidth}
 \graphicspath{ {assets/} }
@@ -154,7 +160,6 @@
 }
 \begin{document}
 \pagestyle{fancy}
-\thispagestyle{empty}
 
 \input{_titulek_dmp}
 % \input{_titulek_soc.tex}
@@ -198,5 +203,6 @@
 \addcontentsline{toc}{section}{Seznam obrázků}
 
 \newpage
+\pagestyle{empty}
 {\Large \listoftodos}
 \end{document}
