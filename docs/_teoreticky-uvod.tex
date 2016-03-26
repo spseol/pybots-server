@@ -28,26 +28,68 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v aplikaci se přízna
 \ic|MapFactory| je třída zodpovědná za vygenerování mapy v závislosti na předané configuraci. Plný výčet parametů konfigurace lze najít v tabulce\fullref{table:conf-parameters}.
 
 \begin{table}[H]
+	\caption{Seznam možných parametrů herní konfigurace s parametry}
+	\label{table:conf-parameters}
 	\centering
 	\begin{tabular}{ l | l | l | l }
 		český název & název parametru & vysvětlení & datový typ \\
 		\hline
-		šířka mapy & \ic|map_width| & počet bloků na šířku mapy & int \\
-		výška mapy & \ic|map_heigth| & počet bloků na výšku mapy & int \\
-		počet botů & \ic|bots| & maximální počet botů ve hře & int \\
-		počet bloků & \ic|blocks| & maximální počet bloků ve hře & int \\
-		počet pokladů & \ic|treasures| & počet pokladů ve hře & int \\
-		hra s tahy & \ic|rounded_game| & hra botů v pořadí & bool \\
-		hra s bateriemi & \ic|battery_game| & hra botů s bateriemi & bool \\
-		hra s lasery & \ic|laser_game| & hra botů s možností laseru & bool \\
+		šířka mapy & \ic|map_width| & počet bloků na šířku mapy & \ic|int| \\
+		výška mapy & \ic|map_heigth| & počet bloků na výšku mapy & \ic|int| \\
+		počet botů & \ic|bots| & maximální počet botů ve hře & \ic|int| \\
+		počet bloků & \ic|blocks| & maximální počet bloků ve hře & \ic|int| \\
+		počet pokladů & \ic|treasures| & počet pokladů ve hře & \ic|int| \\
+		hra s tahy & \ic|rounded_game| & hra botů v pořadí & \ic|bool| \\
+		hra s bateriemi & \ic|battery_game| & hra botů s bateriemi & \ic|bool| \\
+		hra s lasery & \ic|laser_game| & hra botů s možností laseru & \ic|bool| \\
 	\end{tabular}
-	\caption{Seznam možných parametrů herní konfigurace s parametry}
-	\label{table:conf-parameters}
 \end{table}
 
 \subsubsection{Návrh vnějšího rozhraní}
-\todo{probrat URL, metody v závislosti na URL}
+
+\todo{probrat URL}
 
 \subsection{Administrace}
-\todo{změna konfigurace z formuláře, mazání her, náhled na hru}
 
+\begin{wraptable}[11]{R}{.25\textwidth}
+	\vspace{-25pt}
+	\caption{Přehled barev v detailu hry v administraci}
+	\label{table:game-detail-colors}
+	\newcommand{\colpic}[1]{\tikz\draw[#1,fill=#1,draw](0,0)circle(7.5pt);}
+	\newcolumntype{B}{>{\collectcell{\colpic}}l<{\endcollectcell}}
+	\vspace{-10pt}
+	\begin{flushright}
+		\begin{tabular}{ r | B }
+			prázdné pole & emptyfield \\
+			poklad & treasurefield \\
+			základní bot & botfield \\
+			pevný blok & blockfield \\
+			rošířený bot & laserbatterybotfield \\
+		\end{tabular}
+	\end{flushright}
+\end{wraptable}
+
+Pro nastavování aktuálních konfiguračních parametrů z tabulky\fullref{table:conf-parameters} do akutálně běžící aplikace jsem vytvořil jednoduchou administraci s formulářem a seznamem rozehraných her. Formulář obsahuje vstupní pole pro všechny parametry s odpovídajícím typem a pomocí něj je možné změnit parametry nově vytvářených her - jeho detail je možné vidět v obrázku\fullref{fig:admin-conf-form}. Druhou komponentou v administraci je seznam příhlášených botů s možností zobrazení detailu hry a mapy - náhled seznamu možno zhlédnout v obrázku\fullref{fig:admin-games-list}. V samotném seznamu lze mazat hry, co nebyly 30 sekund aktivní - buď samostatně hru po hře nebo hromadně všechny, které odpovídají této podmínce.
+
+Při zobrazení detailu je možno vidět celou strukturu mapy, barevně jsou dle tabulky\fullref{table:game-detail-colors} vyznačena jednotlivá herní pole v mapě, která je co 2 sekundy obnovována. Náhled tohoto detailu je možno zhédnout v obrázku\fullref{fig:admin-game-detail}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{assets/admin-games-list}
+	\caption{Náhled seznamu her v administraci}
+	\label{fig:admin-games-list}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{assets/admin-game-detail}
+	\caption{Náhled detailu hry v administraci}
+	\label{fig:admin-game-detail}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{assets/admin-conf-form}
+	\caption{Náhled administračního formuláře pro konfiguraci}
+	\label{fig:admin-conf-form}
+\end{figure}

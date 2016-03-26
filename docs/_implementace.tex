@@ -26,6 +26,8 @@ Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN
 Jedná se o enumeraci typově rozlišující od sebe jednotlivé potomky abstraktní třídy \ic|Field| nacházejících se v mapě. Hodnoty této enumerace se poté nacházejí ve vyexportované mapě pro klienty. Jednotlivé hodnoty této enumerace jsou k vidění v tabulce\fullref{table:field-enum-values}.
 
 \begin{table}[H]
+    \caption{Seznam hodnot enumerace $Field$}
+    \label{table:field-enum-values}
 	\centering
 	\begin{tabular}{ r r | l }
 		hodnota & klíč & odpovídající třída \\
@@ -36,8 +38,6 @@ Jedná se o enumeraci typově rozlišující od sebe jednotlivé potomky abstrak
 		$3$ & \ic|BLOCK| & \ic|BlockField| \\
 		$4$ & \ic|BATTERY_BOT| & \ic|LaserBatteryBotField| \\
 	\end{tabular}
-	\caption{Seznam hodnot enumerace $Field$}
-	\label{table:field-enum-values}
 \end{table}
 
 \subsection{Enumerace $ReponseState$}
@@ -45,6 +45,8 @@ Jedná se o enumeraci typově rozlišující od sebe jednotlivé potomky abstrak
 Tato enumerace je určena pro definici návratových statusů pro klientské požadavky. Definuje textovou identifikaci stavu společně s HTTP návratovým kódem. Kromě hodnoty $200$ značící korektní stav je použita také hodnota $404$ značící nenalezený objekt. Jednotlivé hodnoty lze nalézt v tabulce\fullref{table:response-state-enum-values}.
 
 \begin{table}[H]
+    \caption{Seznam hodnot enumerace $ResponseState$}
+    \label{table:response-state-enum-values}
 	\centering
 	\begin{tabular}{ r r | l }
 		klíč & hodnota $state$ & návratový kód \\
@@ -59,8 +61,6 @@ Tato enumerace je určena pro definici návratových statusů pro klientské po�
 		\ic|BOT_NOT_ON_TURN| & \ic|bot_not_on_turn| & $200$ \\
 		\ic|MOVEMENT_SUCCESS| & \ic|movement_success| & $200$ \\
 	\end{tabular}
-	\caption{Seznam hodnot enumerace $ResponseState$}
-	\label{table:response-state-enum-values}
 \end{table}
 
 \subsection{Kontejnerová třída $Map$}
@@ -97,7 +97,7 @@ self._actions = {
 Implementace a popis jednotlivých metod:
 
 \subsubsection{Metoda akce kroku $\_action\_step$}
-
+\vspace{-10pt}
 \begin{lstlisting}[caption={Metoda $Game.\_action\_step$},label={lst:game-action-step},numbers=left]
 def _action_step(self, bot_id, bot_field, **kwargs):
     actual_position = self._bots_positions.get(bot_id)
@@ -132,7 +132,7 @@ Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeh
 Na řádku $20$ lze v podstatě prohlásit akci za \emph{proveditelnou}. Na řádcích $21-21$ je následně pochycena hra s aktivním konfiguračním parametrem $battery_game$ a poté je již poveden pohyb bota pomocí vyměnění zdrojového a cílového pole v mapě. Před ukončím této metody je ještě aktualizována pozice bota.
 
 \subsubsection[Metody akcí změny orientace]{Metody akcí změny orientace $\_action\_turn\_left$ a $\_action\_turn\_right$}
-
+\vspace{-10pt}
 \begin{lstlisting}[caption={Metoda $Game.\_action\_turn\_left$},label={lst:game-action-turn-left},numbers=left]
 def _action_turn_left(self, bot_field, **kwargs):
     assert isinstance(bot_field, BotField)
@@ -142,7 +142,7 @@ def _action_turn_left(self, bot_field, **kwargs):
 Dvojice metod \ic|Game._action_turn_left| a \ic|Game._action_turn_right| je si velmi podobná, jediný rozdíl tkví v hodnotě předané instanci bota - jedná se buď o \ic|Action.TURN_LEFT| nebo \ic|Action.TURN_RIGHT|. Implementačně se pouzde předeleguje požadavek na instanci \ic|BotField| předanou v parametru.
 
 \subsubsection{Metoda akce čekání $\_action\_wait$}
-
+\vspace{-10pt}
 \begin{lstlisting}[caption={Metoda $Game.\_action\_wait$},label={lst:game-action-wait},numbers=left]
 def _action_wait(self, bot_field, **kwargs):
     if not self._configuration.battery_game:
@@ -156,7 +156,7 @@ Ihned na $2-3$ řádku je otestován parametr konfigurace \ic|battery_game|, pro
 
 \subsubsection{Metoda akce laseru $\_action\_laser\_beam$}
 \label{subsubsec:action-laser-beam}
-
+\vspace{-10pt}
 \begin{lstlisting}[caption={Metoda $Game.\_action\_laser\_beam$},label={lst:game-action-laser-beam},numbers=left]
 def _action_laser_beam(self, bot_field, bot_position, **kwargs):
     if not self._configuration.laser_game:
@@ -205,6 +205,7 @@ except:
     raise
     \end{lstlisting}
     \end{minipage}
+    \vspace{-15pt}
 \end{figure}
 \footnotetext{Syntactic sugar (syntaktický cukr) je určitá forma zjednodušení syntaxe jazyka určená ke zvýšení čitelnosti či zkrácení zápis zdrojového kódu - například $x += 1$ namísto $x = x + 1$.}
 
@@ -279,7 +280,9 @@ Proces zpracování herní akce je záležitost, při které může dojít až k
 }
 
 \subsection{Testy}
-V této aplikaci jsem se snažil klást důraz na \textbf{co nejvyšší pokrytí} zdrojového kódu \textbf{jednotkovými testy}. Bylo tedy nutné navrhnout testy tak, aby byly schopné pokrýt všechny testované třídy a případy. V kořenovém adresáři projektu tedy vznikl Python balíček \ic|tests| obsahující identickou adresářovou i souborovou strukturu, jako samotné zdrojové kódy ve složce \ic|pybots| - znamená to, že například třída \ic|pybots.game.GameController| má $TestCase$ \ic|tests.pybots.game.TestGameController|. Kromě modulu \ic|tests| vznikl i skript s příznačným jménem \ic|test.py| zajišťující spuštění balíčku \ic|unittest|, jenž zajištuje spouštění testů v Pythonu - více ve sekci \fullref{subsec:python}.
+\begin{sloppypar}
+    V této aplikaci jsem se snažil klást důraz na \textbf{co nejvyšší pokrytí} zdrojového kódu \textbf{jednotkovými testy}. Bylo tedy nutné navrhnout testy tak, aby byly schopné pokrýt všechny testované třídy a případy. V kořenovém adresáři projektu tedy vznikl Python balíček \ic|tests| obsahující identickou adresářovou i souborovou strukturu, jako samotné zdrojové kódy ve složce \ic|pybots| - znamená to, že například třída \ic|pybots.game.GameController| má $TestCase$ \ic|tests.pybots.game.TestGameController|. Kromě modulu \ic|tests| vznikl i skript s příznačným jménem \ic|test.py| zajišťující spuštění balíčku \ic|unittest|, jenž zajištuje spouštění testů v Pythonu - více ve sekci \fullref{subsec:python}.
+\end{sloppypar}
 
 \subsubsection{Vlastní $TestCase$}
 
@@ -300,3 +303,7 @@ V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
     \item \ic|set_conf_to_test_client(self, conf, client)| \\
     Pomocí této metody lze konfigurovat běžící aplikaci přímo v testech - volání této metody způsobí odeslání POST požadavku na URL adresu administrace s daty předanými v parametru \ic|conf|. Je přitom použit testovací klient předaný v parametru \ic|client|. Výhodou této metody je především možnost nakonfigurovat aplikaci před každým testem, je možnost nastavit kterýkoliv z parametrů uvedených v tabulce \fullref{table:conf-parameters}. 
 \end{description}
+
+\subsection{Administrace}
+
+Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná z obecné třídy \ic|Form| pocházející z balíčku \ic|wtforms| zajištující generování, typovost, validaci a vykreslování formulářů do HTML\footnote{}.
