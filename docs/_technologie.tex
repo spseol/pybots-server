@@ -1,8 +1,9 @@
 \section{Použité technologie}
 
 \subsection{Python}
+\label{subsec:python}
 
-\begin{wrapfigure}{R}{0.5\textwidth}
+\begin{wrapfigure}[10]{R}{0.5\textwidth}
  \centering
  \includesvg[width=0.5\textwidth]{assets/python-logo}
  \caption{Logo programovacího jazyka Python}
@@ -14,11 +15,19 @@ Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veř
 
 Jednou z velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https://pypi.python.org/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v jazyce C.
 
-Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII\footnote{\href{https://cs.wikipedia.org/wiki/ASCII}{American Standard Code for Information Interchange} - kódová tabulka znaků z anglické abecedy a některých dalších kódových znaků} znaků a řetězce Unicode\footnote{\href{https://cs.wikipedia.org/wiki/Unicode}{Unicode} je vylepšená norma pro reprezentaci znaků do více bytů.} znaků), celočíselného dělení a některých syntaktických vylepšení jazyka. Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání podpory pro asynchronní volání funkcí a podpory pro typovost parametrů a návratových hodnot funkcí a metod.
+Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s řetězci (Python verze 2 rozlišoval řetězce ASCII\footnote{\href{https://cs.wikipedia.org/wiki/ASCII}{American Standard Code for Information Interchange} - kódová tabulka znaků z anglické abecedy a některých dalších kódových znaků} znaků a řetězce Unicode\footnote{\href{https://cs.wikipedia.org/wiki/Unicode}{Unicode} je vylepšená norma pro reprezentaci znaků do více bytů.} znaků), celočíselného dělení a některých syntaktických vylepšení jazyka.
+
+Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání podpory pro asynchronní volání funkcí a podpory pro typovost parametrů a návratových hodnot funkcí a metod. Jsem zastáncem inovativního a progresivního vývoje, takže celý tento \textbf{projekt} spoléhá na \textbf{spouštění v Pythonu verze 3}.
 
 \subsubsection{Jednotkové testování}
+\label{subsubsec:unit-testing}
 
-Jednotkové automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu aplikace, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost a správnost testů projektu.
+\begin{sloppypar}
+	Jednotkové automatické testování je jeden z způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu aplikace, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost a správnost testů projektu.
+
+	Python nabízí celou řadu nástrojů pro spouštění testů (\href{https://docs.python.org/3/library/unittest.html}{unittest}, \href{https://nose.readthedocs.org/en/latest/}{nose}, \href{http://pytest.org/latest/}{pytest}, \href{https://github.com/DRMacIver/hypothesis}{hypothesis} nebo \href{http://nestorsalceda.github.io/mamba/}{mamba}). V projektu jsem se rozhodl použít balíček \ic|unittest|, vzhledem k tomu, že je vestavěný v Pythonu od verze 3 a není tedy nutné instalovat další závislost.
+)
+\end{sloppypar}
 
 Níže je uveden příklad třídy k testování. Třída \ic|MathOperations| je určena k základním matematickým operacím, pro názornost pro sčítání a dělení. 
 \begin{lstlisting}[caption={Příklad třídy $MathOperations$ k testování}]
@@ -78,7 +87,7 @@ def add(a, b, c=0):
 
 Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
 
-\begin{lstlisting}[caption={Testovací metoda pro upravenou implementaci $MathOperations.add$}]
+\begin{lstlisting}[caption={Testovací metoda pro vylepšenou $MathOperations.add$}]
 def test_add(self):
 	self.assertEqual(
 		MathOperations.add(40, 2),
@@ -119,7 +128,7 @@ def test_add(self):
 
 \subsection{Flask}
 \label{subsec:flask}
-\begin{wrapfigure}{R}{\textwidth/3}
+\begin{wrapfigure}[16]{R}{\textwidth/3}
     \centering
     \includesvg[width=\textwidth/3]{assets/flask-logo}
     \caption{Logo webového frameworku Flask}

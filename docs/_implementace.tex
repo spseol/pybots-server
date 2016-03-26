@@ -155,6 +155,7 @@ def _action_wait(self, bot_field, **kwargs):
 Ihned na $2-3$ řádku je otestován parametr konfigurace \ic|battery_game|, protože bez něj nenní tato akce povolena. Pokud je vše v pořádku, je na instanci bota v mapě předelegován na řádku $6$ příkaz na čekání a nabíjení.
 
 \subsubsection{Metoda akce laseru $\_action\_laser\_beam$}
+\label{subsubsec:action-laser-beam}
 
 \begin{lstlisting}[caption={Metoda $Game.\_action\_laser\_beam$},label={lst:game-action-laser-beam},numbers=left]
 def _action_laser_beam(self, bot_field, bot_position, **kwargs):
@@ -205,17 +206,17 @@ except:
     \end{lstlisting}
     \end{minipage}
 \end{figure}
-\footnotetext{Syntactic sugar (Syntaktický cukr) je určitá forma zjednodušení syntaxe jazyka určená ke zvýšení čitelnosti či zkrácení zápis zdrojového kódu - například $x += 1$ namísto $x = x + 1$.}
+\footnotetext{Syntactic sugar (syntaktický cukr) je určitá forma zjednodušení syntaxe jazyka určená ke zvýšení čitelnosti či zkrácení zápis zdrojového kódu - například $x += 1$ namísto $x = x + 1$.}
 
 Na řádku $11$ poté začíná samotný proces laserového paprsku. Pomocí funkce \ic|get_positions_in_row| jsou získány všechny pozice směrem předaným v parametru \ic|orientation| ze startovní pozice předané v parametru \ic|position|. Těmito pozicemi se následně iteruje a získává se instance herního pole do promněnné \ic|field|. Podmínky na řádcích $13-20$ odlišují tyto 3 situace:
 \begin{description}
-    \item Pole je instancí výchozího prázdného pole v mapě \\
+    \item {\bfseries Pole je instancí výchozího prázdného pole v mapě} \\
         Tento případ nezpůsobuje žádnou změnu - laser prochází dále.
 
-    \item Pole je instancí třídy \ic|LaserBatteryBotField| \\
+    \item {\bfseries Pole je instancí třídy \ic|LaserBatteryBotField|} \\
         Dochází k poškození nepřátelského bota - baterie je tomuto botu vybita o hodnotu poškození útočícího bota a celý cyklus \emph{iterace je zastaven}.
 
-    \item Pole je instancí třídy \ic|BlockField| \\
+    \item {\bfseries Pole je instancí třídy \ic|BlockField|} \\
         Dochází ke zničení pole bloku, který je nahrazen výchozím prázdným polem a celý cyklus \emph{iterace je zastaven}.
 \end{description}
 
@@ -235,26 +236,33 @@ Jedná se o prázdnou variantu herního pole, je zodpovědná pouze za svůj kor
 
 \subsubsection{Pole bloku $BlockField$}
 
-Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli. Jediný rozdíl skrývá rozdílný přístup třídy \ic|Game| při herních akcích - na pole s objektem této třídy není možné vstoupit botem, avšak při zapnutém parametru pro laser hru je možno tento blok zničit. Po zničení je instance pole s blokem nahrazena instancí prázdného pole.
+Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli. Jediný rozdíl skrývá rozdílný přístup třídy \ic|Game| při herních akcích - na pole s objektem této třídy není možné vstoupit botem, avšak při zapnutém parametru pro laser hru je možno tento blok zničit. Po zničení je instance pole s blokem nahrazena instancí prázdného pole - viz detail implementace v sekci\fullref{subsubsec:action-laser-beam}.
 
 \subsubsection{Pole pro poklad $TreasureField$}
 
 Ve své podstatě se jedná o pole jako každé jiné v mapě, avšak má jednu spicální vlastnost. Při vstoupení na něj botem je vyvolána výjimka \ic|GameFinished| (o struktuře a systému výjimek v sekci\fullref{subsec:custom-exceptions}) a hra končí. 
 
 \subsubsection{Pole pro boty $BotField$ a $LaserBatteryBotField$}
-\todo{popsat bot fieldy, především zodpovědnosti}
+
+Třída \ic|BotField| je základní třídou pro instance botů ve hře. Je zodpovědná za udržení své orientace v vlastnosti \ic|orientation|, jenž je v konstruktoru omezena na instance třídy \ic|Orientation|. Setter\footnote{Metoda nastavující neveřejný atribut, jenž může zároveň vytvářet sestrikce na hodnotu tohoto atributu.} pro tuto vlastnost není naimplementován, protože existuje metoda \ic|BotField.rotate|, jenž bota na základě předané akce otáčí na požadovaný směr. Dále je tato třída zopovědná za udržení jména pro bota - což je záležitost čistě informativní. Toto jméno je uloženo ve vlastnosti \ic|name| a je možné jej nastavit buďto konstruktorem anebo setterem.
+
+\begin{sloppypar}
+    Potomek třídy pole bota \ic|LaserBatteryBotField| je lehce složitější. Kromě orientace a jména je také zodpovědný za správu stavu baterie a ovládání laseru. Konstruktor je tedy rozšířen o parametr \ic|battery_level| určující výchozí hodnotu nabití baterie, \ic|laser_battery_cost| určující \uv{cenu} vystřelení laseru, \ic|laser_damage| určující hodnotu vybití nepřátelské baterie při zásahu, \ic|step_battery_cost| stanovující \uv{cenu} pohybu bota a také \ic|battery_charge|, o jehož hodnotu je nabita baterie při nabíjení. Setter vlastnosti \ic|actual_battery_level| je zodpovědný za hlídání stavu baterie, v případě pokus o její snížení pod hodnotu $0$ je vyvolána výjimka \ic|CriticalBatteryLevel| (více o ní v tabulce\fullref{table:custom-exceptions}).
+\end{sloppypar}
 
 \subsection{Systém a struktura vlastních výjimek}
 \label{subsec:custom-exceptions}
 
 Proces zpracování herní akce je záležitost, při které může dojít až k několika desítkám nevalidních nebo hru ukončujících stavů, jako např. bot mimo herní mapu, pohyb bota, který není na řadě, požadavek na neznámého bota, požadavek na neznámou mapu, nesprávná herní akce pro kontext hry anebo hra s již zaplněnými poli pro boty. Proto je v aplikaci navržen systém výjimek, které jsou vyhazovány v momentech, kdy je již proces zpracování akce zahájen a nelze zastavit; jednotlivé výjimky jsou umístěny v tabulce\fullref{table:custom-exceptions}.
 
-\begin{table}
+{
 	\newcolumntype{B}{>{\collectcell\icmacro}r<{\endcollectcell}}
 	\renewcommand{\arraystretch}{1.2}
 	\centering
 	
-	\begin{tabular}{ B || p{.6\textwidth} }
+	\begin{longtable}{ B || p{.6\textwidth} }
+        \caption{Seznam vlastních výjimek a jejich popis}\label{table:custom-exceptions}\\
+
 		OutOfMapError & Tuto výjimku používá třída \ic|Map| k indikaci přístupu mimo rozsah mapy. Kromě utility \ic|get_positions_in_row| ji používá především třída \ic|Game| při procesu zpracování herní akce. \\
 
 		BotNotOnTurn & Výjimka tohoto typu je určena k indikaci stavu, kdy je vznesen požadavek na tah bota, který ve hře se zapnutým parametrem \ic|rounded_game| není na řadě. \\
@@ -266,30 +274,29 @@ Proces zpracování herní akce je záležitost, při které může dojít až k
 		GameFinished & Tato výjimka ukončuje hru - je vyvolána třídou \ic|Game| při vstoupení bota na pole třídy \ic|TreasureField|. Tuto výjimku očekává instance třídy \ic|GameController| v případě jejího zachycení zaznamenává tuto hru za ukončenou a bota, jenž provedl tento krok za výherce hry. \\
 
 		CriticalBatteryLevel & Výjimku, jenž je potomkem výjimky \ic|MovementError|, vyvolává třída pole \ic|LaserBatteryBotField| v případě požadavku na vybití baterie pod nulovou úroveň. Vzhledem k jejímu rodiči je tedy tato výjimka odchytávána jako nemožnost provést herní akci resp. nemožnost provést krok ve hře. \\
-	\end{tabular}
-	\caption{Seznam vlastních výjimek a jejich popis}
-	\label{table:custom-exceptions}
-\end{table}
+
+	\end{longtable}
+}
 
 \subsection{Testy}
-\todo{popsat identickou strukturu testů, systém volání flasku}
+V této aplikaci jsem se snažil klást důraz na \textbf{co nejvyšší pokrytí} zdrojového kódu \textbf{jednotkovými testy}. Bylo tedy nutné navrhnout testy tak, aby byly schopné pokrýt všechny testované třídy a případy. V kořenovém adresáři projektu tedy vznikl Python balíček \ic|tests| obsahující identickou adresářovou i souborovou strukturu, jako samotné zdrojové kódy ve složce \ic|pybots| - znamená to, že například třída \ic|pybots.game.GameController| má $TestCase$ \ic|tests.pybots.game.TestGameController|. Kromě modulu \ic|tests| vznikl i skript s příznačným jménem \ic|test.py| zajišťující spuštění balíčku \ic|unittest|, jenž zajištuje spouštění testů v Pythonu - více ve sekci \fullref{subsec:python}.
 
-\subsubsection{$TestCase$}
+\subsubsection{Vlastní $TestCase$}
 
 V testech pro tuto aplikaci používám vlastní poděděnou třídu pro množinu testovacích metod \ic|TestCase|. Je rozšířená o tyto metody s těmito hlavičkami:
 \begin{description}
 	\item \ic|assertIsInMap(self, game_map, field_cls, expected_count=1)| \\
 	Tato metoda rozšiřuje testovací aserce v původní testovací třídě \ic|TestCase| o možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s výchozí hodnotou \ic|1|.
-	
+
+    \item \ic|setUp(self)| \\
+    Framework \nameref{subsec:flask} používá ke generování URL adres funkci \ic|url_for|, jenž pro svou funkci potřebuje aktivní objekt \ic|RequestContext| v globálním Flask objektu \ic|_request_ctx_stack| třídy \ic|LocalStack|. V této metodě, jenž je volána při spuštění \ic|TestCase| se tedy tento \ic|RequestContext| nastavuje. 
+
+    \item \ic|tearDown(self)| \\
+    Tato metoda je volána při ukončení testů z jedné třídy \ic|TestCase| a je v ní z globálního objektu \ic|_request_ctx_stack| třídy \ic|LocalStack| odebrán kontext, jenž byl nastavený v metodě \ic|setUp|.
+
     \item \ic|test_client(self)| \\
     Tato metoda vrací nakonfigurovaný objekt třídy \ic|FlaskClient|, jenž je schopen pokládat požadavky na instanci aplikace frameworku \nameref{subsec:flask} - základní informací pro tento požadavek je URL, možné je přidat parametry jak pro \nameref{subsec:http} metodu $GET$, tak pro metodu $POST$. Metoda \ic|test_client| provádí s tímto objektem jedinou úpravu - \ic|app_client.testing = True|, jenž zajišťuje probublávání výjimek skrz celý strom volání - nezachycené výjimky jdou poté vidět přímo v testech.
 
     \item \ic|set_conf_to_test_client(self, conf, client)| \\
-    \todo{dopsat text k metodám testCase}
-
-    \item \ic|setUp(self)| \\
-    Framework \nameref{subsec:flask} používá ke generování URL adres funkci \ic|url_for|, jenž pro svou funkci potřebuje aktivní objekt \ic|RequestContext| v globálním Flask objektu \todo{rly je to requests stack?} \ic|RequestStack|. V této metodě, jenž je volána při spuštění \ic|TestCase| se tedy tento \ic|RequestContext| nastavuje. 
-
-    \item \ic|tearDown(self)| \\
-    Tato metoda je volána při ukončení testů z jedné třídy \ic|TestCase| a je v ní z globálního objektu třídy \ic|RequestStack| odebrán kontext (ten, jenž byl nastavený v metodě \ic|setUp|).
+    Pomocí této metody lze konfigurovat běžící aplikaci přímo v testech - volání této metody způsobí odeslání POST požadavku na URL adresu administrace s daty předanými v parametru \ic|conf|. Je přitom použit testovací klient předaný v parametru \ic|client|. Výhodou této metody je především možnost nakonfigurovat aplikaci před každým testem, je možnost nastavit kterýkoliv z parametrů uvedených v tabulce \fullref{table:conf-parameters}. 
 \end{description}
