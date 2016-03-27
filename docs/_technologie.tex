@@ -31,8 +31,9 @@ Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání po
 )
 \end{sloppypar}
 
-Níže je uveden příklad třídy k~testování. Třída \ic|MathOperations| je určena k~základním matematickým operacím, pro názornost pro sčítání a dělení. 
-\begin{lstlisting}[caption={Příklad třídy $MathOperations$ k~testování}]
+Níže je uveden příklad třídy k~testování. Třída \ic|MathOperations| je určena k~základním matematickým operacím, pro názornost pro sčítání a dělení.
+
+\begin{code}[caption={Příklad třídy $MathOperations$ k~testování}]
 class MathOperations(object):
 	@staticmethod
 	def add(a, b):
@@ -41,13 +42,13 @@ class MathOperations(object):
 	@staticmethod
 	def divide(a, b):
 		return a / b
-\end{lstlisting}
+\end{code}
 
 \begin{sloppypar}
 	Pomocí volání \ic|MathOperations.add(40, 2)| získáme \ic|42|, resp. při \ic|MathOperations.divide(36, 6)| je výsledkem \ic|6|. Ve své práci používám balíček pro testování \ic|unittest| dodávaný přímo s~programovacím jazykem Python. Jako hlavní nástroj pro jednotkové testování nabízí tento balíček třídu \ic|TestCase|, která obsahuje celou řadu metod pro testování asercí (\ic|assertEqual|, \ic|assertTrue|, \ic|assertEqual|, \ic|assertIn|, \ic|assertIs| nebo i komplexnější jako \ic|assertDictEqual|, \ic|assertRegex| nebo \ic|assertDictContainsSubset|) a potomky této třídy je potom možno automaticky spouštět a vyhodnocovat. Tyto předpoklady tedy zapíšeme jako metody do obalující třídy:
 \end{sloppypar}
 
-\begin{lstlisting}[caption={Základní TestCase pro třídu $MathOperations$}]
+\begin{code}[caption={Základní TestCase pro třídu $MathOperations$}]
 class TestMathOperations(TestCase):
 	def test_add(self):
 		self.assertEqual(
@@ -60,10 +61,11 @@ class TestMathOperations(TestCase):
 			MathOperations.div(36, 6),
 			6
 		)
-\end{lstlisting}
+\end{code}
 
 V~případě spuštění a úspěšného otestování této třídy bude očekávaný výstup:
-\begin{lstlisting}[language=bash, caption={Ukázka výstupu ze spuštění testů}]
+
+\begin{code}[language=plain,caption={Ukázka výstupu ze spuštění testů}]
 test_add (TestMathOperations) ... ok
 test_div (TestMathOperations) ... ok
 
@@ -71,7 +73,7 @@ test_div (TestMathOperations) ... ok
 Ran 2 tests in 38ms
 
 OK
-\end{lstlisting}
+\end{code}
 
 
 {\itshape
@@ -81,15 +83,15 @@ OK
 
 Poté ale může dojít k~následující změně zdrojového k\'{o}du - vznikne požadavek na metodu \ic|MathOperations.add|, a to konkrétně na zvýšení počtu parametrů na tři. Ne ve všech případech se ovšem bude volat tato metoda i se třetím parametrem, musí být tedy zajištěna \textbf{zpětná kompatibilita}.
 
-\begin{lstlisting}[caption={Vylepšená implementace metoda $MathOperations.add$}]
+\begin{code}[caption={Vylepšená implementace metoda $MathOperations.add$}]
 @staticmethod
 def add(a, b, c=0):
 	return a + b + c
-\end{lstlisting}
+\end{code}
 
 Do metody testující sčítání je tedy nutné přidat aserci i pro tři parametry:
 
-\begin{lstlisting}[caption={Testovací metoda pro vylepšenou $MathOperations.add$}]
+\begin{code}[caption={Testovací metoda pro vylepšenou $MathOperations.add$}]
 def test_add(self):
 	self.assertEqual(
 		MathOperations.add(40, 2),
@@ -99,17 +101,17 @@ def test_add(self):
 		MathOperations.add(10, 7, 3),
 		20
 	)
-\end{lstlisting}
+\end{code}
 
 \begin{sloppypar}
 	Tímto testem máme potvrzenou korektnost jak pro dvouparametrické volání, tak pro \uv{nové} tříparametrické volání. Podstata úprava zdrojového kódu tkví v~zachování předchozích asercí - je tak zajištěna zpětná kompatibilita. Jako další požadavek na metodu \ic|MathOperations.add| může typicky přijít přidání dalšího parametru, kdy je vhodné vzhledem k~aktuální implementaci metody \ic|add| tuto metodu přeimplementovat následovně:
 \end{sloppypar}
 
-\begin{lstlisting}[caption={Finální implementace metody $MathOperations.add$}]
+\begin{code}[caption={Finální implementace metody $MathOperations.add$}]
 @staticmethod
 def add(*values):
 	return sum(values)
-\end{lstlisting}
+\end{code}
 
 \textit{
   Zápis $*values$ je velmi specifický pro jazyk Python. V~případě, že se jedná o~volání funkce/metody, je objekt $values$ rozexpandován do jednotlivých parametrů. Nezáleží přitom, kolik má volaná metoda/funkce předepsaných parametrů, takže i v~tomto případě může přijít $TypeError$. Jedinou podmínkou je možnost iterovat přes objekt $values$ (musí definovat interní metodu $\_\_init\_\_$). \\Druhý případ tohoto zápisu se může vyskytovat v~hlavičce funkce/metody, v~tomto případě znamená téměř pravý opak předchozího případu - předané parametry jsou použity pro vytvoření objektu $values$, jenž jako datový typ $tuple$ obsahuje všechny tyto parametry. 
@@ -117,7 +119,7 @@ def add(*values):
 
 K~testovacím asercím lze přidat i jednu komplexnější obsahující volání s~vyšším počtem parametrů:
 
-\begin{lstlisting}[caption={Finální test pro metodu $MathOperations.add$}]
+\begin{code}[caption={Finální test pro metodu $MathOperations.add$}]
 def test_add(self):
 	...
 	values = tuple(randint(0, 100) for _ in range(10))
@@ -126,7 +128,7 @@ def test_add(self):
 		sum(values)
 	)
 
-\end{lstlisting}
+\end{code}
 
 \subsection{Flask}
 \label{subsec:flask}
@@ -176,7 +178,7 @@ JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nez�
 	\end{minipage}
 \end{figure}
 
-\begin{lstlisting}[language=json,caption={Ukázka datového formátu JSON}]
+\begin{code}[language=json,caption={Ukázka datového formátu JSON}]
 {"map": [
 	[
 		1,
@@ -192,4 +194,4 @@ JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nez�
 	]
 	], "map_resolutions": "2x2"
 }
-\end{lstlisting}
+\end{code}

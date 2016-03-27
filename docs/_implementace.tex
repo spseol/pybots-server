@@ -9,12 +9,12 @@ Abstraktní třída \ic|Exportable| je určena k~identifikování všech tříd,
 
 Tato enumerace dědící ze třídy \ic|IntEnum| z~balíčku \ic|enum| zajištuje sjednocení udávaných orientací v~aplikaci, v~některých případech označuje i směr. Je označena dekorátorem \ic|unique|, který zajištuje unikátnost jednotlivých hodnot v~enumeraci. Tato enumerace obsahuje klíče \ic|NORTH|, \ic|EAST|, \ic|SOUTH| a \ic|WEST| s~hodnotami v~rozsahu od 1 do 4. Jako jednoduché utility jsou ve třídě metody (resp. vlastnosti díky dekorátoru \ic|@property|) \ic|is_horizontal| a \ic|is_vertical| ověřující horizontální, resp. vertikální směr. Výhoda v~předkovi \ic|IntEnum|, resp. \ic|Enum| tkví v~možnosti testovat shodnost pomocí operátoru rovnosti a konstruovat tyto objekty pomocí číselné hodnoty, viz ukázka \fullref{lst:enum-pros}.
 
-\begin{lstlisting}[caption={Výhody třídy $Enum$},label={lst:enum-pros}]
+\begin{code}[caption={Výhody třídy $Enum$},label={lst:enum-pros}]
 orientation_by_key = Orientation.NORTH
 orientation_by_value = Orientation(0)
 
 assert orientation_by_value == orientation_by_key
-\end{lstlisting}
+\end{code}
 
 \subsection{Enumerace $Action$}
 \label{subsec:action-enum}
@@ -71,7 +71,7 @@ Tato enumerace je určena pro definici návratových statusů pro klientské po�
     \fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené ve~vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
 \end{sloppypar}
 
-\begin{lstlisting}[caption={Přetížené indexování třídy $Map$},label={lst:map-indexing}]
+\begin{code}[caption={Přetížené indexování třídy $Map$},label={lst:map-indexing}]
 position = 3, 2
 game_map = Map(width=10, height=10)
 
@@ -79,7 +79,7 @@ assert isinstance(
 	game_map[position],
 	EmptyField
 )
-\end{lstlisting}
+\end{code}
 
 \subsection{Třída hry $Game$}
 
@@ -90,7 +90,7 @@ Jádro této třídy tvoří slovník akcí - jedná se o~interní instanci dato
 {
 \lstset{belowcaptionskip=3pt,belowskip=3pt,aboveskip=-10pt}
 
-\begin{lstlisting}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
+\begin{code}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
 self._actions = {
     Action.STEP: ###\hyperref[subsubsec:method-action-step]{self.\_action\_step},
     Action.TURN_LEFT: ###\hyperref[subsubsec:method-action-turn-left]{self.\_action\_turn\_left},
@@ -98,11 +98,11 @@ self._actions = {
     Action.WAIT: ###\hyperref[subsubsec:method-action-wait]{self.\_action\_wait},
     Action.LASER_BEAM: ###\hyperref[subsubsec:method-action-laser-beam]{self.\_action\_laser\_beam},
 }	
-\end{lstlisting}
+\end{code}
 
 \subsubsection{Metoda akce kroku $\_action\_step$}
 \label{subsubsec:method-action-step}
-\begin{lstlisting}[caption={Metoda $Game.\_action\_step$},label={lst:game-action-step}]
+\begin{code}[caption={Metoda $Game.\_action\_step$},label={lst:game-action-step}]
 def _action_step(self, bot_id, bot_field, **kwargs):
     actual_position = self._bots_positions.get(bot_id)
 
@@ -129,7 +129,7 @@ def _action_step(self, bot_id, bot_field, **kwargs):
     self._map[new_position], self._map[actual_position] = bot_field, new_field
 
     self._bots_positions[bot_id] = new_position
-\end{lstlisting}
+\end{code}
 
 Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeho orientace. Volání na řádcích $5-8$ zajišťuje zjištění následující pozice ve směru natočení bota vzhledem k~jeho akutální pozici. Následuje test na existenci pozice pomocí bloku \ic|try:| $...$ \ic|except OutOfMapError:|. Podmínka na řádku $14$ testuje, zda cílové pole není instancí \ic|TreasureField|, čehož skutečnost by způsobila vyvolání výjimky \ic|GameFinished| a ukončení hry. Následně se na řádcích $16-19$ ověřuje, zdy je možné na cílové bloky přesunout aktuálního bota.
 
@@ -139,32 +139,32 @@ Na řádku $20$ lze v~podstatě prohlásit akci za \emph{proveditelnou}. Na řá
 \label{subsubsec:method-action-turn-left}
 \label{subsubsec:method-action-turn-right}
 
-\begin{lstlisting}[caption={Metoda $Game.\_action\_turn\_left$},label={lst:game-action-turn-left}]
+\begin{code}[caption={Metoda $Game.\_action\_turn\_left$},label={lst:game-action-turn-left}]
 def _action_turn_left(self, bot_field, **kwargs):
     assert isinstance(bot_field, BotField)
     bot_field.rotate(Action.TURN_LEFT)
-\end{lstlisting}
+\end{code}
 
 Dvojice metod \ic|Game._action_turn_left| a \ic|Game._action_turn_right| je si velmi podobná, jediný rozdíl tkví v~hodnotě předané instanci bota - jedná se buď o~\ic|Action.TURN_LEFT| nebo \ic|Action.TURN_RIGHT|. Implementačně se pouzde předeleguje požadavek na instanci \ic|BotField| předanou v~parametru.
 
 \subsubsection{Metoda akce čekání $\_action\_wait$}
 \label{subsubsec:method-action-wait}
 
-\begin{lstlisting}[caption={Metoda $Game.\_action\_wait$},label={lst:game-action-wait}]
+\begin{code}[caption={Metoda $Game.\_action\_wait$},label={lst:game-action-wait}]
 def _action_wait(self, bot_field, **kwargs):
     if not self._configuration.battery_game:
         raise ActionError('This game is not a battery game.')
 
     assert isinstance(bot_field, LaserBatteryBotField)
     bot_field.charge(bot_field.battery_charge)
-\end{lstlisting}
+\end{code}
 
 Ihned na $2-3$ řádku je otestován parametr konfigurace \ic|battery_game|, protože bez něj nenní tato akce povolena. Pokud je vše v~pořádku, je na instanci bota v~mapě předelegován na řádku $6$ příkaz na čekání a nabíjení.
 
 \subsubsection{Metoda akce laseru $\_action\_laser\_beam$}
 \label{subsubsec:method-action-laser-beam}
 
-\begin{lstlisting}[caption={Metoda $Game.\_action\_laser\_beam$},label={lst:game-action-laser-beam}]
+\begin{code}[caption={Metoda $Game.\_action\_laser\_beam$},label={lst:game-action-laser-beam}]
 def _action_laser_beam(self, bot_field, bot_position, **kwargs):
     if not self._configuration.laser_game:
         raise ActionError('This game is not a laser game.')
@@ -185,7 +185,7 @@ def _action_laser_beam(self, bot_field, bot_position, **kwargs):
         if isinstance(field, BlockField):
             self.map[position] = self._configuration.default_empty_map_field()
             break
-\end{lstlisting}
+\end{code}
 
 Metoda \ic|Game._action_laser_beam| je z~metod zpracovávajících herní akce nejsložitější. Prvně je zkontrolován aktivní konfigurační parametr \ic|laser_game| a následně je na řádku $7$ proveden příkaz na vybítí baterie bota (s~možným vyvoláním výjimky \ic|CriticalBatteryLevel| ze třídy \ic|LaserBatteryBotField|).
 }
@@ -195,22 +195,22 @@ Metoda \ic|Game._action_laser_beam| je z~metod zpracovávajících herní akce n
     }
     \begin{minipage}[t][50\lineheight]{.47\textwidth}
     
-    \begin{lstlisting}
+    \begin{code}
 try:
     pass
 except Exception as e:
     raise e
-    \end{lstlisting}
+    \end{code}
     \end{minipage}
     \hfill
     \begin{minipage}[t][50\lineheight]{.47\textwidth}
     
-    \begin{lstlisting}
+    \begin{code}
 try:
     pass
 except:
     raise
-    \end{lstlisting}
+    \end{code}
     \end{minipage}
     
 \end{figure}
@@ -317,7 +317,7 @@ Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná
 
 \fullref{lst:conf-form-fields} na řádcích $2-7$ znázorňuje statický zápis jednotlivých vstupů formuláře - jako třída je použita \ic|IntegerField|, reps. \ic|BooleanField|, s~první parametrem textovým popisem pole a dalšími parametry, jako jsou \ic|validators| a \ic|filters|.
 
-\begin{lstlisting}[caption={Ukázka deklarace polí konfiguračního formuláře},label={lst:conf-form-fields}]
+\begin{code}[caption={Ukázka deklarace polí konfiguračního formuláře},label={lst:conf-form-fields}]
 class ConfigurationForm(Form):
     map_width = IntegerField('map width',
         validators=(DataRequired(), NumberRange(5, 100)),
@@ -326,11 +326,11 @@ class ConfigurationForm(Form):
     laser_game = BooleanField('laser game',
         default=False, validators=(),
         filters=(bool, ))
-\end{lstlisting}
+\end{code}
 
 Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
 
-\begin{lstlisting}[caption={Implementace vlastních metod v~$ConfigurationForm$},label={lst:conf-form-methods}]
+\begin{code}[caption={Implementace vlastních metod v~$ConfigurationForm$},label={lst:conf-form-methods}]
 class ConfigurationForm(Form):
     def validate(self):
         if not super().validate():
@@ -349,7 +349,7 @@ class ConfigurationForm(Form):
         if self.data.get('maze_game'):
             return CustomMazeConfiguration(**self.data)
         return CustomConfiguration(**self.data)
-\end{lstlisting}
+\end{code}
 
 \fullref{lst:conf-form-methods} ukazuje dvě metody třídy \ic|ConfigurationForm|. Metoda \ic|ConfigurationForm.validate| je přepsaná metoda z~rodičovské třídy a zajišťuje dodatečné zvalidování formuláře jakožto konfigurace. Na $4-5$ řádku ukázky se volá rodičovská přepsaná metoda pro validaci jednotlivých polí ve formuláři. Na dalších řádcích je nutné ještě zvalidost konfiguraci jakožto celek, metoda se tedy pokusí v~\ic|try: ... except:| bloku vytvořit pomocí metody \ic|as_configuration| z~této konfigurace mapu. V~případě, že je voláním metody \ic|MapFactory.create| vyhozena výjimka \ic|ConfigurationError|, je naskytnutá chyba přidána do formuláře a pomocí \ic|return False| je validace prohlášena za neúspěšnou. 
 
