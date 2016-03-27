@@ -22,7 +22,6 @@ before_script:
   - "pep8 --ignore=E501,E731 pybots" # ignore too long lines, lambda assigning
 
 script:
-  - 
   - coverage run --source=pybots test.py
 
 after_success:

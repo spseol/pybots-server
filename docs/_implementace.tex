@@ -87,8 +87,6 @@ Třída \ic|Game| je jednou z~nevyýznamnějších třídy v~objektovém návrhu
 
 Jádro této třídy tvoří slovník akcí - jedná se o~interní instanci datového typu \ic|dict| uloženého v~lokálním kontextu objektu, viz \fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace \nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
 \\
-{
-\lstset{belowcaptionskip=3pt,belowskip=3pt,aboveskip=-10pt}
 
 \begin{code}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
 self._actions = {
@@ -188,13 +186,12 @@ def _action_laser_beam(self, bot_field, bot_position, **kwargs):
 \end{code}
 
 Metoda \ic|Game._action_laser_beam| je z~metod zpracovávajících herní akce nejsložitější. Prvně je zkontrolován aktivní konfigurační parametr \ic|laser_game| a následně je na řádku $7$ proveden příkaz na vybítí baterie bota (s~možným vyvoláním výjimky \ic|CriticalBatteryLevel| ze třídy \ic|LaserBatteryBotField|).
-}
-\begin{figure}
+
+\begin{figure}[!h]
     {\itshape
-    Zápis klíčového slova \ic|raise| v~bloku \ic|except| bez parametru je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:
-    }
-    \begin{minipage}[t][50\lineheight]{.47\textwidth}
-    
+    Zápis klíčového slova \ic|raise| v~bloku \ic|except| bez parametru je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:}
+
+    \begin{minipage}[b][50\lineheight]{.47\textwidth}
     \begin{code}
 try:
     pass
@@ -203,7 +200,7 @@ except Exception as e:
     \end{code}
     \end{minipage}
     \hfill
-    \begin{minipage}[t][50\lineheight]{.47\textwidth}
+    \begin{minipage}[b][50\lineheight]{.47\textwidth}
     
     \begin{code}
 try:

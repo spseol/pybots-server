@@ -1,0 +1,49 @@
+\def\refname{Seznam použitých materiálů}
+
+\newdateformat{bibciteformat}{\THEYEAR-\twodigit{\THEMONTH}-\twodigit{\THEDAY}}
+
+\newcommand{\wwwbibitem}[3]{%
+	#1. \textit{#2}. [online]. \bibciteformat\today\ [cit. \today].\\
+	\emph{Dostupné z} \href{#3}{#3}%
+}
+
+\begin{thebibliography}{00}
+	\bibitem{python-docs}
+	\wwwbibitem{Python 3.5.1 documentation}{Python}{https://docs.python.org/3/}
+
+	\bibitem{flask-docs}
+	\wwwbibitem{Flask Documentation (0.10)}{Flask}{http://flask.pocoo.org/docs/0.10/}
+
+	\bibitem{bootstrap-docs}
+	\wwwbibitem{Bootstrap}{Bootstrap}{http://v4-alpha.getbootstrap.com/}
+
+	\bibitem{fabric-docs}
+	\wwwbibitem{JSDoc}{FabricJS}{http://fabricjs.com/docs/}
+
+	\bibitem{jquery-docs}
+	\wwwbibitem{jQuery API Documentation}{jQuery}{http://api.jquery.com/}
+
+	\bibitem{font-awesome-docs}
+	\wwwbibitem{Font Awesome, the iconic font and CSS toolkit}{Font Awesome}{http://fortawesome.github.io/Font-Awesome/}
+
+	\bibitem{git-docs}
+	\wwwbibitem{Git - Documentation}{Git}{https://git-scm.com/doc}
+
+	\bibitem{github-docs}
+	\wwwbibitem{GitHub Help}{GitHub}{https://help.github.com/}
+
+	\bibitem{travis-docs}
+	\wwwbibitem{Travis CI User Documentation}{Travis CI}{https://docs.travis-ci.com/}
+
+	\bibitem{http-rfc}
+	\wwwbibitem{Hypertext Transfer Protocol -- HTTP/1.1}{The Internet Society (1999)}{https://www.w3.org/Protocols/rfc2616/rfc2616.txt}
+
+	\bibitem{json-docs}
+	\wwwbibitem{JSON}{JSON}{http://www.json.org/}
+
+	\bibitem{latex-docs}
+	\wwwbibitem{Documentation}{Share\LaTeX, Online \LaTeX\ Editor}{https://www.sharelatex.com/learn/Main\_Page}
+
+	\bibitem{latex-pro-pragmatiky}
+	\wwwbibitem{\LaTeX\ pro pragmatiky}{\LaTeX\ pro pragmatiky}{http://www.nti.tul.cz/\textasciitilde{}satrapa/docs/latex/latex-pro-pragmatiky.pdf}
+\end{thebibliography}
