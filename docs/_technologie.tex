@@ -13,7 +13,7 @@ Python je moderní interpretovaný programovací jazyk, který byl navržen v~ro
 
 Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \href{https://en.wikipedia.org/wiki/CPython}{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \href{https://cs.wikipedia.org/wiki/Jython}{Jython} naprogramovaný v~jazyce \href{https://cs.wikipedia.org/wiki/Java_%28programovac%C3%AD_jazyk%29}{Java} nebo \href{https://cs.wikipedia.org/wiki/IronPython}{IronPython} implementovaný v jazyce \href{https://cs.wikipedia.org/wiki/C_Sharp}{C\#} v prostředích \href{https://cs.wikipedia.org/wiki/.NET}{.NET} a \href{https://cs.wikipedia.org/wiki/Mono_%28platforma%29}{Mono}.
 
-Jednou z~velkých výhod Pythonu je jeho rozšířitelnost. Oficiální portál pro rozšiřující balíčky \href{https://pypi.python.org/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z~těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z~dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v~jazyce C.
+Jednou z~velkých výhod Pythonu je jeho rozšiřitelnost. Oficiální portál pro rozšiřující balíčky \href{https://pypi.python.org/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z~těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z~dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v~jazyce C.
 
 \begin{sloppypar}
 	Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s~řetězci (Python verze 2 rozlišoval řetězce ASCII\footnote{\href{https://cs.wikipedia.org/wiki/ASCII}{American Standard Code for Information Interchange} - kódová tabulka znaků z~anglické abecedy a některých dalších kódových znaků} znaků a řetězce Unicode\footnote{\href{https://cs.wikipedia.org/wiki/Unicode}{Unicode} je vylepšená norma pro reprezentaci znaků do více bytů.} znaků), celočíselného dělení a některých syntaktických vylepšení jazyka.
@@ -62,7 +62,7 @@ class TestMathOperations(TestCase):
 		)
 \end{lstlisting}
 
-V~případě spuštění a úspěšného otestování této třídy by byl výstup tento:
+V~případě spuštění a úspěšného otestování této třídy bude očekávaný výstup:
 \begin{lstlisting}[language=bash, caption={Ukázka výstupu ze spuštění testů}]
 test_add (TestMathOperations) ... ok
 test_div (TestMathOperations) ... ok
@@ -115,7 +115,7 @@ def add(*values):
   Zápis $*values$ je velmi specifický pro jazyk Python. V~případě, že se jedná o~volání funkce/metody, je objekt $values$ rozexpandován do jednotlivých parametrů. Nezáleží přitom, kolik má volaná metoda/funkce předepsaných parametrů, takže i v~tomto případě může přijít $TypeError$. Jedinou podmínkou je možnost iterovat přes objekt $values$ (musí definovat interní metodu $\_\_init\_\_$). \\Druhý případ tohoto zápisu se může vyskytovat v~hlavičce funkce/metody, v~tomto případě znamená téměř pravý opak předchozího případu - předané parametry jsou použity pro vytvoření objektu $values$, jenž jako datový typ $tuple$ obsahuje všechny tyto parametry. 
 }
 
-K testovacím asercím lze přidat i jednu komplexnější obsahující volání s~vyšším počtem parametrů:
+K~testovacím asercím lze přidat i jednu komplexnější obsahující volání s~vyšším počtem parametrů:
 
 \begin{lstlisting}[caption={Finální test pro metodu $MathOperations.add$}]
 def test_add(self):
@@ -136,7 +136,7 @@ def test_add(self):
     \caption{Logo webového frameworku Flask}
 \end{wrapfigure}
 
-Flask je webový framework implementovaný v~jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k~jeho variabilitě a v~základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcích a podobně.
+Flask je webový framework implementovaný v~jazyce Python. Mezi jeho přednosti patří vestavěný vývojářský server, plná podpora pro unit testování a kvalitní dokumentace. Vzhledem k~jeho variabilitě a v~základu tenké architektuře bylo nutné přidat abstraktní vrstvy pro samotné zpracování herních akcí a podobně.
 
 Vzhledem k~tomu, že je framework téměř stoprocentně pokryt testy, lze jednoduše usuzovat z~těchto testů o~funkčnostech frameworku a také je velmi snadné psát vlastní testy na kteroukoliv komponentu aplikace.
 
@@ -151,7 +151,7 @@ Vzhledem k~tomu, že je framework téměř stoprocentně pokryt testy, lze jedno
 \subsection{JSON}
 \label{subsec:json}
 
-JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nezávislý na platformě. Oproti jeho hlavnímu konkurentu XML\footnote{\href{https://cs.wikipedia.org/wiki/Extensible_Markup_Language}{Extensible Markup Language} je značkovací jazyk určený pro serializaci dat.} je datově úspornější, avšak je nevhodný k~přenosu binárních informací. JSON je schopen kódovat a následně dekódovat datové typy uvedené v tabulce\fullref{table:json-types}.
+JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nezávislý na platformě. Oproti jeho hlavnímu konkurentu XML\footnote{\href{https://cs.wikipedia.org/wiki/Extensible_Markup_Language}{Extensible Markup Language} je značkovací jazyk určený pro serializaci dat.} je datově úspornější, avšak je nevhodný k~přenosu binárních informací. JSON je schopen kódovat a následně dekódovat datové typy uvedené v~tabulce\fullref{table:json-types}.
 
 \begin{figure}[H]
 	\begin{minipage}{.45\textwidth}%

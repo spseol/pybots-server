@@ -18,7 +18,7 @@ assert orientation_by_value == orientation_by_key
 
 \subsection{Enumerace $Action$}
 \label{subsec:action-enum}
-Enumerace \ic|Action| se v~aplikaci používá jako jednoznačný identifikátor akce pro jednotlivé boty. Je stejně jako \ic|Orientation| odekorována pomocí \ic|@unique|, ale narozdíl od ní se nejedná o~číselnou enumeraci, ale o~enumeraci řetězců - pro snažší identifikaci v~rámci požadavků na server.
+Enumerace \ic|Action| se v~aplikaci používá jako jednoznačný identifikátor akce pro jednotlivé boty. Je stejně jako \ic|Orientation| odekorována pomocí \ic|@unique|, ale na rozdíl od ní se nejedná o~číselnou enumeraci, ale o~enumeraci řetězců - pro snažší identifikaci v~rámci požadavků na server.
 Mezi její hodnoty patří \ic|STEP| pro pohyb robota, \ic|TURN_LEFT| a \ic|TURN_RIGHT| pro jeho otáčení, \ic|WAIT| pro čekání na místě (a nabití baterie) a \ic|LASER_BEAM| pro aktivaci laserového paprsku.
 
 \subsection{Enumerace $Field$}
@@ -42,7 +42,7 @@ Jedná se o~enumeraci typově rozlišující od sebe jednotlivé potomky abstrak
 
 \subsection{Enumerace $ReponseState$}
 
-Tato enumerace je určena pro definici návratových statusů pro klientské požadavky. Definuje textovou identifikaci stavu společně s~jeho HTTP návratovým kódem. Kromě hodnoty $200$ značící korektní stav je použita také hodnota $404$ značící nenalezený objekt. Testová reprezentace se používá v odpovědi klientům v klíči \ic|state|. Jednotlivé hodnoty lze nalézt v~tabulce\fullref{table:response-state-enum-values}.
+Tato enumerace je určena pro definici návratových statusů pro klientské požadavky. Definuje textovou identifikaci stavu společně s~jeho HTTP návratovým kódem. Kromě hodnoty $200$ značící korektní stav je použita také hodnota $404$ značící nenalezený objekt. Testová reprezentace se používá v~odpovědi klientům v~klíči \ic|state|. Jednotlivé hodnoty lze nalézt v~tabulce\fullref{table:response-state-enum-values}.
 
 \begin{table}[H]
     \caption{Seznam hodnot enumerace $ResponseState$}
@@ -66,9 +66,9 @@ Tato enumerace je určena pro definici návratových statusů pro klientské po�
 \subsection{Kontejnerová třída $Map$}
 
 \begin{sloppypar}
-    \ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v~konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Parametry šířky a výšky jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance třídy předané v parametru. Slouží k~vyhledávání nad mapou, ale bohužel je její časová složitost vzhledem k~implementaci mapy $O(n^2)$. Metoda \ic|get_next_field| je určena k~získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V~případě nemožnosti získat další pole ve směru na kraji mapy je vrácena prázdná hodnota \ic|None|.
+    \ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v~konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Parametry šířky a výšky jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance třídy předané v~parametru. Slouží k~vyhledávání nad mapou, ale bohužel je její časová složitost vzhledem k~implementaci mapy $O(n^2)$. Metoda \ic|get_next_field| je určena k~získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V~případě nemožnosti získat další pole ve směru na kraji mapy je vrácena prázdná hodnota \ic|None|.
 
-    \fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v~vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+    \fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené ve~vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
 \end{sloppypar}
 
 \begin{lstlisting}[caption={Přetížené indexování třídy $Map$},label={lst:map-indexing}]
@@ -248,11 +248,11 @@ Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli
 
 \subsubsection{Pole pro poklad $TreasureField$}
 
-Ve své podstatě se jedná o~pole jako každé jiné v~mapě, avšak má jednu spicální vlastnost. Při vstoupení na něj botem je vyvolána výjimka \ic|GameFinished| (o~struktuře a systému výjimek v~sekci\fullref{subsec:custom-exceptions}) a hra končí. 
+Ve své podstatě se jedná o~pole jako každé jiné, avšak má jednu speciální vlastnost. Při vstoupení na něj botem je vyvolána výjimka \ic|GameFinished| (o~struktuře a systému výjimek v~sekci\fullref{subsec:custom-exceptions}) a hra končí. 
 
 \subsubsection{Pole pro boty $BotField$ a $LaserBatteryBotField$}
 
-Třída \ic|BotField| je základní třídou pro instance botů ve hře. Je zodpovědná za udržení své orientace v~vlastnosti \ic|orientation|, jenž je v~konstruktoru omezena na instance třídy \ic|Orientation|. Setter\footnote{Metoda nastavující neveřejný atribut, jenž může zároveň vytvářet sestrikce na hodnotu tohoto atributu.} pro tuto vlastnost není naimplementován, protože existuje metoda \ic|BotField.rotate|, jenž bota na základě předané akce otáčí na požadovaný směr. Dále je tato třída zopovědná za udržení jména pro bota - což je záležitost čistě informativní. Toto jméno je uloženo ve vlastnosti \ic|name| a je možné jej nastavit buďto konstruktorem anebo setterem.
+Třída \ic|BotField| je základní třídou pro instance botů ve hře. Je zodpovědná za udržení své orientace v~vlastnosti \ic|orientation|, jenž je v~konstruktoru omezena na instance třídy \ic|Orientation|. Setter\footnote{Metoda nastavující neveřejný atribut, jenž může zároveň vytvářet sestrikce na hodnotu tohoto atributu.} pro tuto vlastnost není naimplementován, protože existuje metoda \ic|BotField.rotate|, jenž bota na základě předané akce otáčí na požadovaný směr. Dále je tato třída zodpovědná za udržení jména pro bota - což je záležitost čistě informativní. Toto jméno je uloženo ve vlastnosti \ic|name| a je možné jej nastavit buďto konstruktorem anebo setterem.
 
 \begin{sloppypar}
     Potomek třídy pole bota \ic|LaserBatteryBotField| je lehce složitější. Kromě orientace a jména je také zodpovědný za správu stavu baterie a ovládání laseru. Konstruktor je tedy rozšířen o~parametr \ic|battery_level| určující výchozí hodnotu nabití baterie, \ic|laser_battery_cost| určující \uv{cenu} vystřelení laseru, \ic|laser_damage| určující hodnotu vybití nepřátelské baterie při zásahu, \ic|step_battery_cost| stanovující \uv{cenu} pohybu bota a také \ic|battery_charge|, o~jehož hodnotu je nabita baterie při nabíjení. Setter vlastnosti \ic|actual_battery_level| je zodpovědný za hlídání stavu baterie, v~případě pokus o~její snížení pod hodnotu $0$ je vyvolána výjimka \ic|CriticalBatteryLevel| (více o~ní v~tabulce\fullref{table:custom-exceptions}).
@@ -261,7 +261,7 @@ Třída \ic|BotField| je základní třídou pro instance botů ve hře. Je zodp
 \subsection{Systém a struktura vlastních výjimek}
 \label{subsec:custom-exceptions}
 
-Proces zpracování herní akce je záležitost, při které může dojít až k~několika desítkám nevalidních nebo hru ukončujících stavů, jako např. bot mimo herní mapu, pohyb bota, který není na řadě, požadavek na neznámého bota, požadavek na neznámou mapu, nesprávná herní akce pro kontext hry anebo hra s~již zaplněnými poli pro boty. Proto je v~aplikaci navržen systém výjimek, které jsou vyhazovány v~momentech, kdy je již proces zpracování akce zahájen a nelze zastavit; jednotlivé výjimky jsou umístěny v~tabulce\fullref{table:custom-exceptions}.
+Proces zpracování herní akce je záležitost, při které může dojít až k~několika desítkám nevalidních nebo hru ukončujících stavů, jako např. bot mimo herní mapu, pohyb bota, který není na řadě, požadavek na neznámého bota, požadavek na neznámou mapu, nesprávná herní akce pro kontext hry anebo hra s~již zaplněnými poli pro boty. Proto je v~aplikaci navržen systém výjimek, které jsou \uv{vyhazovány}\footnote{Překlad z~anglického $throw$, v~případě Pythonu $raise$ - jedná se o~stav, kdy je výjimka vyvolána a začíná prostupovat zásobníkem volání až ke $catch$ bloku ($except$ v~Pythonu).} v~momentech, kdy je již proces zpracování akce zahájen a nelze zastavit; jednotlivé výjimky jsou umístěny v~tabulce\fullref{table:custom-exceptions}.
 
 {
 	\newcolumntype{B}{>{\collectcell\icmacro}r<{\endcollectcell}}
@@ -277,12 +277,11 @@ Proces zpracování herní akce je záležitost, při které může dojít až k
 
 		NoFreeBots & Tento typ vyjímky slouží k~rozpoznání stavu, kdy se řídící třída pokusí přidat bota do hry, v~níž již není volné pole pro bota. \\
 
-		ConfigurationError & \ic|ConfigurationError| se používá pro signalizaci stavu nevalidní konfigurace. Ve dvou případech je užívána třídou \ic|MapFactory|, jenž její pomocí rozlišuje stavy při nevalidním požadavku na vytvoření mapy (nemožnost umístit příliš moc herních bloků do příliš malé mapy) a nelogickou konfiguraci parametrů \ic|battery_game = True| a \ic|laser_game = False|. Pomocí této výjimky se také kontroluje validita configuračního formuláře - více o~tomto formuláři v~sekci\fullref{subsec:administration}. \\
+		ConfigurationError & \ic|ConfigurationError| se používá pro signalizaci stavu nevalidní konfigurace. Ve dvou případech je užívána třídou \ic|MapFactory|, jenž její pomocí rozlišuje stavy při nevalidním požadavku na vytvoření mapy (nemožnost umístit příliš moc herních bloků do příliš malé mapy) a nelogickou konfiguraci parametrů \ic|battery_game = True| a \ic|laser_game = False|. Pomocí této výjimky se také kontroluje validita konfiguračního formuláře - více o~tomto formuláři v~sekci\fullref{subsec:administration}. \\
 
-		GameFinished & Tato výjimka ukončuje hru - je vyvolána třídou \ic|Game| při vstoupení bota na pole třídy \ic|TreasureField|. Tuto výjimku očekává instance třídy \ic|GameController| v~případě jejího zachycení zaznamenává tuto hru za ukončenou a bota, jenž provedl tento krok za výherce hry. \\
+		GameFinished & Tato výjimka ukončuje hru - je vyvolána třídou \ic|Game| při vstoupení bota na pole třídy \ic|TreasureField|. Tuto výjimku očekává instance třídy \ic|GameController|, v~případě jejího zachycení zaznamenává tuto hru za ukončenou a bota, který provedl tento krok za vítěze. \\
 
 		CriticalBatteryLevel & Výjimku, jenž je potomkem výjimky \ic|MovementError|, vyvolává třída pole \ic|LaserBatteryBotField| v~případě požadavku na vybití baterie pod nulovou úroveň. Vzhledem k~jejímu rodiči je tedy tato výjimka odchytávána jako nemožnost provést herní akci resp. nemožnost provést krok ve hře. \\
-
 	\end{longtable}
 }
 
@@ -299,7 +298,7 @@ V~testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 	Tato metoda rozšiřuje testovací aserce v~původní testovací třídě \ic|TestCase| o~možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v~parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s~výchozí hodnotou \ic|1|.
 
     \item \ic|setUp(self)| \\
-    Framework \nameref{subsec:flask} používá ke generování URL adres funkci \ic|url_for|, jenž pro svou funkci potřebuje aktivní objekt \ic|RequestContext| v~globálním Flask objektu \ic|_request_ctx_stack| třídy \ic|LocalStack|. V~této metodě, jenž je volána při spuštění \ic|TestCase| se tedy tento \ic|RequestContext| nastavuje. 
+    Framework \nameref{subsec:flask} používá ke generování URL adres funkci \ic|url_for|, jenž pro svou funkci potřebuje aktivní objekt \ic|RequestContext| v~globálním Flask objektu \ic|_request_ctx_stack| třídy \ic|LocalStack|. V~této metodě, která je volána při spuštění \ic|TestCase| se tedy tento \ic|RequestContext| nastavuje. 
 
     \item \ic|tearDown(self)| \\
     Tato metoda je volána při ukončení testů z~jedné třídy \ic|TestCase| a je v~ní z~globálního objektu \ic|_request_ctx_stack| třídy \ic|LocalStack| odebrán kontext, jenž byl nastavený v~metodě \ic|setUp|.
@@ -316,7 +315,7 @@ V~testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 
 Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná z~obecné třídy \ic|Form| pocházející z~balíčku \ic|wtforms| zajištující generování, typovost, validaci a vykreslování formulářů do \href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HTML}\footnote{\href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HyperText Markup Language} je značkovací jazyk určený pro tvorbu webových stránek vycházející z~jazyka XML.}.
 
-\fullref{lst:conf-form-fields} na řádcích $2-7$ znázorňuje statický zápis jednotlivých vstupů formuláře - jako třída je použita \ic|IntegerField|, reps. \ic|BooleanField|, s první parametrem textovým popisem pole a dalšími parametry, jako jsou \ic|validators| a \ic|filters|.
+\fullref{lst:conf-form-fields} na řádcích $2-7$ znázorňuje statický zápis jednotlivých vstupů formuláře - jako třída je použita \ic|IntegerField|, reps. \ic|BooleanField|, s~první parametrem textovým popisem pole a dalšími parametry, jako jsou \ic|validators| a \ic|filters|.
 
 \begin{lstlisting}[caption={Ukázka deklarace polí konfiguračního formuláře},label={lst:conf-form-fields}]
 class ConfigurationForm(Form):
@@ -329,9 +328,9 @@ class ConfigurationForm(Form):
         filters=(bool, ))
 \end{lstlisting}
 
-Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (v tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V případě, že je z jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
+Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
 
-\begin{lstlisting}[caption={Implementace vlastních metod v $ConfigurationForm$},label={lst:conf-form-methods}]
+\begin{lstlisting}[caption={Implementace vlastních metod v~$ConfigurationForm$},label={lst:conf-form-methods}]
 class ConfigurationForm(Form):
     def validate(self):
         if not super().validate():
@@ -352,8 +351,8 @@ class ConfigurationForm(Form):
         return CustomConfiguration(**self.data)
 \end{lstlisting}
 
-\fullref{lst:conf-form-methods} ukazuje dvě metody třídy \ic|ConfigurationForm|. Metoda \ic|ConfigurationForm.validate| je přepsaná metoda z rodičovské třídy a zajišťuje dodatečné zvalidování formuláře jakožto konfigurace. Na $4-5$ řádku ukázky se volá rodičovská přepsaná metoda pro validaci jednotlivých polí ve formuláři. Na dalších řádcích je nutné ještě zvalidost konfiguraci jakožto celek, metoda se tedy pokusí v \ic|try: ... except:| bloku vytvořit pomocí metody \ic|as_configuration| z této konfigurace mapu. V případě, že je voláním metody \ic|MapFactory.create| vyhozena výjimka \ic|ConfigurationError|, je naskytnutá chyba přidána do formuláře a pomocí \ic|return False| je validace prohlášena za neúspěšnou. 
+\fullref{lst:conf-form-methods} ukazuje dvě metody třídy \ic|ConfigurationForm|. Metoda \ic|ConfigurationForm.validate| je přepsaná metoda z~rodičovské třídy a zajišťuje dodatečné zvalidování formuláře jakožto konfigurace. Na $4-5$ řádku ukázky se volá rodičovská přepsaná metoda pro validaci jednotlivých polí ve formuláři. Na dalších řádcích je nutné ještě zvalidost konfiguraci jakožto celek, metoda se tedy pokusí v~\ic|try: ... except:| bloku vytvořit pomocí metody \ic|as_configuration| z~této konfigurace mapu. V~případě, že je voláním metody \ic|MapFactory.create| vyhozena výjimka \ic|ConfigurationError|, je naskytnutá chyba přidána do formuláře a pomocí \ic|return False| je validace prohlášena za neúspěšnou. 
 
 \begin{sloppypar}
-    Metoda \ic|ConfigurationForm.as_configuration|, jenž je označená jako vlasnost pomocí dekorátoru \ic|@property|, slouží k získání instance potomka třídy \ic|BaseConfiguration|. Rozhoduje se dle aktivního parametru \ic|maze_game|, který určuje, jak se budou pokládat jednotlivé herní entity do herní mapy.
+    Metoda \ic|ConfigurationForm.as_configuration|, jenž je označená jako vlasnost pomocí dekorátoru \ic|@property|, slouží k~získání instance potomka třídy \ic|BaseConfiguration|. Rozhoduje se dle aktivního parametru \ic|maze_game|, který určuje, jak se budou pokládat jednotlivé herní entity do herní mapy.
 \end{sloppypar}

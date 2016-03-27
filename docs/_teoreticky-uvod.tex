@@ -13,7 +13,7 @@
 
 O~interní reprezentaci jedné instance hry se stará třída \ic|Game|, která je zodpovědná za striktní přístup klienta do mapy. Zpracovává jednotlivé herní akce klientů, kontroluje jejich validitu a aplikuje změny do mapy. \ic|Game| je sama schopna se vyexportovat do hodnoty, která je následně převeden do formátu \nameref{subsec:json}, jenž je následně distribuován ke klientovi. Při herních akcích překládá výjimky vyvolané interně uloženou mapou na ty zvenku známé. V~případě módu hry s~tahy hlídá \ic|Game| pořadí jednotlivých botů.
 
-Třída \ic|Game| interně využívá třídu \ic|Map| k~uchování stavu hry. Třída \ic|Map| je v~podstatě pouze zapouzdřený kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - tzn. mj. ošetřuje stavy pro nevalidní přístup mimo rozsah mapy.
+Třída \ic|Game| interně využívá třídu \ic|Map| k~uchování stavu hry. Třída \ic|Map| je v~podstatě pouze zapouzdřený kontejner reprezentující vlastní mapu. Je zodpovědná za validní přístup - ošetřuje stavy pro nevalidní přístup mimo rozsah mapy.
 
 Společným předkem pro všechny entity uložené v~mapě je třída \ic|Field|. Jejím nejprimitivnějším potomkem je prázdné pole \ic|EmptyField|.
 
@@ -23,9 +23,9 @@ Společným předkem pro všechny entity uložené v~mapě je třída \ic|Field|
 
 Mezi další pomomky třídy \ic|Field| patří \ic|BlockField| reprezentující v~mapě pole pevného bloku a \ic|TreasureField| zastupující poklad ve hře.
 
-Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského požadavku na herní akci na odpovídající instanci hry. Zároveň zodpovídá za vytváření her, resp. na svém vstupu příjmá instanci potomka třídy \ic|BaseConfiguration|, kterou následně předá do singletonu\footnote{Singleton je návrhový vzor zajišťující právě jednu instanci třídy v aplikaci.} třídy \ic|MapFactory|, který sestaví instanci mapy.
+Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského herné akce na odpovídající instanci hry. Zároveň zodpovídá za vytváření her, resp. na svém vstupu příjmá instanci potomka třídy \ic|BaseConfiguration|, kterou následně předá do singletonu\footnote{Singleton je návrhový vzor zajišťující právě jednu instanci třídy v~aplikaci.} třídy \ic|MapFactory|, který sestaví instanci mapy.
 
-\ic|MapFactory| je třída zodpovědná za vygenerování mapy v~závislosti na předané configuraci. Plný výčet parametů konfigurace lze najít v~tabulce\fullref{table:conf-parameters}.
+\ic|MapFactory| je třída zodpovědná za vygenerování mapy v~závislosti na předané konfiguraci. Plný výčet parametů konfigurace lze najít v~tabulce\fullref{table:conf-parameters}.
 
 \begin{table}[H]
 	\caption{Seznam možných parametrů herní konfigurace s~parametry}
@@ -71,7 +71,7 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se přízna
 
 Pro nastavování aktuálních konfiguračních parametrů z~tabulky\fullref{table:conf-parameters} do akutálně běžící aplikace jsem vytvořil jednoduchou administraci s~formulářem a seznamem rozehraných her. Formulář obsahuje vstupní pole pro všechny parametry s~odpovídajícím typem a pomocí něj je možné změnit parametry nově vytvářených her - jeho detail je možné vidět v~obrázku\fullref{fig:admin-conf-form}. Druhou komponentou v~administraci je seznam příhlášených botů s~možností zobrazení detailu hry a mapy - náhled seznamu možno zhlédnout v~obrázku\fullref{fig:admin-games-list}. V~samotném seznamu lze \textbf{mazat hry}, co jsou \textbf{30 a více sekund neaktivní} - buď samostatně hru po hře nebo hromadně všechny, které odpovídají této podmínce.
 
-Při zobrazení detailu je možno vidět celou strukturu mapy, barevně jsou dle tabulky\fullref{table:game-detail-colors} vyznačena jednotlivá herní pole v~\textbf{mapě}, která je s \textbf{intervalem 2 sekund obnovována}. Náhled tohoto detailu je možno zhédnout v~obrázku\fullref{fig:admin-game-detail}.
+Při zobrazení detailu je možno vidět celou strukturu mapy, barevně jsou dle tabulky\fullref{table:game-detail-colors} vyznačena jednotlivá herní pole v~\textbf{mapě}, která je s~\textbf{intervalem 2 sekund obnovována}. Náhled tohoto detailu je možno zhédnout v~obrázku\fullref{fig:admin-game-detail}.
 
 \begin{figure}[H]
 	\centering
