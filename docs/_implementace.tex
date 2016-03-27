@@ -3,13 +3,13 @@
 
 \subsection{Pomocná třída $Exportable$}
 
-Abstraktní třída \ic|Exportable| je určena k~identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou metodu \ic|export|, která by v~potomcích měla vracet jedině takové hednoty, které je možné překonvertovat do formátu \nameref{subsec:json} - v~naprosté většině případů se v~aplikaci k~exportu používá vestavěný datový typ \ic|dict|.
+Abstraktní třída \ic|Exportable| je určena k~identifikování všech tříd, jejichž instance je schopna se vyexportovat. Obsahuje jedinou abstraktní metodu \ic|export|, která by v~potomcích měla vracet jedině takové hodnoty, které je možné překonvertovat do formátu \nameref{subsec:json} - v~naprosté většině případů se v~aplikaci k~exportu používá vestavěný datový typ \ic|dict|.
 
 \subsection{Enumerace $Orientation$}
 
-Tato enumerace dědící ze třídy \ic|IntEnum| z~balíčku \ic|enum| zajištuje především sjednocení udávaných orientací v~aplikaci, v~některých případech označuje i směr. Je označena dekorátorem \ic|unique|, který zajištuje unikátnost jednotlivých hodnot v~enumeraci. Tato enumerace obsahuje klíče \ic|NORTH|, \ic|EAST|, \ic|SOUTH| a \ic|WEST| s~hodnotami v~rozsahu od 1 do 4. Jako jednoduché utility jsou ve třídě metody (resp. vlastnosti díky dekorátoru \ic|@property|) \ic|is_horizontal| a \ic|is_vertical| ověřující horizontální, resp. vertikální směr. Výhoda v~předkovi \ic|IntEnum|, resp. \ic|Enum| tkví v~možnosti testovat shodnost pomocí operátoru rovnosti a konstruovat tyto objekty pomocí číselné hodnoty, viz následující ukázka.
+Tato enumerace dědící ze třídy \ic|IntEnum| z~balíčku \ic|enum| zajištuje sjednocení udávaných orientací v~aplikaci, v~některých případech označuje i směr. Je označena dekorátorem \ic|unique|, který zajištuje unikátnost jednotlivých hodnot v~enumeraci. Tato enumerace obsahuje klíče \ic|NORTH|, \ic|EAST|, \ic|SOUTH| a \ic|WEST| s~hodnotami v~rozsahu od 1 do 4. Jako jednoduché utility jsou ve třídě metody (resp. vlastnosti díky dekorátoru \ic|@property|) \ic|is_horizontal| a \ic|is_vertical| ověřující horizontální, resp. vertikální směr. Výhoda v~předkovi \ic|IntEnum|, resp. \ic|Enum| tkví v~možnosti testovat shodnost pomocí operátoru rovnosti a konstruovat tyto objekty pomocí číselné hodnoty, viz ukázka \fullref{lst:enum-pros}.
 
-\begin{lstlisting}[caption={Výhody třídy $Enum$}]
+\begin{lstlisting}[caption={Výhody třídy $Enum$},label={lst:enum-pros}]
 orientation_by_key = Orientation.NORTH
 orientation_by_value = Orientation(0)
 
@@ -42,7 +42,7 @@ Jedná se o~enumeraci typově rozlišující od sebe jednotlivé potomky abstrak
 
 \subsection{Enumerace $ReponseState$}
 
-Tato enumerace je určena pro definici návratových statusů pro klientské požadavky. Definuje textovou identifikaci stavu společně s~HTTP návratovým kódem. Kromě hodnoty $200$ značící korektní stav je použita také hodnota $404$ značící nenalezený objekt. Jednotlivé hodnoty lze nalézt v~tabulce\fullref{table:response-state-enum-values}.
+Tato enumerace je určena pro definici návratových statusů pro klientské požadavky. Definuje textovou identifikaci stavu společně s~jeho HTTP návratovým kódem. Kromě hodnoty $200$ značící korektní stav je použita také hodnota $404$ značící nenalezený objekt. Testová reprezentace se používá v odpovědi klientům v klíči \ic|state|. Jednotlivé hodnoty lze nalézt v~tabulce\fullref{table:response-state-enum-values}.
 
 \begin{table}[H]
     \caption{Seznam hodnot enumerace $ResponseState$}
@@ -66,10 +66,10 @@ Tato enumerace je určena pro definici návratových statusů pro klientské po�
 \subsection{Kontejnerová třída $Map$}
 
 \begin{sloppypar}
-    \ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v~konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Oba tyto parametry jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance předáné třídy. Slouží k~vyhledávání nad mapou, ale bohužel je její složitost vzhledem k~implementaci $O(n^2)$. Metoda \ic|get_next_field| je určena k~získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V~případě nemožnosti získat další pole ve směru na kraji mapy je vráceno \ic|None|.
-\end{sloppypar}
+    \ic|Map| je implementována jako dvourozměrná instance datového typu \ic|list|. Při inicializování objektu je ihned v~konstruktoru (metoda \ic|__init__|) vytvořen dvourozměrný seznam - první rozměr pro výšku, druhý pro šířku. Parametry šířky a výšky jsou předány konstruktorem a je ověřena jejich nenulovost. Celý kontejner je naplněn instancemi třídy \ic|EmptyField|. Mezi další metody této třídy patří \ic|get_field_occurrences|, vracející seznam souřadnic, na kterých se nachází instance třídy předané v parametru. Slouží k~vyhledávání nad mapou, ale bohužel je její časová složitost vzhledem k~implementaci mapy $O(n^2)$. Metoda \ic|get_next_field| je určena k~získávání vedlejšího pole dle zadaných souřadnic a instance třídy \ic|Orientation|. V~případě nemožnosti získat další pole ve směru na kraji mapy je vrácena prázdná hodnota \ic|None|.
 
-Zdrojový kód\fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v~vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+    \fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené v~vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
+\end{sloppypar}
 
 \begin{lstlisting}[caption={Přetížené indexování třídy $Map$},label={lst:map-indexing}]
 position = 3, 2
@@ -85,21 +85,23 @@ assert isinstance(
 
 Třída \ic|Game| je jednou z~nevyýznamnějších třídy v~objektovém návrhu této aplikace. Zajišťuje zpracování klientské herních akce, deleguje herní povely na instance herních polí a kontroluje přiřazování prázdných polí novým botům. Dále si uchovává čas svého vytvoření a čas poslední modifikace, to kvůli administraci. V~případě aktivního konfiguračního parametru \ic|rounded_game| hlídá pořadí tahů botů a v~případně nesrovnalosti vyhazuje vyjímku \ic|BotNotOnTurn|.
 
-Jádro této třídy tvoří slovník akcí - jedná se o~interní instanci datového typu \ic|dict| uloženého v~lokálním kontextu objektu, viz\fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace\nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
+Jádro této třídy tvoří slovník akcí - jedná se o~interní instanci datového typu \ic|dict| uloženého v~lokálním kontextu objektu, viz \fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace \nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
+\\
+{
+\lstset{belowcaptionskip=3pt,belowskip=3pt,aboveskip=-10pt}
 
 \begin{lstlisting}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
 self._actions = {
-    Action.STEP: self._action_step,
-    Action.TURN_LEFT: self._action_turn_left,
-    Action.TURN_RIGHT: self._action_turn_right,
-    Action.WAIT: self._action_wait,
-    Action.LASER_BEAM: self._action_laser_beam,
+    Action.STEP: ###\hyperref[subsubsec:method-action-step]{self.\_action\_step},
+    Action.TURN_LEFT: ###\hyperref[subsubsec:method-action-turn-left]{self.\_action\_turn\_left},
+    Action.TURN_RIGHT: ###\hyperref[subsubsec:method-action-turn-right]{self.\_action\_turn\_right},
+    Action.WAIT: ###\hyperref[subsubsec:method-action-wait]{self.\_action\_wait},
+    Action.LASER_BEAM: ###\hyperref[subsubsec:method-action-laser-beam]{self.\_action\_laser\_beam},
 }	
 \end{lstlisting}
-Implementace a popis jednotlivých metod:
 
 \subsubsection{Metoda akce kroku $\_action\_step$}
-\vspace{-10pt}
+\label{subsubsec:method-action-step}
 \begin{lstlisting}[caption={Metoda $Game.\_action\_step$},label={lst:game-action-step}]
 def _action_step(self, bot_id, bot_field, **kwargs):
     actual_position = self._bots_positions.get(bot_id)
@@ -134,7 +136,9 @@ Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeh
 Na řádku $20$ lze v~podstatě prohlásit akci za \emph{proveditelnou}. Na řádcích $21-21$ je následně pochycena hra s~aktivním konfiguračním parametrem $battery_game$ a poté je již poveden pohyb bota pomocí vyměnění zdrojového a cílového pole v~mapě. Před ukončím této metody je ještě aktualizována pozice bota.
 
 \subsubsection[Metody akcí změny orientace]{Metody akcí změny orientace $\_action\_turn\_left$ a $\_action\_turn\_right$}
-\vspace{-10pt}
+\label{subsubsec:method-action-turn-left}
+\label{subsubsec:method-action-turn-right}
+
 \begin{lstlisting}[caption={Metoda $Game.\_action\_turn\_left$},label={lst:game-action-turn-left}]
 def _action_turn_left(self, bot_field, **kwargs):
     assert isinstance(bot_field, BotField)
@@ -144,7 +148,8 @@ def _action_turn_left(self, bot_field, **kwargs):
 Dvojice metod \ic|Game._action_turn_left| a \ic|Game._action_turn_right| je si velmi podobná, jediný rozdíl tkví v~hodnotě předané instanci bota - jedná se buď o~\ic|Action.TURN_LEFT| nebo \ic|Action.TURN_RIGHT|. Implementačně se pouzde předeleguje požadavek na instanci \ic|BotField| předanou v~parametru.
 
 \subsubsection{Metoda akce čekání $\_action\_wait$}
-\vspace{-10pt}
+\label{subsubsec:method-action-wait}
+
 \begin{lstlisting}[caption={Metoda $Game.\_action\_wait$},label={lst:game-action-wait}]
 def _action_wait(self, bot_field, **kwargs):
     if not self._configuration.battery_game:
@@ -157,8 +162,8 @@ def _action_wait(self, bot_field, **kwargs):
 Ihned na $2-3$ řádku je otestován parametr konfigurace \ic|battery_game|, protože bez něj nenní tato akce povolena. Pokud je vše v~pořádku, je na instanci bota v~mapě předelegován na řádku $6$ příkaz na čekání a nabíjení.
 
 \subsubsection{Metoda akce laseru $\_action\_laser\_beam$}
-\label{subsubsec:action-laser-beam}
-\vspace{-10pt}
+\label{subsubsec:method-action-laser-beam}
+
 \begin{lstlisting}[caption={Metoda $Game.\_action\_laser\_beam$},label={lst:game-action-laser-beam}]
 def _action_laser_beam(self, bot_field, bot_position, **kwargs):
     if not self._configuration.laser_game:
@@ -183,13 +188,13 @@ def _action_laser_beam(self, bot_field, bot_position, **kwargs):
 \end{lstlisting}
 
 Metoda \ic|Game._action_laser_beam| je z~metod zpracovávajících herní akce nejsložitější. Prvně je zkontrolován aktivní konfigurační parametr \ic|laser_game| a následně je na řádku $7$ proveden příkaz na vybítí baterie bota (s~možným vyvoláním výjimky \ic|CriticalBatteryLevel| ze třídy \ic|LaserBatteryBotField|).
-
+}
 \begin{figure}
     {\itshape
     Zápis klíčového slova \ic|raise| v~bloku \ic|except| bez parametru je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:
     }
-    \begin{minipage}{.475\textwidth}
-    \vspace{10pt}
+    \begin{minipage}[t][50\lineheight]{.47\textwidth}
+    
     \begin{lstlisting}
 try:
     pass
@@ -198,8 +203,8 @@ except Exception as e:
     \end{lstlisting}
     \end{minipage}
     \hfill
-    \begin{minipage}{.475\textwidth}
-    \vspace{10pt}
+    \begin{minipage}[t][50\lineheight]{.47\textwidth}
+    
     \begin{lstlisting}
 try:
     pass
@@ -207,7 +212,7 @@ except:
     raise
     \end{lstlisting}
     \end{minipage}
-    \vspace{-15pt}
+    
 \end{figure}
 \footnotetext{Syntactic sugar (syntaktický cukr) je určitá forma zjednodušení syntaxe jazyka určená ke zvýšení čitelnosti či zkrácení zápis zdrojového kódu - například $x += 1$ namísto $x = x + 1$.}
 
@@ -239,7 +244,7 @@ Jedná se o~prázdnou variantu herního pole, je zodpovědná pouze za svůj kor
 
 \subsubsection{Pole bloku $BlockField$}
 
-Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli. Jediný rozdíl skrývá rozdílný přístup třídy \ic|Game| při herních akcích - na pole s~objektem této třídy není možné vstoupit botem, avšak při zapnutém parametru pro laser hru je možno tento blok zničit. Po zničení je instance pole s~blokem nahrazena instancí prázdného pole - viz detail implementace v~sekci\fullref{subsubsec:action-laser-beam}.
+Třída \ic|BlockField| je ve své jednoduchosti velmi podobná prázdnému poli. Jediný rozdíl skrývá rozdílný přístup třídy \ic|Game| při herních akcích - na pole s~objektem této třídy není možné vstoupit botem, avšak při zapnutém parametru pro laser hru je možno tento blok zničit. Po zničení je instance pole s~blokem nahrazena instancí prázdného pole - viz detail implementace v~sekci\fullref{subsubsec:method-action-laser-beam}.
 
 \subsubsection{Pole pro poklad $TreasureField$}
 
