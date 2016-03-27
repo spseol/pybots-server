@@ -7,6 +7,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[paper=a4paper,top=2.5cm,left=3.5cm,right=2.5cm,bottom=2.5cm,includefoot]{geometry} % odsazení a velikosti stránek
 \usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolar},pdftitle={Souboje virtualnich robotu PYBOTS},pdfsubject={herni server PYBOTS pro programatory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
+\usepackage[titles]{tocloft}
 \usepackage{listings} % výpisy zdrojových kódů
 \usepackage{color} % barvy
 \usepackage{xcolor} % vytváření barev
@@ -51,6 +52,10 @@
 \definecolor{botfield}{HTML}{FF4500}
 \definecolor{blockfield}{HTML}{999999}
 \definecolor{laserbatterybotfield}{HTML}{7D2A69}
+
+\setlength{\cftbeforesecskip}{14pt}
+\setlength{\cftbeforesubsecskip}{7pt}
+\setlength{\cftbeforesubsubsecskip}{3.5pt}
 
 % default width of svg
 \setsvg{width=.5\textwidth}
@@ -183,6 +188,7 @@
 \setcounter{page}{4}
 
 \tableofcontents
+\addtocontents{toc}{~\hfill\textbf{Strana}\par}
 \addcontentsline{toc}{section}{Obsah}
 
 \newpage
