@@ -29,6 +29,7 @@
 \usepackage{pdfpages} % inlude pdf
 \usepackage{titlesec} % \section na nové stránce
 \usepackage{longtable} % tabulka přes více stránek
+\usepackage{datetime}
 
 % ------ CONFIGURATION ------
 
@@ -133,7 +134,10 @@
     numbersep=7pt,
     numbers=left,
     showstringspaces=false,
-    escapeinside={###}{\^^M}
+    escapeinside={###}{\^^M},
+    belowcaptionskip=3pt,
+    belowskip=3pt,
+    aboveskip=0pt
 }
 \DeclareCaptionFormat{listing}{%
 	\colorlet{currentcolor}{.}%
@@ -222,6 +226,9 @@
 
 \listoffigures
 \addcontentsline{toc}{section}{Seznam obrázků}
+
+\input{_pouzite-zdroje.tex}
+\addcontentsline{toc}{section}{Seznam použitých materiálů} 
 
 \newpage
 \pagestyle{empty}

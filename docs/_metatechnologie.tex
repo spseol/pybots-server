@@ -37,25 +37,59 @@ Git je plně ovladatelný z~příkazové řádky, avšak existuje velké množst
  	\end{minipage}
 \end{figure}
 
-\subsection{Github}
+\subsection{GitHub}
 
-Github je webová služba poskytující podporu pro hostování \nameref{subsec:git} repozitářů. Pro veřejné repozitáře je tato služba zcela zdarma, pro soukromé repozitáře je zpoplatněna. Kromě hostování nabízí i širokou škálu služeb týkajících se zdrojového kódu, jako například komentování zdrojového k\'{o}du, komentování jeho změn, systém úkolů, soukromých zpráv mezi vývojáři nebo možnost zařazení repozitáře mezi oblíbené. Github spustili v~roce 2008 vývojáři Tom Preston-Werner, Chris Wanstrath a PJ Hyett.
-
-\begin{figure}[bht]
+\begin{wrapfigure}{R}{.3\textwidth}
+	\raisebox{50pt}
  	\centering
- 	\includesvg{assets/github-logo}
+ 	\includesvg[width=.3\textwidth]{assets/github-logo}
  	\caption{Logo systému pro správu git repozitářů GitHub}
-\end{figure}
+\end{wrapfigure}
+
+GitHub je webová služba poskytující podporu pro hostování \nameref{subsec:git} repozitářů. Pro veřejné repozitáře je tato služba zcela zdarma, pro soukromé repozitáře je zpoplatněna. Kromě hostování nabízí i širokou škálu služeb týkajících se zdrojového kódu, jako například komentování zdrojového k\'{o}du, komentování jeho změn, systém úkolů, soukromých zpráv mezi vývojáři nebo možnost zařazení repozitáře mezi oblíbené. GitHub spustili v~roce 2008 vývojáři Tom Preston-Werner, Chris Wanstrath a PJ Hyett a nabízí i možnost napojení na jiné systémy, jako je například \nameref{subsec:travis-ci}. GitHub umí na základně uživatelských akcí (\ic|git push|, \ic|git pull|, \ic|git clone| a další) notifikovat externí služby pomocí HTTP POST požadavku na specifikovanou URL adresu - tato vlastnost se nazývá \uv{webhooks}.
 
 \subsection{Travis CI}
+\label{subsec:travis-ci}
 
-\begin{figure}[bht]
+Travis CI je webová služba zajišťující automatické sestavení a otestování změn zdrojového kódu v repozitáři na GitHubu. Je řízen souborem \ic|.travis.yml|, ve kterém jsou definovány příkazy pro instalaci a nastavení prostředí a následné sestavení a spuštění testů projektu. Travis CI je specifický v tom, že pro každé sestavení (\uv{build}) je rozběhnut samostatný kontejner s nainstalovaným virtuální systémem. V době psaní této práce je to distribuce \ic|Ubuntu 12.04.5 LTS|. Při instalaci je možnost používat tradiční příkazy zapsané jazyce \ic|bash|, který tato distribuce používá jako výchozí příkazový interpret. \fullref{lst:travis-yml} také ukazuje možnost testovat projekt nad více verzemi Pythonu, v mém případě je to \ic|Python 3.5.0|, \ic|Python 3.4.2|, \ic|PyPy 2.4.0 [Python 3.2.5]| (\href{http://pypy.org/}{interpret} Pythonu napsaný v Pythonu) a \ic|nightly|, což je poslední vydaná verzy Pythonu, aktuálně se jedná o \ic|Python 3.6.0a0|.
+
+\begin{code}[caption={Zkrácená ukázka konfiguračního soubotu .travis.yml},label={lst:travis-yml},keywords={}]
+language: python
+
+python:
+  - 3.4
+  - 3.5
+  - pypy3
+  - nightly
+
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls pep8
+
+before_script:
+  - pep8 --ignore=E501,E731 pybots
+
+script:
+  - coverage run --source=pybots test.py
+
+after_success:
+  - coveralls
+
+matrix:
+  allow_failures:
+    - python: pypy3
+    - python: nightly
+\end{code}
+
+\begin{sloppypar}
+	V ukázce lze vidět příkazy spouštěné při běhu kontejneru (\ic|install|, \ic|before_script|, \ic|script| a \ic|after_success|), ve kterých se postupně nejprve nainstalují Python závislosti ze souboru \ic|requirements.txt|, poté zaznamenávač pokrytí kódu \ic|coverage| a poté linter \ic|pep8|, který následně zkontroluje zdrojový kód a v případě úspěchu se na řádku $17$ spustí samotné testy. Celý běh je zakončen odesláním výsledků pokrytí na službu \href{https://coveralls.io/}{coveralls.io}. V sekcích \ic|language|, \ic|python| a \ic|matrix| je uložena konfigurace pro různé verze jazyka Python.
+\end{sloppypar}
+
+\begin{figure}
 	\centering
-	\includesvg{assets/travis-logo}
-	\caption{Logo automatického buildovacího nástroje Travis CI}
+	\includesvg[width=.3\textwidth]{assets/travis-logo}
+	\caption{Logo automatického sestavovacího nástroje Travis CI}
 \end{figure}
-
-\todo{popsat Travis-CI}
 
 \subsection{Pycharm}
 
