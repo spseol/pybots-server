@@ -101,6 +101,11 @@
 \newcommand{\icmacro}[1]{\fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{codeprimary},breaklines=true]|#1|}}
 \makeatother
 
+\lstnewenvironment{code}[1][]{%
+\noindent\minipage{\linewidth}%
+\lstset{#1}%
+}{\endminipage}
+
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
@@ -122,10 +127,10 @@
     tabsize=4,
     breaklines=true,
     captionpos=t,
-    xleftmargin=\fboxsep,
-    xrightmargin=-\fboxsep,
+    xleftmargin=4pt\fboxsep,
+    xrightmargin=-3pt\fboxsep,
     numberstyle=\scriptsize,
-    numbersep=6pt,
+    numbersep=7pt,
     numbers=left,
     showstringspaces=false,
     escapeinside={###}{\^^M}
