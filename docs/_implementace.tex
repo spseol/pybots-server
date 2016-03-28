@@ -277,7 +277,6 @@ Třída \ic|BotField| je základní třídou pro instance botů ve hře. Je zodp
 Proces zpracování herní akce je záležitost, při které může dojít až k~několika desítkám nevalidních nebo hru ukončujících stavů, jako např. bot mimo herní mapu, pohyb bota, který není na řadě, požadavek na neznámého bota, požadavek na neznámou mapu, nesprávná herní akce pro kontext hry anebo hra s~již zaplněnými poli pro boty. Proto je v~aplikaci navržen systém výjimek, které jsou \uv{vyhazovány}\footnote{Překlad z~anglického $throw$, v~případě Pythonu $raise$ - jedná se o~stav, kdy je výjimka vyvolána a začíná prostupovat zásobníkem volání až ke $catch$ bloku ($except$ v~Pythonu).} v~momentech, kdy je již proces zpracování akce zahájen a nelze zastavit; jednotlivé výjimky jsou umístěny v~tabulce\fullref{table:custom-exceptions}.
 
 {
-	\newcolumntype{B}{>{\collectcell\icmacro}r<{\endcollectcell}}
 	\renewcommand{\arraystretch}{1.2}
 	\centering
 	

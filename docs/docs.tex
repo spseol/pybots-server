@@ -117,7 +117,7 @@
 
 \newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
 
-\newcolumntype{I}{>{\collectcell\ic}l<{\endcollectcell}}
+\newcolumntype{B}{>{\collectcell\icmacro}r<{\endcollectcell}}
 
 % ------ LISTINGS SETUP ------
 
@@ -203,9 +203,9 @@
 
 \newpage
 \setcounter{page}{4}
+\addtocontents{toc}{~\hfill\textbf{Strana}\par}
 \addcontentsline{toc}{section}{Obsah}
-\tableofcontents
-%\addtocontents{toc}{~\hfill\textbf{Strana}\par}
+{\large\tableofcontents}
 
 \newpage
 \addcontentsline{toc}{section}{Zadání}
