@@ -102,10 +102,15 @@
 \newcommand{\icmacro}[1]{\fcolorbox{white}{lightgray}{\lstinline[basicstyle=\ttfamily\color{codeprimary},breaklines=true]|#1|}}
 \makeatother
 
-\lstnewenvironment{code}[1][]{%
-\noindent\minipage{\linewidth}%
-\lstset{#1}%
-}{\endminipage}
+% \lstnewenvironment{code}[3][]%
+%   {\noindent%
+%     \minipage{\linewidth}%
+%     \lstset{#1,#2,#3}%
+%   }{\endminipage}%
+
+\lstnewenvironment{code}[1][]%
+{\noindent\minipage{\linewidth}\lstset{frameround=fttf,#1}}%
+{\endminipage}%
 
 % ref as <number of section> <title of section>
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
@@ -128,20 +133,21 @@
     tabsize=4,
     breaklines=true,
     captionpos=t,
-    xleftmargin=4pt\fboxsep,
-    xrightmargin=-3pt\fboxsep,
+    xleftmargin=\dimexpr\fboxsep+1pt\relax,
+    xrightmargin=\fboxsep,
     numberstyle=\scriptsize,
     numbersep=7pt,
     numbers=left,
     showstringspaces=false,
-    escapeinside={###}{\^^M},
+    escapeinside={\#!}{\^^M},,
     belowcaptionskip=3pt,
     belowskip=3pt,
-    aboveskip=0pt
+    aboveskip=0pt,
 }
+
 \DeclareCaptionFormat{listing}{%
 	\colorlet{currentcolor}{.}%
-	{\color{codeprimary}{\framebox[\textwidth+\fboxsep+\fboxsep+1pt]{\color{currentcolor}#1#2#3}}}%
+	{\color{codeprimary}{\framebox[\textwidth+1pt]{\color{currentcolor}#1#2#3}}}%
 }
 \captionsetup[lstlisting]{format=listing, singlelinecheck=false}
 
