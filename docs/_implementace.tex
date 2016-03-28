@@ -71,7 +71,7 @@ Tato enumerace je určena pro definici návratových statusů pro klientské po�
     \fullref{lst:map-indexing} znázorňuje přetížené indexování instancí třídy \ic|Map| pomocí pozice uložené ve~vestavěném datovém typu \ic|tuple| (nebo jakýkoliv jiný objekt, který implementuje metodu \ic|__iter__|). Výsledkem je instance prázdného herního pole.
 \end{sloppypar}
 
-\begin{code}[caption={Přetížené indexování třídy $Map$},label={lst:map-indexing}]
+\begin{code}[caption={Přetížené indexování třídy $Map$},label=lst:map-indexing]
 position = 3, 2
 game_map = Map(width=10, height=10)
 
@@ -90,16 +90,16 @@ Jádro této třídy tvoří slovník akcí - jedná se o~interní instanci dato
 
 \begin{code}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions},aboveskip=-10pt]
 self._actions = {
-    Action.STEP: ###\hyperref[subsubsec:method-action-step]{self.\_action\_step},
-    Action.TURN_LEFT: ###\hyperref[subsubsec:method-action-turn-left]{self.\_action\_turn\_left},
-    Action.TURN_RIGHT: ###\hyperref[subsubsec:method-action-turn-right]{self.\_action\_turn\_right},
-    Action.WAIT: ###\hyperref[subsubsec:method-action-wait]{self.\_action\_wait},
-    Action.LASER_BEAM: ###\hyperref[subsubsec:method-action-laser-beam]{self.\_action\_laser\_beam},
+    Action.STEP: #!\hyperref[subsubsec:method-action-step]{self.\_action\_step},
+    Action.TURN_LEFT: #!\hyperref[subsubsec:method-action-turn-left]{self.\_action\_turn\_left},
+    Action.TURN_RIGHT: #!\hyperref[subsubsec:method-action-turn-right]{self.\_action\_turn\_right},
+    Action.WAIT: #!\hyperref[subsubsec:method-action-wait]{self.\_action\_wait},
+    Action.LASER_BEAM: #!\hyperref[subsubsec:method-action-laser-beam]{self.\_action\_laser\_beam},
 }	
 \end{code}
 { % only actions methods
 
-\titlespacing*{\subsubsection}{0}{.5ex}{-.5ex}
+\titlespacing*{\subsubsection}{0pt}{0.5ex}{-0.5ex}
 
 \subsubsection{Metoda akce kroku $\_action\_step$}
 \label{subsubsec:method-action-step}
@@ -196,7 +196,7 @@ def _action_laser_beam(self, bot_field, bot_position, **kwargs):
     {\itshape
     Zápis klíčového slova \ic|raise| v~bloku \ic|except| bez parametru v~ukázce \fullref{lst:game-action-laser-beam} je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:}
 
-    \begin{minipage}[b][50\lineheight]{.47\textwidth}
+    \begin{minipage}[b][9ex]{.47\textwidth}
     \begin{code}
 try:
     pass
@@ -205,7 +205,7 @@ except Exception as e:
     \end{code}
     \end{minipage}
     \hfill
-    \begin{minipage}[b][50\lineheight]{.47\textwidth}
+    \begin{minipage}[b][9ex]{.47\textwidth}
     
     \begin{code}
 try:
@@ -347,6 +347,10 @@ class ConfigurationForm(Form):
 
 \begin{sloppypar}
     Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (implementující metodu \ic|__iter__|, v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
+
+    \fullref{lst:conf-form-methods} ukazuje dvě metody třídy \ic|ConfigurationForm|. Metoda \ic|ConfigurationForm.validate| je přepsaná metoda z~rodičovské třídy a zajišťuje dodatečné zvalidování formuláře jakožto konfigurace. Na $4-5$ řádku ukázky se volá rodičovská přepsaná metoda pro validaci jednotlivých polí ve formuláři. Na dalších řádcích je nutné ještě zvalidost konfiguraci jakožto celek, metoda se tedy pokusí v~\ic|try: ... except:| bloku vytvořit pomocí metody \ic|as_configuration| z~této konfigurace mapu. V~případě, že je voláním metody \ic|MapFactory.create| vyhozena výjimka \ic|ConfigurationError|, je naskytnutá chyba přidána do formuláře a pomocí \ic|return False| je validace prohlášena za neúspěšnou. 
+
+    Metoda \ic|ConfigurationForm.as_configuration|, jenž je označená jako vlasnost pomocí dekorátoru \ic|@property|, slouží k~získání instance potomka třídy \ic|BaseConfiguration|. Rozhoduje se dle aktivního parametru \ic|maze_game|, který určuje, jak se budou pokládat jednotlivé herní entity do herní mapy.
 \end{sloppypar}
 
 \begin{code}[caption={Implementace vlastních metod v~$ConfigurationForm$},label={lst:conf-form-methods}]
@@ -369,9 +373,3 @@ class ConfigurationForm(Form):
             return CustomMazeConfiguration(**self.data)
         return CustomConfiguration(**self.data)
 \end{code}
-
-\fullref{lst:conf-form-methods} ukazuje dvě metody třídy \ic|ConfigurationForm|. Metoda \ic|ConfigurationForm.validate| je přepsaná metoda z~rodičovské třídy a zajišťuje dodatečné zvalidování formuláře jakožto konfigurace. Na $4-5$ řádku ukázky se volá rodičovská přepsaná metoda pro validaci jednotlivých polí ve formuláři. Na dalších řádcích je nutné ještě zvalidost konfiguraci jakožto celek, metoda se tedy pokusí v~\ic|try: ... except:| bloku vytvořit pomocí metody \ic|as_configuration| z~této konfigurace mapu. V~případě, že je voláním metody \ic|MapFactory.create| vyhozena výjimka \ic|ConfigurationError|, je naskytnutá chyba přidána do formuláře a pomocí \ic|return False| je validace prohlášena za neúspěšnou. 
-
-\begin{sloppypar}
-    Metoda \ic|ConfigurationForm.as_configuration|, jenž je označená jako vlasnost pomocí dekorátoru \ic|@property|, slouží k~získání instance potomka třídy \ic|BaseConfiguration|. Rozhoduje se dle aktivního parametru \ic|maze_game|, který určuje, jak se budou pokládat jednotlivé herní entity do herní mapy.
-\end{sloppypar}
