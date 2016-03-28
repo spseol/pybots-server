@@ -66,6 +66,7 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se přízna
 	\caption{Seznam možných parametrů herní konfigurace s~parametry}
 	\label{table:conf-parameters}
 	\centering
+	\vspace*{-5pt}
 	\begin{tabular}{ l | l | l | l }
 		český název & název parametru & vysvětlení & datový typ \\
 		\hline
@@ -78,16 +79,39 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se přízna
 		hra s~bateriemi & \ic|battery_game| & hra botů s~bateriemi & \ic|bool| \\
 		hra s~lasery & \ic|laser_game| & hra botů s~možností laseru & \ic|bool| \\
 	\end{tabular}
+	\vspace*{-15pt}
 \end{table}
 
-\subsubsection{Návrh vnějšího rozhraní}
+{\titlespacing*{\subsubsection}{0pt}{0.5ex}{0.5ex}
+\subsubsection{Návrh vnějšího rozhraní}}
 
-\todo{probrat URL}
+Pro jednotlivé části aplikace je nutné mít různé URL adresy, aby je šlo jednoduše rozlišovat. Přehled URL adres a jejích určení lze najít v tabulce\fullref{table:urls}. Čarou jsou vizuálně odděleny URL adresy patřící hernímu rozhraní a URL adresy určené pro administraci. Také je v tabulce zaznemanána metoda používaná k přístupu na URL.
+{
+\captionsetup{belowskip=-5pt,aboveskip=0pt}
+\begin{table}[H]
+	\caption{Seznam URL adres aplikace}
+	\label{table:urls}
+	\centering
+	\begin{tabular}{ B | B | p{37.5ex} }
+		URL & metoda & popis \\
+		\hline
+		/init & GET & vytváří hru a vrací \ic|bot_id| v JSON \\
+		/game/<int:bot_id> & GET & vrací hru dle \ic|bot_id| v JSON \\
+		/action & POST & příjmá herní akce klientů \\
+		/reset & POST & kompletně resetuje aplikaci \\
+		/info & GET & vrací JSON výčet enumerací v aplikaci \\
+		\hline
+		/admin & GET & zobrazuje administraci \\
+		/admin & POST & příjmá odeslání konf. formuláře \\
+		/admin/<int:bot_id> & GET & vrací admin. detail hry dle \ic|bot_id| \\
+		/admin/<int:bot_id> & POST & maže hru dle \ic|bot_id| \\
+	\end{tabular}
+\end{table}
+}
 
 \subsection{Administrace}
 
-\begin{wraptable}[12]{r}{.25\textwidth}
-	\vspace{-25pt}
+\begin{wraptable}[13]{r}{.3\textwidth}
 	\caption{Přehled barev v~detailu hry v~administraci}
 	\label{table:game-detail-colors}
 	\newcommand{\colpic}[1]{\tikz\draw[#1,fill=#1,draw](0,0)circle(7.5pt);}
@@ -106,23 +130,23 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se přízna
 
 Pro nastavování aktuálních konfiguračních parametrů z~tabulky\fullref{table:conf-parameters} do akutálně běžící aplikace jsem vytvořil jednoduchou administraci s~formulářem a seznamem rozehraných her. Formulář obsahuje vstupní pole pro všechny parametry s~odpovídajícím typem a pomocí něj je možné změnit parametry nově vytvářených her - jeho detail je možné vidět v~obrázku\fullref{fig:admin-conf-form}. Druhou komponentou v~administraci je seznam příhlášených botů s~možností zobrazení detailu hry a mapy - náhled seznamu možno zhlédnout v~obrázku\fullref{fig:admin-games-list}. V~samotném seznamu lze \textbf{mazat hry}, co jsou \textbf{30 a více sekund neaktivní} - buď samostatně hru po hře nebo hromadně všechny, které odpovídají této podmínce.
 
-Při zobrazení detailu je možno vidět celou strukturu mapy, barevně jsou dle tabulky\fullref{table:game-detail-colors} vyznačena jednotlivá herní pole v~\textbf{mapě}, která je s~\textbf{intervalem 2 sekund obnovována}. Náhled tohoto detailu je možno zhédnout v~obrázku\fullref{fig:admin-game-detail}.
-
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics{assets/admin-games-list}
 	\caption{Náhled seznamu her v~administraci}
 	\label{fig:admin-games-list}
 \end{figure}
 
-\begin{figure}[H]
+Při zobrazení detailu je možno vidět celou strukturu mapy, barevně jsou dle tabulky\fullref{table:game-detail-colors} vyznačena jednotlivá herní pole v~\textbf{mapě}, která je s~\textbf{intervalem 2 sekund obnovována}. Náhled tohoto detailu je možno zhédnout v~obrázku\fullref{fig:admin-game-detail}.
+
+\begin{figure}[h]
 	\centering
 	\includegraphics{assets/admin-game-detail}
 	\caption{Náhled detailu hry v~administraci}
 	\label{fig:admin-game-detail}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics{assets/admin-conf-form}
 	\caption{Náhled administračního formuláře pro konfiguraci}
