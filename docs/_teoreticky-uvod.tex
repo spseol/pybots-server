@@ -1,8 +1,43 @@
+\section*{Úvod}
+\addcontentsline{toc}{section}{Úvod}
+{\large\sloppy
 
-\section{Teoretický úvod}
+Hlavním předmětem této práce je vytvoření interpretu pro hru virtuálních robotů. Znamená to tedy vytvořit program, který bude spuštěný na počítači s~veřejným přístupem (s~veřejnou IP adresou) - dále jen \emph{server}, a se kterým budou komunikovat jiné počítačové programy běžící odděleně od \emph{serveru} - dále jen \emph{klienti}.
+
+Tato práce popisuje vytvoření interní architektury aplikace vhodné ke konfigurování a vytváření herních map, správě rozehraných her, klientských herních požadavků na tyto hry a ošetření nestandardních stavů. Je nutno vytvořit konfigurační mechanismus, který by byl schopen na základně parametrů od \emph{klienta} vytvářet nové hry na \emph{serveru} s~různými parametry - jako je výška a šířka mapy, počty herních bloků a další. 
+
+Jako hlavní programovací jazyk byl zvolen programovací jazyk \nameref{subsec:python} především kvůli rychlosti vývoje v~něm, stručnosti a přehlednosti zápisu a také díky jeho výuce na \href{http://www.spseol.cz/}{VOŠ a SPŠE Olomouc}, kde je autor této práce studentem a kde může \emph{server} sloužit pro výuku programování pro pokročilé studenty v~oblasti programování.  
+
+Ve své práci se prvně v~sekci \nameref{sec:theory-analyse} věnuji použité architektuře, objektovým vztahům a administraci s~konfiguračním formulářem. V~sekci \nameref{sec:implementation} jsou probrána implementační rozhodnutí, systém výjimek řídící zpracování herní akce a vnitřní logika konfigurace. Sekce \nameref{sec:used-technologies} vytváří základní přehled o~použitých technologiích přímo podílejících se na běhu aplikace a především jednotkovém testování. Naproti tomu sekce \nameref{sec:used-metatechnologies} popisuje použité technologie, které se nepřímo podíleli na vývoji aplikace, tzv. \emph{metatechnologie}.
+
+}
+
+\section{Teoretický rozbor}
+\label{sec:theory-analyse}
 
 \subsection{Rozbor zadání}
-\todo{rozbor jednotlivých bodů}
+\begin{enumerate}
+	\item
+	{\bfseries Implementujte interpret hry, který bude sloužit pro soutěž virtuálních robotů.}\\
+	Z~tohoto bodu plyne zadání vytvořit aplikaci, která bude schopna reprezentovat heru a příjmat jednotlivé klientské herní akce.
+
+	\item
+	{\bfseries Interpret postavte tak, aby bylo snadné měnit konkrétní pravidla a styl hry.}\\
+	K~aplikaci z~prvního bodu zadání bude nutné přidat konfigurační rozhraní, pomocí které půjdou měnit parametry jednotlivým hrám.
+
+	\item
+	{\bfseries Interpret bude umožňovat alespoň tyto styly hry:}
+		\begin{enumerate}
+			\item Souboj individuálních robotů
+			\item Souboj decentralizovaných týmů robotů
+			\item Souboj centralizovaných týmů robotů
+		\end{enumerate}
+	Buď samotným interpretem nebo pomocí konfigurace bude možné přepínat jednotlivé módy hry mezi souboji \emph{jeden bot - jeden bot}, \emph{více botů proti více botům} nebo možnost ovládat z~klientského zařízení více botů.
+
+	\item
+	{\bfseries Ve spolupráci s~vedoucím práce zorganizujte jeden ročník této soutěže.}
+	Bude potřebné sestavit tutoriál a dokumentaci komunikačního rozhraní serveru pro naprogramování klientských aplikací a následně porovnat různé algoritmické implementace klientů v~různých programovacích jazycích.
+\end{enumerate}
 \subsection{Návrh architektury aplikace}
 
 \subsubsection{Návrh interní struktury}
@@ -51,7 +86,7 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se přízna
 
 \subsection{Administrace}
 
-\begin{wraptable}[12]{R}{.25\textwidth}
+\begin{wraptable}[12]{r}{.25\textwidth}
 	\vspace{-25pt}
 	\caption{Přehled barev v~detailu hry v~administraci}
 	\label{table:game-detail-colors}

@@ -83,12 +83,12 @@ assert isinstance(
 
 \subsection{Třída hry $Game$}
 
-Třída \ic|Game| je jednou z~nevyýznamnějších třídy v~objektovém návrhu této aplikace. Zajišťuje zpracování klientské herních akce, deleguje herní povely na instance herních polí a kontroluje přiřazování prázdných polí novým botům. Dále si uchovává čas svého vytvoření a čas poslední modifikace, to kvůli administraci. V~případě aktivního konfiguračního parametru \ic|rounded_game| hlídá pořadí tahů botů a v~případně nesrovnalosti vyhazuje vyjímku \ic|BotNotOnTurn|.
+Třída \ic|Game| je jednou z~nejvýznamnějších třídy v~objektovém návrhu této aplikace. Zajišťuje zpracování klientské herních akce, deleguje herní povely na instance herních polí a kontroluje přiřazování prázdných polí novým botům. Dále si uchovává čas svého vytvoření a čas poslední modifikace, to kvůli administraci. V~případě aktivního konfiguračního parametru \ic|rounded_game| hlídá pořadí tahů botů a v~případně nesrovnalosti vyhazuje vyjímku \ic|BotNotOnTurn|.
 
 Jádro této třídy tvoří slovník akcí - jedná se o~interní instanci datového typu \ic|dict| uloženého v~lokálním kontextu objektu, viz \fullref{lst:game-actions}. Klíče tohoto slovníku jsou hodnoty enumerace \nameref{subsec:action-enum} a jednotlivými hodnotami jsou reference na funkce zpracovávající akce.
 \\
 
-\begin{code}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions}]
+\begin{code}[caption={Slovník akcí ve třídě $Game$},label={lst:game-actions},aboveskip=-10pt]
 self._actions = {
     Action.STEP: ###\hyperref[subsubsec:method-action-step]{self.\_action\_step},
     Action.TURN_LEFT: ###\hyperref[subsubsec:method-action-turn-left]{self.\_action\_turn\_left},
@@ -97,6 +97,9 @@ self._actions = {
     Action.LASER_BEAM: ###\hyperref[subsubsec:method-action-laser-beam]{self.\_action\_laser\_beam},
 }	
 \end{code}
+{ % only actions methods
+
+\titlespacing*{\subsubsection}{0}{.5ex}{-.5ex}
 
 \subsubsection{Metoda akce kroku $\_action\_step$}
 \label{subsubsec:method-action-step}
@@ -131,7 +134,7 @@ def _action_step(self, bot_id, bot_field, **kwargs):
 
 Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeho orientace. Volání na řádcích $5-8$ zajišťuje zjištění následující pozice ve směru natočení bota vzhledem k~jeho akutální pozici. Následuje test na existenci pozice pomocí bloku \ic|try:| $...$ \ic|except OutOfMapError:|. Podmínka na řádku $14$ testuje, zda cílové pole není instancí \ic|TreasureField|, čehož skutečnost by způsobila vyvolání výjimky \ic|GameFinished| a ukončení hry. Následně se na řádcích $16-19$ ověřuje, zdy je možné na cílové bloky přesunout aktuálního bota.
 
-Na řádku $20$ lze v~podstatě prohlásit akci za \emph{proveditelnou}. Na řádcích $21-21$ je následně pochycena hra s~aktivním konfiguračním parametrem $battery_game$ a poté je již poveden pohyb bota pomocí vyměnění zdrojového a cílového pole v~mapě. Před ukončím této metody je ještě aktualizována pozice bota.
+Na řádku $20$ lze v~podstatě prohlásit akci za \emph{proveditelnou}. Na řádcích $21-21$ je následně pochycena hra s~aktivním konfiguračním parametrem $battery\_game$ a poté je již poveden pohyb bota pomocí vyměnění zdrojového a cílového pole v~mapě. Před ukončím této metody je ještě aktualizována pozice bota.
 
 \subsubsection[Metody akcí změny orientace]{Metody akcí změny orientace $\_action\_turn\_left$ a $\_action\_turn\_right$}
 \label{subsubsec:method-action-turn-left}
@@ -143,7 +146,9 @@ def _action_turn_left(self, bot_field, **kwargs):
     bot_field.rotate(Action.TURN_LEFT)
 \end{code}
 
-Dvojice metod \ic|Game._action_turn_left| a \ic|Game._action_turn_right| je si velmi podobná, jediný rozdíl tkví v~hodnotě předané instanci bota - jedná se buď o~\ic|Action.TURN_LEFT| nebo \ic|Action.TURN_RIGHT|. Implementačně se pouzde předeleguje požadavek na instanci \ic|BotField| předanou v~parametru.
+\begin{sloppypar}
+    Dvojice metod \ic|Game._action_turn_left| a \ic|Game._action_turn_right| je si velmi podobná, jediný rozdíl tkví v~hodnotě předané instanci bota - jedná se buď o~\ic|Action.TURN_LEFT| nebo \ic|Action.TURN_RIGHT|. Implementačně se pouzde předeleguje požadavek na instanci \ic|BotField| předanou v~parametru.
+\end{sloppypar}
 
 \subsubsection{Metoda akce čekání $\_action\_wait$}
 \label{subsubsec:method-action-wait}
@@ -166,13 +171,11 @@ Ihned na $2-3$ řádku je otestován parametr konfigurace \ic|battery_game|, pro
 def _action_laser_beam(self, bot_field, bot_position, **kwargs):
     if not self._configuration.laser_game:
         raise ActionError('This game is not a laser game.')
-
     assert isinstance(bot_field, LaserBatteryBotField)
     try:
         bot_field.drain(bot_field.laser_battery_cost)
     except CriticalBatteryLevel:
         raise
-
     for position in get_positions_in_row(self.map, bot_position, bot_field.orientation):
         field = self.map[position]
         if isinstance(field, self._configuration.default_empty_map_field):
@@ -185,11 +188,13 @@ def _action_laser_beam(self, bot_field, bot_position, **kwargs):
             break
 \end{code}
 
-Metoda \ic|Game._action_laser_beam| je z~metod zpracovávajících herní akce nejsložitější. Prvně je zkontrolován aktivní konfigurační parametr \ic|laser_game| a následně je na řádku $7$ proveden příkaz na vybítí baterie bota (s~možným vyvoláním výjimky \ic|CriticalBatteryLevel| ze třídy \ic|LaserBatteryBotField|).
+\begin{sloppypar}
+    Metoda \ic|Game._action_laser_beam| je z~metod zpracovávajících herní akce nejsložitější. Prvně je zkontrolován aktivní konfigurační parametr \ic|laser_game| a následně je na řádku $7$ proveden příkaz na vybítí baterie bota (s~možným vyvoláním výjimky \ic|CriticalBatteryLevel| ze třídy \ic|LaserBatteryBotField|).
+\end{sloppypar}
 
 \begin{figure}[!h]
     {\itshape
-    Zápis klíčového slova \ic|raise| v~bloku \ic|except| bez parametru je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:}
+    Zápis klíčového slova \ic|raise| v~bloku \ic|except| bez parametru v~ukázce \fullref{lst:game-action-laser-beam} je pouze \uv{syntactic sugar}\footnotemark. Následující dva zápisy jsou si návzájem ekvivalentní:}
 
     \begin{minipage}[b][50\lineheight]{.47\textwidth}
     \begin{code}
@@ -213,7 +218,10 @@ except:
 \end{figure}
 \footnotetext{Syntactic sugar (syntaktický cukr) je určitá forma zjednodušení syntaxe jazyka určená ke zvýšení čitelnosti či zkrácení zápis zdrojového kódu - například $x += 1$ namísto $x = x + 1$.}
 
-Na řádku $11$ poté začíná samotný proces laserového paprsku. Pomocí funkce \ic|get_positions_in_row| jsou získány všechny pozice směrem předaným v~parametru \ic|orientation| ze startovní pozice předané v~parametru \ic|position|. Těmito pozicemi se následně iteruje a získává se instance herního pole do promněnné \ic|field|. Podmínky na řádcích $13-20$ odlišují tyto 3 situace:
+\begin{sloppypar}
+    Na řádku $11$ poté začíná samotný proces laserového paprsku. Pomocí funkce \ic|get_positions_in_row| jsou získány všechny pozice směrem předaným v~parametru \ic|orientation| ze startovní pozice předané v~parametru \ic|position|. Těmito pozicemi se následně iteruje a získává se instance herního pole do promněnné \ic|field|. Podmínky na řádcích $13-20$ odlišují tyto 3 situace:
+\end{sloppypar}
+
 \begin{description}
     \item {\bfseries Pole je instancí výchozího prázdného pole v~mapě} \\
         Tento případ nezpůsobuje žádnou změnu - laser prochází dále.
@@ -224,6 +232,7 @@ Na řádku $11$ poté začíná samotný proces laserového paprsku. Pomocí fun
     \item {\bfseries Pole je instancí třídy \ic|BlockField|} \\
         Dochází ke zničení pole bloku, který je nahrazen výchozím prázdným polem a celý cyklus \emph{iterace je zastaven}.
 \end{description}
+} % only action methods
 
 \subsection{Třídy reprezentující herní bloky}
 
@@ -291,9 +300,11 @@ Proces zpracování herní akce je záležitost, při které může dojít až k
 
 V~testech pro tuto aplikaci používám vlastní poděděnou třídu pro množinu testovacích metod \ic|TestCase|. Je rozšířená o~tyto metody s~těmito hlavičkami:
 \begin{description}
-	\item \ic|assertIsInMap(self, game_map, field_cls, expected_count=1)| \\
-	Tato metoda rozšiřuje testovací aserce v~původní testovací třídě \ic|TestCase| o~možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v~parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s~výchozí hodnotou \ic|1|.
-
+	\item \ic|assertIsInMap(self, game_map, field_cls, expected_count=1)|
+    \begin{sloppypar}
+	   Tato metoda rozšiřuje testovací aserce v~původní testovací třídě \ic|TestCase| o~možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v~parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s~výchozí hodnotou \ic|1|.
+    \end{sloppypar}
+    
     \item \ic|setUp(self)| \\
     Framework \nameref{subsec:flask} používá ke generování URL adres funkci \ic|url_for|, jenž pro svou funkci potřebuje aktivní objekt \ic|RequestContext| v~globálním Flask objektu \ic|_request_ctx_stack| třídy \ic|LocalStack|. V~této metodě, která je volána při spuštění \ic|TestCase| se tedy tento \ic|RequestContext| nastavuje. 
 
@@ -310,9 +321,11 @@ V~testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 \subsection{Administrace}
 \label{subsec:administration}
 
-Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná z~obecné třídy \ic|Form| pocházející z~balíčku \ic|wtforms| zajištující generování, typovost, validaci a vykreslování formulářů do \href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HTML}\footnote{\href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HyperText Markup Language} je značkovací jazyk určený pro tvorbu webových stránek vycházející z~jazyka XML.}.
+\begin{sloppypar}
+    Administrační formulář zajištuje třída \ic|ConfigurationForm| poděděná z~obecné třídy \ic|Form| pocházející z~balíčku \ic|wtforms| zajištující generování, typovost, validaci a vykreslování formulářů do \href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HTML}\footnote{\href{https://cs.wikipedia.org/wiki/HyperText_Markup_Language}{HyperText Markup Language} je značkovací jazyk určený pro tvorbu webových stránek vycházející z~jazyka XML.}.
 
-\fullref{lst:conf-form-fields} na řádcích $2-7$ znázorňuje statický zápis jednotlivých vstupů formuláře - jako třída je použita \ic|IntegerField|, reps. \ic|BooleanField|, s~první parametrem textovým popisem pole a dalšími parametry, jako jsou \ic|validators| a \ic|filters|.
+    \fullref{lst:conf-form-fields} na řádcích $2-7$ znázorňuje statický zápis jednotlivých vstupů formuláře - jako třída je použita \ic|IntegerField|, reps. \ic|BooleanField|, s~první parametrem textovým popisem pole a dalšími parametry, jako jsou \ic|validators| a \ic|filters|.
+\end{sloppypar}
 
 \begin{code}[caption={Ukázka deklarace polí konfiguračního formuláře},label={lst:conf-form-fields}]
 class ConfigurationForm(Form):
@@ -325,7 +338,9 @@ class ConfigurationForm(Form):
         filters=(bool, ))
 \end{code}
 
-Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
+\begin{sloppypar}
+    Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
+\end{sloppypar}
 
 \begin{code}[caption={Implementace vlastních metod v~$ConfigurationForm$},label={lst:conf-form-methods}]
 class ConfigurationForm(Form):
