@@ -132,7 +132,7 @@ def _action_step(self, bot_id, bot_field, **kwargs):
     self._bots_positions[bot_id] = new_position
 \end{code}
 
-Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeho orientace. Volání na řádcích $5-8$ zajišťuje zjištění následující pozice ve směru natočení bota vzhledem k~jeho akutální pozici. Následuje test na existenci pozice pomocí bloku \ic|try:| $...$ \ic|except OutOfMapError:|. Podmínka na řádku $14$ testuje, zda cílové pole není instancí \ic|TreasureField|, čehož skutečnost by způsobila vyvolání výjimky \ic|GameFinished| a ukončení hry. Následně se na řádcích $16-19$ ověřuje, zdy je možné na cílové bloky přesunout aktuálního bota.
+Na řádcích $2-4$ je nejprve získána aktuální pozice bota a následně jeho orientace. Volání na řádcích $5-8$ zajišťuje zjištění následující pozice ve směru natočení bota vzhledem k~jeho akutální pozici. Následuje test na existenci pozice pomocí bloku \ic|try:| $...$ \ic|except OutOfMapError:|. Podmínka na řádku $14$ testuje, zda cílové pole není instancí \ic|TreasureField|, čehož skutečnost by způsobila vyvolání výjimky \ic|GameFinished| a ukončení hry. Následně se na řádcích $16-19$ ověřuje, zda je možné na cílové bloky přesunout aktuálního bota.
 
 Na řádku $20$ lze v~podstatě prohlásit akci za \emph{proveditelnou}. Na řádcích $21-21$ je následně pochycena hra s~aktivním konfiguračním parametrem $battery\_game$ a poté je již poveden pohyb bota pomocí vyměnění zdrojového a cílového pole v~mapě. Před ukončím této metody je ještě aktualizována pozice bota.
 
@@ -236,7 +236,14 @@ except:
 
 \subsection{Třídy reprezentující herní bloky}
 
-Na tomto místě je nutno poznamenat, že potomci třídy \ic|Field|, jenž jsou umisťováni do mapy, nejsou zodpovědni za své umístění, tzv. neuchovávají žádné informace o~své pozici, ale pouze informace o~svém stavu, jako jsou například orientace, jméno nebo stav baterie. 
+Na tomto místě je nutno poznamenat, že potomci třídy \ic|Field|, jenž jsou umisťováni do mapy, nejsou zodpovědni za své umístění, tzv. neuchovávají žádné informace o~své pozici, ale pouze informace o~svém stavu, jako jsou například orientace, jméno nebo stav baterie. Strukturu dědění těchto tříd lze vidět v ilustraci\fullref{fig:fields-uml}.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=.8\textwidth]{assets/fields-uml}
+    \caption{Struktura dědění tříd reprezentujících herní bloky}
+    \label{fig:fields-uml}
+\end{figure}
 
 \subsubsection{Společný abstraktní předek $Field$}
 
@@ -302,7 +309,7 @@ V~testech pro tuto aplikaci používám vlastní poděděnou třídu pro množin
 \begin{description}
 	\item \ic|assertIsInMap(self, game_map, field_cls, expected_count=1)|
     \begin{sloppypar}
-	   Tato metoda rozšiřuje testovací aserce v~původní testovací třídě \ic|TestCase| o~možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instací herních polí, resp. instancí třídy předané v~parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s~výchozí hodnotou \ic|1|.
+	   Tato metoda rozšiřuje testovací aserce v~původní testovací třídě \ic|TestCase| o~možnost testovat herní mapu (instanci třídy \ic|Map|) na určitý počet instancí herních polí, resp. instancí třídy předané v~parametru \ic|field_cls|. Ve výsledku je provedena aserce počtu nalezených těchto bloků vůči hodnotě parametru \ic|expected_count| s~výchozí hodnotou \ic|1|.
     \end{sloppypar}
     
     \item \ic|setUp(self)| \\
@@ -339,7 +346,7 @@ class ConfigurationForm(Form):
 \end{code}
 
 \begin{sloppypar}
-    Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
+    Pojmenovaný parametr \ic|validators| příjmá iterovatelný objekt (implementující metodu \ic|__iter__|, v~tomto případě \ic|tuple|) funkcí (nebo objektů implementující interní metodu \ic|__call__|), jenž jsou volány při validaci samotných prvků. V~případě, že je z~jakéhokoliv volání vyvolána výjimka \ic|ValueError|, je validace zastavena a prohlášena za neúspěšnou. Konfigurační pole \ic|map_width| používá dva tyto validátory - \ic|DataRequired()| zajištující vyplnění pole a \ic|NumberRange(5, 100)| hlídající rozsah zadané hodnoty. S~parametrem \ic|filters| se pracuje podobně, avšak se jednotlivé funkce volají jako filtry hodnoty z~pole - používá se \ic|int| pro přetypování hodnoty na stejnojmenný datový typ.
 \end{sloppypar}
 
 \begin{code}[caption={Implementace vlastních metod v~$ConfigurationForm$},label={lst:conf-form-methods}]
