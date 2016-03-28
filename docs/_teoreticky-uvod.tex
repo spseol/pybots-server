@@ -111,14 +111,14 @@ Pro jednotlivé části aplikace je nutné mít různé URL adresy, aby je šlo 
 
 \subsection{Administrace}
 
-\begin{wraptable}[13]{r}{.3\textwidth}
+\begin{wraptable}[14]{r}{.3\textwidth}
 	\caption{Přehled barev v~detailu hry v~administraci}
 	\label{table:game-detail-colors}
-	\newcommand{\colpic}[1]{\tikz\draw[#1,fill=#1,draw](0,0)circle(7.5pt);}
-	\newcolumntype{B}{>{\collectcell{\colpic}}l<{\endcollectcell}}
+	\newcommand{\colpic}[1]{\tikz \draw[#1,fill=#1,draw](0,0)circle(7.5pt);}
+	\newcolumntype{M}{>{\collectcell{\colpic}}l<{\endcollectcell}}
 	\vspace{-10pt}
 	\begin{flushright}
-		\begin{tabular}{ r | B }
+		\begin{tabular}{ r | M }
 			prázdné pole & emptyfield \\
 			poklad & treasurefield \\
 			základní bot & botfield \\
