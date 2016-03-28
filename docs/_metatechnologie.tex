@@ -1,4 +1,5 @@
 \section{Použité metatechnologie}
+\label{sec:used-metatechnologies}
 
 \subsection{Git}
 \label{subsec:git}
@@ -16,7 +17,7 @@ Repozitář je v~tomto systému základní nejvyšší jednotka pro správu zdro
 \begin{figure}[H]
  	\centering
  	\includesvg[width=.9\textwidth]{assets/git-operations}
- 	\caption{Základní operace při práci se systémem Git}
+ 	\caption[Základní operace při práci se systémem Git]{Základní operace při práci se systémem Git\cite{basic-git-svg}}
  	\label{fig:git-operations}
 \end{figure}
 
@@ -39,10 +40,9 @@ Git je plně ovladatelný z~příkazové řádky, avšak existuje velké množst
 
 \subsection{GitHub}
 
-\begin{wrapfigure}{R}{.3\textwidth}
-	\raisebox{50pt}
+\begin{wrapfigure}{R}{.4\textwidth}
  	\centering
- 	\includesvg[width=.3\textwidth]{assets/github-logo}
+ 	\includesvg[width=.4\textwidth]{assets/github-logo}
  	\caption{Logo systému pro správu git repozitářů GitHub}
 \end{wrapfigure}
 
@@ -51,7 +51,18 @@ GitHub je webová služba poskytující podporu pro hostování \nameref{subsec:
 \subsection{Travis CI}
 \label{subsec:travis-ci}
 
-Travis CI je webová služba zajišťující automatické sestavení a otestování změn zdrojového kódu v repozitáři na GitHubu. Je řízen souborem \ic|.travis.yml|, ve kterém jsou definovány příkazy pro instalaci a nastavení prostředí a následné sestavení a spuštění testů projektu. Travis CI je specifický v tom, že pro každé sestavení (\uv{build}) je rozběhnut samostatný kontejner s nainstalovaným virtuální systémem. V době psaní této práce je to distribuce \ic|Ubuntu 12.04.5 LTS|. Při instalaci je možnost používat tradiční příkazy zapsané jazyce \ic|bash|, který tato distribuce používá jako výchozí příkazový interpret. \fullref{lst:travis-yml} také ukazuje možnost testovat projekt nad více verzemi Pythonu, v mém případě je to \ic|Python 3.5.0|, \ic|Python 3.4.2|, \ic|PyPy 2.4.0 [Python 3.2.5]| (\href{http://pypy.org/}{interpret} Pythonu napsaný v Pythonu) a \ic|nightly|, což je poslední vydaná verzy Pythonu, aktuálně se jedná o \ic|Python 3.6.0a0|.
+	Travis CI je webová služba zajišťující automatické sestavení a otestování změn zdrojového kódu v~repozitáři na GitHubu. Je řízen souborem \ic|.travis.yml|, ve kterém jsou definovány příkazy pro instalaci a nastavení prostředí a následné sestavení a spuštění testů projektu. Travis CI je specifický v~tom, že pro každé sestavení (\uv{build}) je rozběhnut samostatný kontejner s~nainstalovaným virtuální systémem. V~době psaní této práce je to distribuce \ic|Ubuntu 12.04.5 LTS|. 
+
+\begin{wrapfigure}[]{l}{.4\textwidth}
+	\centering
+	\includesvg[width=.4\textwidth]{assets/travis-logo}
+	\caption{Logo automatického sestavovacího nástroje Travis CI}
+\end{wrapfigure}
+
+	Při instalaci je možnost používat tradiční příkazy zapsané jazyce \ic|bash|, který tato distribuce používá jako výchozí příkazový interpret. \fullref{lst:travis-yml} také ukazuje možnost testovat projekt nad více verzemi Pythonu, v~mém případě je to \ic|Python 3.5.0|, \ic|Python 3.4.2|, \ic|PyPy 2.4.0 [Python 3.2.5]| (\href{http://pypy.org/}{interpret} Pythonu napsaný v~Pythonu) a \ic|nightly|, což je poslední vydaná verze Pythonu, aktuálně se jedná o~\ic|Python 3.6.0a0|.
+
+	V~ukázce lze vidět také příkazy spouštěné při běhu kontejneru (\ic|install|, \ic|before_script|, \ic|script| a \ic|after_success|), ve kterých se postupně nejprve nainstalují Python závislosti ze souboru \ic|requirements.txt|, poté zaznamenávač pokrytí kódu \ic|coverage| a poté linter \ic|pep8|, který následně zkontroluje zdrojový kód a v~případě úspěchu se na řádku $17$ spustí samotné testy. Celý běh je zakončen odesláním výsledků pokrytí na službu \href{https://coveralls.io/}{coveralls.io}. V~sekcích \ic|language|, \ic|python| a \ic|matrix| je uložena konfigurace pro různé verze jazyka Python.
+
 
 \begin{code}[caption={Zkrácená ukázka konfiguračního soubotu .travis.yml},label={lst:travis-yml},keywords={}]
 language: python
@@ -82,21 +93,14 @@ matrix:
 \end{code}
 
 \begin{sloppypar}
-	V ukázce lze vidět příkazy spouštěné při běhu kontejneru (\ic|install|, \ic|before_script|, \ic|script| a \ic|after_success|), ve kterých se postupně nejprve nainstalují Python závislosti ze souboru \ic|requirements.txt|, poté zaznamenávač pokrytí kódu \ic|coverage| a poté linter \ic|pep8|, který následně zkontroluje zdrojový kód a v případě úspěchu se na řádku $17$ spustí samotné testy. Celý běh je zakončen odesláním výsledků pokrytí na službu \href{https://coveralls.io/}{coveralls.io}. V sekcích \ic|language|, \ic|python| a \ic|matrix| je uložena konfigurace pro různé verze jazyka Python.
 \end{sloppypar}
-
-\begin{figure}
-	\centering
-	\includesvg[width=.3\textwidth]{assets/travis-logo}
-	\caption{Logo automatického sestavovacího nástroje Travis CI}
-\end{figure}
 
 \subsection{Pycharm}
 
 \begin{figure}[bht]
 	\centering
 	\includesvg{assets/pycharm-logo}
-	\caption{Logo vývojového nástroje Pycharm}
+	\caption{Logo vývojového prostředí Pycharm}
 \end{figure}
 
-\todo{popsat Pycharm}
+Pycharm je světově uznávané a profesionální vývojové prostředí (IDE - \emph{Integrated Development Environment}) použité k~vývoji této aplikace. Je vyvíjeno českou společností \href{https://www.jetbrains.com/}{JetBrains}, která mj. nabízí studentům volné licence pro nekomerční použití. Pycharm nabízí velmi širkovou škálu službe týkajících se vývoje v~Pythonu - od základních i pokročilých forem refaktoringu\footnote{Refaktoring je cílená úprava zdrojového kódu za účelem zvýšení jeho přehlednosti nebo výkonnosti.}, přes integraci verzovacích systémů, jako je například i \nameref{subsec:git}, podporu Python frameworků, pokročilé debuggovací nástroje až podpoře i jiný jazyků než Python, např. HTML, CSS, Javascript či povrchově i \LaTeX{}.

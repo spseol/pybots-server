@@ -1,21 +1,22 @@
 \section{Použité technologie}
+\label{sec:used-technologies}
 
 \subsection{Python}
 \label{subsec:python}
 
-\begin{wrapfigure}[10]{R}{0.5\textwidth}
+\begin{wrapfigure}[10]{R}{0.65\textwidth}
  \centering
- \includesvg[width=0.5\textwidth]{assets/python-logo}
+ \includesvg[width=0.65\textwidth]{assets/python-logo}
  \caption{Logo programovacího jazyka Python}
 \end{wrapfigure}
 
-Python je moderní interpretovaný programovací jazyk, který byl navržen v~roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
-
-Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \href{https://en.wikipedia.org/wiki/CPython}{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \href{https://cs.wikipedia.org/wiki/Jython}{Jython} naprogramovaný v~jazyce \href{https://cs.wikipedia.org/wiki/Java_%28programovac%C3%AD_jazyk%29}{Java} nebo \href{https://cs.wikipedia.org/wiki/IronPython}{IronPython} implementovaný v jazyce \href{https://cs.wikipedia.org/wiki/C_Sharp}{C\#} v prostředích \href{https://cs.wikipedia.org/wiki/.NET}{.NET} a \href{https://cs.wikipedia.org/wiki/Mono_%28platforma%29}{Mono}.
-
-Jednou z~velkých výhod Pythonu je jeho rozšiřitelnost. Oficiální portál pro rozšiřující balíčky \href{https://pypi.python.org/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z~těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z~dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v~jazyce C.
-
 \begin{sloppypar}
+	Python je moderní interpretovaný programovací jazyk, který byl navržen v~roce 1991 nizozemským programátorem Guido van Rossumem. Nabízí rozličná programovací paradigma: imperativní, procedurální, funkcionální nebo objektově orientované, které jsem ve své práci použil nejčastěji.
+
+	Python je vyvíjen jako open source projekt, jeho zdrojové kódy jsou tedy veřejné a je možné do nich přispět. Jeho výchozí implementace se nazývá \href{https://en.wikipedia.org/wiki/CPython}{CPython} dle jazyka C, ve kterém je implementována. Mezi další jeho alternativní implementace patří \href{https://cs.wikipedia.org/wiki/Jython}{Jython} naprogramovaný v~jazyce \href{https://cs.wikipedia.org/wiki/Java_%28programovac%C3%AD_jazyk%29}{Java} nebo \href{https://cs.wikipedia.org/wiki/IronPython}{IronPython} implementovaný v jazyce \href{https://cs.wikipedia.org/wiki/C_Sharp}{C\#} v prostředích \href{https://cs.wikipedia.org/wiki/.NET}{.NET} a \href{https://cs.wikipedia.org/wiki/Mono_%28platforma%29}{Mono}.
+
+	Jednou z~velkých výhod Pythonu je jeho rozšiřitelnost. Oficiální portál pro rozšiřující balíčky \href{https://pypi.python.org/pypi}{PyPi} aktuálně nabízí okolo 74 tisíc knihoven. Kterýkoliv z~těchto balíčků je možno pomocí nástroje pip nainstalovat a používat. Jednou z~dalších možností, jak rozšířit jeho funkčnost, je naprogramovat si vlastní rozšíření v~jazyce C.
+
 	Python je aktuálně vyvíjen ve dvou hlavních větvích; větvi Pythonu verze 2 a verze 3. Motivace pro vydání verze 3 byla především ve sjednocení práce s~řetězci (Python verze 2 rozlišoval řetězce ASCII\footnote{\href{https://cs.wikipedia.org/wiki/ASCII}{American Standard Code for Information Interchange} - kódová tabulka znaků z~anglické abecedy a některých dalších kódových znaků} znaků a řetězce Unicode\footnote{\href{https://cs.wikipedia.org/wiki/Unicode}{Unicode} je vylepšená norma pro reprezentaci znaků do více bytů.} znaků), celočíselného dělení a některých syntaktických vylepšení jazyka.
 \end{sloppypar}
 
@@ -28,10 +29,9 @@ Poslední vydaná verze Pythonu je 3.5 a její hlavní výhodou je přidání po
 	Jednotkové automatické testování je jeden z~způsobů, jak vývojáři ulehčit úpravu, vytváření i mazání částí zdrojových kódů. Jednotka testu je v~množina asercí (předpokladů), které kontrolují vývojářem vytvořené modelové situace nad zdrojovým kódem programu. Automatické testování je poté automatické spouštění testů např. po změně zdrojového kódu a určení, zda testy prošly korektně (aserce všech testů jsou pravdivé). Samotný test je však psán samotným vývojářem, což při testování může vytvářet klamný dojem \uv{bezchybnosti} zdrojového kódu aplikace, protože vývojář jakožto člověk, je bytost chybující a samotný kód testů může být napsat chybně a aserce jsou v~tu chvíli bezpředmětné, protože jsou např. vždy pravdivé a znehodnocují tím korektnost a správnost testů projektu.
 
 	Python nabízí celou řadu nástrojů pro spouštění testů (\href{https://docs.python.org/3/library/unittest.html}{unittest}, \href{https://nose.readthedocs.org/en/latest/}{nose}, \href{http://pytest.org/latest/}{pytest}, \href{https://github.com/DRMacIver/hypothesis}{hypothesis} nebo \href{http://nestorsalceda.github.io/mamba/}{mamba}). V~projektu jsem se rozhodl použít balíček \ic|unittest|, vzhledem k~tomu, že je vestavěný v~Pythonu od verze 3 a není tedy nutné instalovat další závislost.
-)
-\end{sloppypar}
 
-Níže je uveden příklad třídy k~testování. Třída \ic|MathOperations| je určena k~základním matematickým operacím, pro názornost pro sčítání a dělení.
+	Níže je uveden příklad třídy k~testování. Třída \ic|MathOperations| je určena k~základním matematickým operacím, pro názornost pro sčítání a dělení.
+\end{sloppypar}
 
 \begin{code}[caption={Příklad třídy $MathOperations$ k~testování}]
 class MathOperations(object):
@@ -133,9 +133,9 @@ def test_add(self):
 
 \subsection{Flask}
 \label{subsec:flask}
-\begin{wrapfigure}[16]{R}{\textwidth/3}
+\begin{wrapfigure}[18]{L}{.35\textwidth}
     \centering
-    \includesvg[width=\textwidth/3]{assets/flask-logo}
+    \includesvg[width=.35\textwidth]{assets/flask-logo}
     \caption{Logo webového frameworku Flask}
 \end{wrapfigure}
 
@@ -157,9 +157,9 @@ Vzhledem k~tomu, že je framework téměř stoprocentně pokryt testy, lze jedno
 JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nezávislý na platformě. Oproti jeho hlavnímu konkurentu XML\footnote{\href{https://cs.wikipedia.org/wiki/Extensible_Markup_Language}{Extensible Markup Language} je značkovací jazyk určený pro serializaci dat.} je datově úspornější, avšak je nevhodný k~přenosu binárních informací. JSON je schopen kódovat a následně dekódovat datové typy uvedené v~tabulce\fullref{table:json-types}.
 
 \begin{figure}[H]
-	\begin{minipage}{.45\textwidth}%
+	\begin{minipage}{.6\textwidth}%
 		\newcolumntype{B}{>{\bfseries}l}%
-		\begin{tabular}{ B | p{5cm} }%
+		\begin{tabular}{ B | p{6.5cm} }%
 			typ & popis \\
 			\hline
 			integer & celočíselné hodnoty: $6$, $-3$ nebo $0$ \\
@@ -172,7 +172,7 @@ JSON (\emph{JavaScript Object Notation}) je datový formát pro přenos dat nez�
 		\captionof{table}{Seznam datových typů formátu JSON\label{table:json-types}}
 	\end{minipage}%
 	\hfill%
-	\begin{minipage}{.45\textwidth}
+	\begin{minipage}{.3\textwidth}
 	    \centering
 	    \includesvg[width=\textwidth]{assets/json-logo}
 	 	\captionof{figure}{Logo datového formátu JSON}%

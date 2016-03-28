@@ -5,7 +5,7 @@
 
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage[paper=a4paper,top=2.5cm,left=3.5cm,right=2.5cm,bottom=2.5cm,includefoot]{geometry} % odsazení a velikosti stránek
+\usepackage[paper=a4paper,top=2cm,left=3.5cm,right=2cm,bottom=2cm,includefoot]{geometry} % odsazení a velikosti stránek
 \usepackage[bookmarksopen,bookmarks,pdfauthor={Josef Kolar},pdftitle={Souboje virtualnich robotu PYBOTS},pdfsubject={herni server PYBOTS pro programatory},pdfkeywords={python,game,programmers,flask,maze,bots}]{hyperref} % odkazy
 \usepackage[titles]{tocloft} % pro stylování obsahu
 \usepackage{listings} % výpisy zdrojových kódů
@@ -195,15 +195,15 @@
 \lipsum[2]
 \end{abstract}
 
+\newpage
 \setcounter{page}{4}
-
-\tableofcontents
-\addtocontents{toc}{~\hfill\textbf{Strana}\par}
 \addcontentsline{toc}{section}{Obsah}
+\tableofcontents
+%\addtocontents{toc}{~\hfill\textbf{Strana}\par}
 
 \newpage
-\includepdf[pages={1}]{assets/zadani.pdf}
 \addcontentsline{toc}{section}{Zadání}
+\includepdf[pages={1},width=\textwidth]{assets/zadani.pdf}
 
 \newpage
 \pagestyle{fancy}
@@ -227,8 +227,8 @@
 \listoffigures
 \addcontentsline{toc}{section}{Seznam obrázků}
 
-\input{_pouzite-zdroje.tex}
-\addcontentsline{toc}{section}{Seznam použitých materiálů} 
+\input{_reference.tex}
+\addcontentsline{toc}{section}{Reference} 
 
 \newpage
 \pagestyle{empty}
