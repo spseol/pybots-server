@@ -195,6 +195,11 @@
 \input{_titulek_dmp}
 % \input{_titulek_soc.tex}
 
+\newpage
+\setcounter{page}{2}
+\addcontentsline{toc}{section}{Zadání}
+\includepdf[pages={1},width=\textwidth]{assets/zadani.pdf}
+
 \input{_prohlaseni}
 
 % \begin{abstract}
@@ -203,13 +208,8 @@
 
 \newpage
 \setcounter{page}{4}
-\addtocontents{toc}{~\hfill\textbf{Strana}\par}
 \addcontentsline{toc}{section}{Obsah}
 {\large\tableofcontents}
-
-\newpage
-\addcontentsline{toc}{section}{Zadání}
-\includepdf[pages={1},width=\textwidth]{assets/zadani.pdf}
 
 \newpage
 \pagestyle{fancy}
@@ -234,5 +234,5 @@
 \addcontentsline{toc}{section}{Seznam obrázků}
 
 \input{_reference.tex}
-\addcontentsline{toc}{section}{Reference} 
+\addcontentsline{toc}{section}{Seznam použitých zdrojů} 
 \end{document}
