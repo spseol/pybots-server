@@ -1,0 +1,62 @@
+\documentclass[11pt]{extarticle}
+
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.5cm,left=1cm,right=1cm,bottom=0cm]{geometry}
+\usepackage{color}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+}
+
+\begin{document}
+\pagestyle{empty}
+	{\centering \section*{Obsah CD přílohy}}
+	\begin{description}
+		\item \textbf{pybots-server}\\
+		Složka obsahující kompletní zdrojové kódy k~vývoji této aplikace (taktéž dostupná na \url{https://github.com/spseol/pybots-server}).
+			\begin{description}
+				\item \textbf{pybots}\\
+				Kořenový balíček pro aplikaci.
+				\item \textbf{tests}\\
+				Kořenový balíček pro testy aplikace, uvnitř téměř identická struktura jako složka \emph{pybots}.
+				\item \textbf{docs}\\
+				Kořenová složka pro dokumentaci \emph{docs.pdf} sázenou z~\LaTeX{} souboru \emph{docs.tex} a složky zdrojů \emph{assets}.
+				\item \textbf{.travis.yml}\\
+				Konfigurační soubor pro Travis CI.
+				\item \textbf{README.md}\\
+				Tutoriál pro tvorbu klientské aplikace.
+				\item \textbf{main.py}\\
+				Spouštěcí soubor aplikace, možno předat argument \emph{debug} pro zapnutí Flask debug módu.
+				\item \textbf{test.py}\\
+				Spouštěcí soubor testů, v~případě, že neprojdou, je ekončeno s~nenulovou návratovou hodnotou.
+				\item \textbf{requirements.txt}\\
+				Standardizovaný zápis seznamu závislostí určený pro nástroj \emph{pip} - \emph{pip install -r requirements.txt}
+			\end{description}
+		\item \textbf{clients}\\
+		Složka obsahující klienty, které nejsou přímou součástí této práce.
+		\begin{description}
+			\item \textbf{RoboGameClient.jar} \\
+			Klient napsaný v~jazyce \emph{Java}, zvládá kromě vykreslování mapy i automatického chození a hru s~bateriemi. Pro spuštění je nutná \emph{Java} verze minimálně 1.8. Byl mi poskytnut pod licencí \emph{CC-BY-SA} mým spolužákem Jiřím Hanákem. Spouští se pomocí \emph{\$ java -jar RoboGameClient.jar}.
+			\item \textbf{LUAvsPYbots-2.3} \\
+			Klienta napsaný v~jazyce \emph{Lua}, pro spuštění nutný dostupný framework LÖVE (\url{https://love2d.org/}). Podporuje grafické rozhraní a byl mi poskytnut žákem 3B Jiřím Jurečkou pod licencí \emph{CC-BY-SA}. Spouští se pomocí \emph{\$ love LUAvsPYbots-2.3}.
+		\end{description}
+		\item \textbf{docs.pdf}\\
+			Textová práce k~DMP ve formátu PDF.
+	\end{description}
+	{\centering \section*{Jak rozběhnout server PYBOTS?}}
+	Návod je určený pro rozběhnutí na sysému \textbf{Debian} nebo jeho derivátech.
+	\begin{itemize}
+		\item Naklonovat repozitář z~GitHubu nebo nakopírovat složku \emph{pybots-server} z~CD na lokální zařízení.
+		\item Pomocí \emph{venv} balíčku (\url{https://docs.python.org/3/library/venv.html}) vytvořit Python 3 virtuální prostředí- \emph{\$ pyvenv venv}
+		\item Aktivovat virtuální prostředí - \emph{\$ source venv/bin/activate}.
+		\item Nainstalovat závislosti - \emph{\$ pip install -r requirements.txt}.
+		\item (nepovinné) Zkontrolovat celistvost projektu - \emph{\$ python test.py}
+		\item Spuštění serveru - \emph{\$ python main.py}, server je spuštěn na \url{localhost:44822} (a také na \url{http://hroch.spseol.cz:44822/})
+	\end{itemize}
+	{\hfill \textbf{Josef Kolář \copyright{} 2016}, \url{mail@josefkolar.cz}}
+\end{document}
