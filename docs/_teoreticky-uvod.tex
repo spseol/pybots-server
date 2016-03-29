@@ -56,7 +56,7 @@ Společným předkem pro všechny entity uložené v~mapě je třída \ic|Field|
 	Existenci bota v~mapě reprezentuje třída \ic|BotField|, která je zopovědná za udržení jeho prostorové orientace a umí se na místě otáčet. V~případě, že se jedná o~hru s~bateriemi, je tato třída nahrazena třídou \ic|LaserBatteryBotField|, která se kromě orientace stará i o~stav baterie. Ten je řízen pomocí metod \ic|LaserBatteryBotField.charge()| pro nabíjení, resp. \ic|drain()| pro vybíjení. Výjimka \ic|CriticalBatteryLevel| je vyvolána v~případě, kdy by mělo dojít k~vybití baterie na kritickou úroveň.
 \end{sloppypar}
 
-Mezi další pomomky třídy \ic|Field| patří \ic|BlockField| reprezentující v~mapě pole pevného bloku a \ic|TreasureField| zastupující poklad ve hře.
+Mezi další potomky třídy \ic|Field| patří \ic|BlockField| reprezentující v~mapě pole pevného bloku a \ic|TreasureField| zastupující poklad ve hře.
 
 Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se příznačně nazývá \ic|GameController|. Je zodpovědná delegování klientského herné akce na odpovídající instanci hry. Zároveň zodpovídá za vytváření her, resp. na svém vstupu příjmá instanci potomka třídy \ic|BaseConfiguration|, kterou následně předá do singletonu\footnote{Singleton je návrhový vzor zajišťující právě jednu instanci třídy v~aplikaci.} třídy \ic|MapFactory|, který sestaví instanci mapy.
 
@@ -85,7 +85,7 @@ Třída, která kontroluje jednotlivé instance \ic|Game| v~aplikaci se přízna
 {\titlespacing*{\subsubsection}{0pt}{0.5ex}{0.5ex}
 \subsubsection{Návrh vnějšího rozhraní}}
 
-Pro jednotlivé části aplikace je nutné mít různé URL adresy, aby je šlo jednoduše rozlišovat. Přehled URL adres a jejích určení lze najít v tabulce\fullref{table:urls}. Čarou jsou vizuálně odděleny URL adresy patřící hernímu rozhraní a URL adresy určené pro administraci. Také je v tabulce zaznemanána metoda používaná k přístupu na URL.
+Pro jednotlivé části aplikace je nutné mít různé URL adresy, aby je šlo jednoduše rozlišovat. Přehled URL adres a jejích určení lze najít v~tabulce\fullref{table:urls}. Čarou jsou vizuálně odděleny URL adresy patřící hernímu rozhraní a URL adresy určené pro administraci. Také je v~tabulce zaznemanána metoda používaná k~přístupu na URL.
 {
 \captionsetup{belowskip=-5pt,aboveskip=0pt}
 \begin{table}[H]
@@ -95,11 +95,11 @@ Pro jednotlivé části aplikace je nutné mít různé URL adresy, aby je šlo 
 	\begin{tabular}{ B | B | p{37.5ex} }
 		URL & metoda & popis \\
 		\hline
-		/init & GET & vytváří hru a vrací \ic|bot_id| v JSON \\
-		/game/<int:bot_id> & GET & vrací hru dle \ic|bot_id| v JSON \\
+		/init & GET & vytváří hru a vrací \ic|bot_id| v~JSON \\
+		/game/<int:bot_id> & GET & vrací hru dle \ic|bot_id| v~JSON \\
 		/action & POST & příjmá herní akce klientů \\
 		/reset & POST & kompletně resetuje aplikaci \\
-		/info & GET & vrací JSON výčet enumerací v aplikaci \\
+		/info & GET & vrací JSON výčet enumerací v~aplikaci \\
 		\hline
 		/admin & GET & zobrazuje administraci \\
 		/admin & POST & příjmá odeslání konf. formuláře \\
