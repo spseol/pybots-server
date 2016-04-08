@@ -1,7 +1,6 @@
 from unittest import case
 
 from flask.helpers import url_for
-
 from main import app
 from pybots.configurations.base_configuration import BaseConfiguration
 from pybots.game.map import Map
@@ -16,8 +15,8 @@ class TestCase(case.TestCase):
     def assertIsInMap(self, game_map, field_cls, expected_count=1):
         assert isinstance(game_map, Map)
         count = 0
-        inner_map = getattr(game_map, '_{}__map'.format(game_map.__class__.__name__))
-        for row in inner_map:
+        map_container = game_map.map
+        for row in map_container:
             for field in row:
                 if isinstance(field, field_cls):
                     count += 1

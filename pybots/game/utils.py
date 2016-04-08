@@ -57,8 +57,8 @@ def get_positions_in_row(game_map, position, orientation, limit=None):
             break
 
 
-def random_position(game_map):
-    return random.randint(0, game_map.width - 1), random.randint(0, game_map.height - 1)
+def random_position(game_map, fce=random.randint):
+    return fce(0, game_map.width - 1), fce(0, game_map.height - 1)
 
 
 class MovementError(Exception):

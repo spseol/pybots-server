@@ -1,6 +1,6 @@
-from _collections_abc import Iterator
 import unittest
 
+from _collections_abc import Iterator
 from pybots.game.fields.bot_field import BotField
 from pybots.game.fields.empty_field import EmptyField
 from pybots.game.field import Field, FIELD_KEY
@@ -61,7 +61,7 @@ class TestMap(unittest.TestCase):
 
     def test__export_field(self):
         game_map = Map(1, 1)
-        getattr(game_map, '_{}__map'.format(game_map.__class__.__name__))[0][0] = None
+        game_map.map[0][0] = None
         with self.assertRaises(UnknownFieldError):
             game_map._export_field(game_map[0, 0])
 

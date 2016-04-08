@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, triangular
 
 from pybots.configurations.field_placer import FieldPlacerMixin
 from pybots.game.fields.block_field import BlockField
@@ -24,11 +24,15 @@ class MazeFieldPlacerMixin(FieldPlacerMixin):
 
     def place_treasures(self, game_map=None, count=None, field_class=TreasureField, *args, **kwargs):
         self._check_place_args(game_map, count, field_class)
+
+        def random(a, b):
+            return int(triangular(a, b))
+
         for _ in range(count):
             treasure = field_class()
             position = random_position(game_map)
             while not isinstance(game_map[position], self.default_empty_map_field):
-                position = random_position(game_map)
+                position = random_position(game_map, fce=random)
             game_map[position] = treasure
 
     def place_blocks(self, game_map=None, count=None, field_class=BlockField, *args, **kwargs):
