@@ -1,6 +1,6 @@
 from os.path import join, dirname
 
-from flask.ext.misaka import markdown
+from flask_misaka import markdown
 
 from flask.templating import render_template
 from flask.views import MethodView

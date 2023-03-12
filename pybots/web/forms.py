@@ -1,6 +1,6 @@
 from wtforms import Form
-from wtforms.fields.core import BooleanField
-from wtforms.fields.html5 import IntegerField
+from wtforms import BooleanField
+from wtforms import IntegerField
 from wtforms.validators import DataRequired, NumberRange
 
 from pybots.configurations import ConfigurationError

@@ -6,7 +6,7 @@ import os
 from os.path import join, dirname
 
 from jinja2.loaders import FileSystemLoader
-from flask.ext.cors import CORS
+from flask_cors import CORS
 
 from pybots import web
 from pybots.json_encoder import JSONEncoder
