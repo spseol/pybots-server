@@ -91,8 +91,7 @@
 \ifnum\pdfstrcmp%
 {\pdffilemoddate{\SVG@in@path#2.svg}}%
 {\pdffilemoddate{\SVG@in@path#2.pdf}}>0%
-\immediate\write18{\SVG@cmd@inkscape \space \SVG@in@path#2.svg%
-  \space -o \spce \SVG@in@path#2.pdf \space --export-latex}%
+\immediate\write18{\SVG@cmd@inkscape\space\SVG@in@path#2.svg\space-o\spce\SVG@in@path#2.pdf\space--export-latex}%
 \fi%
 \ifSVG@out@usewidth%
 \settoheight\SVG@out@height%
