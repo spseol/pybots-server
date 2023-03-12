@@ -70,7 +70,7 @@
 \define@key[SVG]{svg.sty}{pretex}{\def\SVG@out@pretex{#1}}%
 \def\SVG@out@postex{}%
 \define@key[SVG]{svg.sty}{postex}{\def\SVG@out@postex{#1}}%
-\def\SVG@cmd@inkscape{inkscape -z -C}%
+\def\SVG@cmd@inkscape{inkscape}%
 \define@key[SVG]{svg.sty}{inkscape}{\def\SVG@cmd@inkscape{#1}}%
 \def\SVG@cmd@pdflatex{pdflatex}%
 \define@key[SVG]{svg.sty}{pdflatex}{\def\SVG@cmd@pdflatex{#1}}%
@@ -91,8 +91,8 @@
 \ifnum\pdfstrcmp%
 {\pdffilemoddate{\SVG@in@path#2.svg}}%
 {\pdffilemoddate{\SVG@in@path#2.pdf}}>0%
-\immediate\write18{\SVG@cmd@inkscape \space -f\SVG@in@path#2.svg%
-  \space-A\SVG@in@path#2.pdf --export-latex}%
+\immediate\write18{\SVG@cmd@inkscape \space \SVG@in@path#2.svg%
+  \space -o \spce \SVG@in@path#2.pdf \space --export-latex}%
 \fi%
 \ifSVG@out@usewidth%
 \settoheight\SVG@out@height%
