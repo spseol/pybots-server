@@ -1,9 +1,17 @@
 from flask.views import MethodView
+from flask import request
+import datetime
 
 from pybots.game.actions import Action
 from pybots.game.fields.laser_battery_bot_field import CriticalBatteryLevel
 from pybots.game.game_controller import game_controller
-from pybots.game.utils import MovementError, ActionError, GameFinished, NoFreeBots, BotNotOnTurn
+from pybots.game.utils import (
+    MovementError,
+    ActionError,
+    GameFinished,
+    NoFreeBots,
+    BotNotOnTurn,
+)
 from pybots.views.response_state import ResponseState
 from pybots.views.utils import form_to_kwargs
 
@@ -26,10 +34,7 @@ class ActionView(MethodView):
             return ResponseState.INVALID_ACTION.response
 
         try:
-            game = game_controller.action(
-                bot_id,
-                action
-            )
+            game = game_controller.action(bot_id, action)
             return ResponseState.MOVEMENT_SUCCESS.as_response(game=game.export(bot_id))
         except NoFreeBots:
             # TODO: is it special state?
@@ -43,4 +48,8 @@ class ActionView(MethodView):
         except MovementError:
             return ResponseState.MOVEMENT_ERROR.response
         except GameFinished:
+            d = datetime.datetime.now()
+            print("Won: ", d, request.remote_addr)
+            with open("won.log", "a") as f:
+                f.write(f"Won: {d} {request.remote_addr}\n")
             return ResponseState.GAME_WON.response
