@@ -29,7 +29,6 @@
             var canvas = new fabric.StaticCanvas('c', {renderOnAddRemove: false, backgroundColor: field2color[0]});
 
             function renderMap(map) {
-                console.log(map)
                 var rows = map.length, columns = map[0].length;
                 $.each(map, function (y, row) {
                     $.each(row, function (x, field) {
