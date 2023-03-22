@@ -29,14 +29,16 @@
             var canvas = new fabric.StaticCanvas('c', {renderOnAddRemove: false, backgroundColor: field2color[0]});
 
             function renderMap(map) {
+                console.log(map)
                 var rows = map.length, columns = map[0].length;
                 $.each(map, function (y, row) {
                     $.each(row, function (x, field) {
                         field = field['field'];
                         /* never render empty fields, blocks and treasures only once */
-                        if (field == 0 || (wallsRendered && field != 2)) {
-                            return;
-                        }
+                        //if (field == 0 || (wallsRendered && field != 2)) {
+                        {#if (field == 0 ) {#}
+                        {#    return;#}
+                        {#}#}
                         canvas.add(new fabric.Rect({
                             left: x * width / columns,
                             top: y * height / rows,
@@ -57,7 +59,7 @@
             }
 
             refreshMap();
-            setInterval(refreshMap, 2000);
+            setInterval(refreshMap, 777);
         });
     </script>
 {% endblock %}
