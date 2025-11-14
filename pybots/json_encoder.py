@@ -1,6 +1,6 @@
 from enum import Enum
 
-from flask import json
+import json
 
 
 class JSONEncoder(json.JSONEncoder):
